@@ -38,6 +38,11 @@ class Request
         return $this->post;
     }
 
+    public function getQueryParams(): array
+    {
+        return $this->get;
+    }
+
     public static function capture(): self
     {
         return new self($_SERVER, $_GET, $_POST, $_FILES, $_COOKIE);
