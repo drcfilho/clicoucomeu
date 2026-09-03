@@ -126,9 +126,9 @@
 - [x] Criar navegacao mobile.
 - [x] Criar header.
 - [x] Criar flash messages.
-- [ ] Criar componentes de modal.
-- [ ] Criar componente de confirmacao.
-- [ ] Criar componente de loading.
+- [x] Criar componentes de modal.
+- [x] Criar componente de confirmacao.
+- [x] Criar componente de loading.
 
 # Fase 6 - Categorias
 
