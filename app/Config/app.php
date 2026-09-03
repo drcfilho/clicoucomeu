@@ -19,6 +19,10 @@ function appConfig(): array
             'secure' => filter_var(env('SESSION_SECURE', false), FILTER_VALIDATE_BOOL),
             'same_site' => env('SESSION_SAMESITE', 'Lax'),
         ],
+        'auth' => [
+            'max_attempts' => (int) env('AUTH_MAX_ATTEMPTS', 5),
+            'lockout_seconds' => (int) env('AUTH_LOCKOUT_SECONDS', 900),
+        ],
         'dev' => [
             'bypass_store_hours' => filter_var(env('DEV_BYPASS_STORE_HOURS', false), FILTER_VALIDATE_BOOL),
         ],

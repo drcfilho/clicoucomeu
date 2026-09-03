@@ -53,7 +53,7 @@ class AuthController
 
         /** @var AuthService $auth */
         $auth = $this->container->get('auth');
-        $result = $auth->attempt((string) $data['usuario'], (string) $data['senha']);
+        $result = $auth->attempt((string) $data['usuario'], (string) $data['senha'], $request->ip());
 
         if (!$result['success']) {
             $session->set('auth_error', $result['message']);

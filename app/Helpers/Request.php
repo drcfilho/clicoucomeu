@@ -45,6 +45,34 @@ class Request
         return array_merge($this->get, $this->post);
     }
 
+    public function ip(): string
+    {
+        $keys = [
+            'HTTP_CF_CONNECTING_IP',
+            'HTTP_X_FORWARDED_FOR',
+            'REMOTE_ADDR',
+        ];
+
+        foreach ($keys as $key) {
+            $value = trim((string) ($this->server[$key] ?? ''));
+
+            if ($value === '') {
+                continue;
+            }
+
+            if ($key === 'HTTP_X_FORWARDED_FOR') {
+                $parts = explode(',', $value);
+                $value = trim($parts[0] ?? '');
+            }
+
+            if ($value !== '') {
+                return $value;
+            }
+        }
+
+        return '0.0.0.0';
+    }
+
     public function json(): array
     {
         $raw = file_get_contents('php://input');

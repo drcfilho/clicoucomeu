@@ -103,7 +103,8 @@ function bootstrap(): App\Helpers\App
     $container->set('auth', function () use ($container): App\Services\AuthService {
         return new App\Services\AuthService(
             $container->get('userRepository'),
-            $container->get('session')
+            $container->get('session'),
+            $container->get('config')['app']['auth'] ?? []
         );
     });
     $container->set('menuService', function () use ($container): App\Services\MenuService {
