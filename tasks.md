@@ -248,22 +248,22 @@
 
 # Fase 16 - Servico de Pedidos
 
-- [ ] Validar loja aberta.
-- [ ] Validar tenant.
-- [ ] Validar produtos.
-- [ ] Validar variacoes.
-- [ ] Validar adicionais.
-- [ ] Buscar precos reais.
-- [ ] Recalcular subtotal.
-- [ ] Calcular taxa de entrega.
-- [ ] Aplicar cupom.
-- [ ] Gerar token publico.
-- [ ] Gerar numero sequencial.
-- [ ] Criar cliente ou localizar existente.
-- [ ] Criar pedido em transacao.
-- [ ] Criar itens.
-- [ ] Criar adicionais.
-- [ ] Registrar historico de status.
+- [x] Validar loja aberta.
+- [x] Validar tenant.
+- [x] Validar produtos.
+- [x] Validar variacoes.
+- [x] Validar adicionais.
+- [x] Buscar precos reais.
+- [x] Recalcular subtotal.
+- [x] Calcular taxa de entrega.
+- [x] Aplicar cupom.
+- [x] Gerar token publico.
+- [x] Gerar numero sequencial.
+- [x] Criar cliente ou localizar existente.
+- [x] Criar pedido em transacao.
+- [x] Criar itens.
+- [x] Criar adicionais.
+- [x] Registrar historico de status.
 
 # Fase 17 - Painel de Pedidos
 
