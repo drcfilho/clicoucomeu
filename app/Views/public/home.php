@@ -198,9 +198,15 @@ $checkoutConfig = [
                             <p class="brand-slogan"><?= htmlspecialchars((string) $slogan, ENT_QUOTES, 'UTF-8') ?></p>
                         </div>
                     </div>
-                    <div class="status-box">
-                        <div class="status-label">Aberto</div>
-                        <div class="status-sub">Peça online</div>
+                    <?php 
+                    $storeIsOpen = $status_loja['is_open'] ?? true;
+                    $storeMessage = $status_loja['message'] ?? 'Aberto para pedidos';
+                    ?>
+                    <div class="status-box" style="<?= !$storeIsOpen ? 'background: #fef2f2; border-color: #fca5a5;' : '' ?>">
+                        <div class="status-label" style="<?= !$storeIsOpen ? 'color: #dc2626;' : '' ?>">
+                            <?= $storeIsOpen ? 'Aberto Agora' : 'Fechado' ?>
+                        </div>
+                        <div class="status-sub"><?= htmlspecialchars((string) $storeMessage, ENT_QUOTES, 'UTF-8') ?></div>
                     </div>
                 </div>
             </header>

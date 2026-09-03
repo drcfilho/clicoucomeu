@@ -19,7 +19,8 @@ class MenuService
         private NeighborhoodRepository $neighborhoods,
         private PaymentMethodRepository $paymentMethods,
         private CategoryRepository $categories,
-        private ProductRepository $products
+        private ProductRepository $products,
+        private ?StoreHoursService $storeHoursService = null
     ) {
     }
 
@@ -31,13 +32,15 @@ class MenuService
             return null;
         }
 
-        $settings = $this->configurations->findByTenantId((int) $tenant['id']);
-        $neighborhoodRows = $this->neighborhoods->findActiveByTenantId((int) $tenant['id']);
-        $paymentMethodRows = $this->paymentMethods->findActiveByTenantId((int) $tenant['id']);
-        $categoryRows = $this->categories->findActiveByTenantId((int) $tenant['id']);
-        $productRows = $this->products->findActiveByTenantId((int) $tenant['id']);
-        $variationRows = $this->products->findVariationsByTenantId((int) $tenant['id']);
-        $addonGroupRows = $this->products->findAddonGroupsByTenantId((int) $tenant['id']);
+        $tenantId = (int) $tenant['id'];
+        $settings = $this->configurations->findByTenantId($tenantId);
+        $neighborhoodRows = $this->neighborhoods->findActiveByTenantId($tenantId);
+        $paymentMethodRows = $this->paymentMethods->findActiveByTenantId($tenantId);
+        $categoryRows = $this->categories->findActiveByTenantId($tenantId);
+        $productRows = $this->products->findActiveByTenantId($tenantId);
+        $variationRows = $this->products->findVariationsByTenantId($tenantId);
+        $addonGroupRows = $this->products->findAddonGroupsByTenantId($tenantId);
+        $storeStatus = $this->storeHoursService ? $this->storeHoursService->isOpen($tenantId) : ['is_open' => true, 'message' => 'Aberto'];
 
         $productsByCategory = [];
         foreach ($productRows as $product) {
@@ -65,6 +68,7 @@ class MenuService
             'neighborhoods' => $neighborhoodRows,
             'payment_methods' => $paymentMethodRows,
             'categories' => $categories,
+            'status_loja' => $storeStatus,
         ];
     }
 }

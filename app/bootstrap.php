@@ -133,7 +133,8 @@ function bootstrap(): App\Helpers\App
             $container->get('neighborhoodRepository'),
             $container->get('paymentMethodRepository'),
             $container->get('categoryRepository'),
-            $container->get('productRepository')
+            $container->get('productRepository'),
+            $container->get('storeHoursService')
         );
     });
     $container->set('orderService', function () use ($container): App\Services\OrderService {

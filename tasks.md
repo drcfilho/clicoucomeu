@@ -210,7 +210,7 @@
 
 - [x] Criar rota por slug.
 - [x] Exibir logo e tema.
-- [ ] Exibir status aberto/fechado.
+- [x] Exibir status aberto/fechado.
 - [x] Listar categorias.
 - [x] Listar produtos.
 - [ ] Implementar busca.
