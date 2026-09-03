@@ -91,24 +91,26 @@ function bootstrap(): App\Helpers\App
             $container->get('logger')
         );
     });
-    $container->set('userRepository', function () use ($container): App\Repositories\UserRepository {
-        return new App\Repositories\UserRepository($container->get('db'));
-    });
-    $container->set('categoryRepository', function () use ($container): App\Repositories\CategoryRepository {
-        return new App\Repositories\CategoryRepository($container->get('db'));
-    });
-    $container->set('configurationRepository', function () use ($container): App\Repositories\ConfigurationRepository {
-        return new App\Repositories\ConfigurationRepository($container->get('db'));
-    });
-    $container->set('productRepository', function () use ($container): App\Repositories\ProductRepository {
-        return new App\Repositories\ProductRepository($container->get('db'));
-    });
-    $container->set('neighborhoodRepository', function () use ($container): App\Repositories\NeighborhoodRepository {
-        return new App\Repositories\NeighborhoodRepository($container->get('db'));
-    });
-    $container->set('paymentMethodRepository', function () use ($container): App\Repositories\PaymentMethodRepository {
-        return new App\Repositories\PaymentMethodRepository($container->get('db'));
-    });
+    $container->set('userRepository', fn () => new App\Repositories\UserRepository($container->get('db')));
+    $container->set(App\Repositories\UserRepository::class, fn () => $container->get('userRepository'));
+
+    $container->set('categoryRepository', fn () => new App\Repositories\CategoryRepository($container->get('db')));
+    $container->set(App\Repositories\CategoryRepository::class, fn () => $container->get('categoryRepository'));
+
+    $container->set('configurationRepository', fn () => new App\Repositories\ConfigurationRepository($container->get('db')));
+    $container->set(App\Repositories\ConfigurationRepository::class, fn () => $container->get('configurationRepository'));
+
+    $container->set('productRepository', fn () => new App\Repositories\ProductRepository($container->get('db')));
+    $container->set(App\Repositories\ProductRepository::class, fn () => $container->get('productRepository'));
+
+    $container->set('addonRepository', fn () => new App\Repositories\AddonRepository($container->get('db')));
+    $container->set(App\Repositories\AddonRepository::class, fn () => $container->get('addonRepository'));
+
+    $container->set('neighborhoodRepository', fn () => new App\Repositories\NeighborhoodRepository($container->get('db')));
+    $container->set(App\Repositories\NeighborhoodRepository::class, fn () => $container->get('neighborhoodRepository'));
+
+    $container->set('paymentMethodRepository', fn () => new App\Repositories\PaymentMethodRepository($container->get('db')));
+    $container->set(App\Repositories\PaymentMethodRepository::class, fn () => $container->get('paymentMethodRepository'));
     $container->set('storeHoursService', function () use ($container, $appConfig): App\Services\StoreHoursService {
         return new App\Services\StoreHoursService(
             $container->get('db'),
@@ -116,9 +118,12 @@ function bootstrap(): App\Helpers\App
             (bool) ($appConfig['dev']['bypass_store_hours'] ?? false)
         );
     });
+    $container->set(App\Services\StoreHoursService::class, fn () => $container->get('storeHoursService'));
+
     $container->set('tenantRepository', function () use ($container): App\Repositories\TenantRepository {
         return new App\Repositories\TenantRepository($container->get('db'));
     });
+    $container->set(App\Repositories\TenantRepository::class, fn () => $container->get('tenantRepository'));
     $container->set('auth', function () use ($container): App\Services\AuthService {
         return new App\Services\AuthService(
             $container->get('userRepository'),

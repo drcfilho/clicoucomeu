@@ -16,21 +16,65 @@ class Container
         $this->entries[$id] = $value;
     }
 
+    public function has(string $id): bool
+    {
+        return array_key_exists($id, $this->resolved) || array_key_exists($id, $this->entries) || class_exists($id);
+    }
+
     public function get(string $id): mixed
     {
         if (array_key_exists($id, $this->resolved)) {
             return $this->resolved[$id];
         }
 
-        if (!array_key_exists($id, $this->entries)) {
-            throw new InvalidArgumentException("Container entry not found: {$id}");
+        // Tenta resolver por alias registrado (ex: 'categoryRepository')
+        if (array_key_exists($id, $this->entries)) {
+            $entry = $this->entries[$id];
+            $value = is_callable($entry) ? $entry($this) : $entry;
+            $this->resolved[$id] = $value;
+            return $value;
         }
 
-        $entry = $this->entries[$id];
-        $value = is_callable($entry) ? $entry() : $entry;
+        // Fallback 1: Tenta resolver convertendo FQCN para alias (ex: App\Repositories\CategoryRepository => categoryRepository)
+        $shortName = lcfirst(basename(str_replace('\\', '/', $id)));
+        if (array_key_exists($shortName, $this->entries)) {
+            return $this->get($shortName);
+        }
 
-        $this->resolved[$id] = $value;
+        // Fallback 2: Auto-instanciação de classe válida
+        if (class_exists($id)) {
+            $reflector = new \ReflectionClass($id);
+            $constructor = $reflector->getConstructor();
 
-        return $value;
+            if ($constructor === null) {
+                $instance = new $id();
+            } else {
+                $parameters = $constructor->getParameters();
+                $dependencies = [];
+
+                foreach ($parameters as $parameter) {
+                    $type = $parameter->getType();
+                    if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) {
+                        $dependencyClass = $type->getName();
+                        if ($dependencyClass === self::class) {
+                            $dependencies[] = $this;
+                        } else {
+                            $dependencies[] = $this->get($dependencyClass);
+                        }
+                    } elseif ($parameter->isDefaultValueAvailable()) {
+                        $dependencies[] = $parameter->getDefaultValue();
+                    } else {
+                        $dependencies[] = null;
+                    }
+                }
+
+                $instance = $reflector->newInstanceArgs($dependencies);
+            }
+
+            $this->resolved[$id] = $instance;
+            return $instance;
+        }
+
+        throw new InvalidArgumentException("Container entry not found: {$id}");
     }
 }
