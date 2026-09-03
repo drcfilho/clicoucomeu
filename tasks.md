@@ -267,22 +267,22 @@
 
 # Fase 17 - Painel de Pedidos
 
-- [ ] Listar novos.
-- [ ] Listar preparando.
-- [ ] Listar prontos.
-- [ ] Listar finalizados.
-- [ ] Criar polling.
-- [ ] Destacar novos.
-- [ ] Tocar som.
-- [ ] Criar contador por status.
-- [ ] Abrir detalhes.
-- [ ] Aceitar pedido.
-- [ ] Iniciar preparo.
-- [ ] Marcar pronto.
-- [ ] Marcar saiu para entrega.
-- [ ] Finalizar.
-- [ ] Marcar retirado.
-- [ ] Cancelar.
+- [x] Listar novos.
+- [x] Listar preparando.
+- [x] Listar prontos.
+- [x] Listar finalizados.
+- [x] Criar polling.
+- [x] Destacar novos.
+- [x] Tocar som.
+- [x] Criar contador por status.
+- [x] Abrir detalhes.
+- [x] Aceitar pedido.
+- [x] Iniciar preparo.
+- [x] Marcar pronto.
+- [x] Marcar saiu para entrega.
+- [x] Finalizar.
+- [x] Marcar retirado.
+- [x] Cancelar.
 - [ ] Registrar historico.
 
 # Fase 18 - Tela da Cozinha

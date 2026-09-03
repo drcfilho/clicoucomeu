@@ -3,6 +3,7 @@ $sessionPerfil = $_SESSION['perfil'] ?? null;
 $backofficeSection = (string) ($backofficeSection ?? 'painel');
 $backofficeNav = [
     'painel' => ['label' => 'Painel', 'href' => '/painel'],
+    'pedidos' => ['label' => 'Pedidos 🚨', 'href' => '/painel/pedidos'],
     'categorias' => ['label' => 'Categorias', 'href' => '/painel/categorias'],
     'produtos' => ['label' => 'Produtos', 'href' => '/painel/produtos'],
     'adicionais' => ['label' => 'Adicionais', 'href' => '/painel/adicionais'],

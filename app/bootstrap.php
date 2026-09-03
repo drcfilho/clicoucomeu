@@ -27,6 +27,7 @@ require_once BASE_PATH . '/app/Repositories/CategoryRepository.php';
 require_once BASE_PATH . '/app/Repositories/ConfigurationRepository.php';
 require_once BASE_PATH . '/app/Repositories/NeighborhoodRepository.php';
 require_once BASE_PATH . '/app/Repositories/PaymentMethodRepository.php';
+require_once BASE_PATH . '/app/Repositories/OrderRepository.php';
 require_once BASE_PATH . '/app/Repositories/ProductRepository.php';
 require_once BASE_PATH . '/app/Repositories/TenantRepository.php';
 require_once BASE_PATH . '/app/Repositories/UserRepository.php';
@@ -44,6 +45,7 @@ require_once BASE_PATH . '/app/Controllers/Painel/AddonController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/NeighborhoodController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/PaymentMethodController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/StoreHoursController.php';
+require_once BASE_PATH . '/app/Controllers/Painel/OrderController.php';
 require_once BASE_PATH . '/app/Controllers/Admin/TenantController.php';
 require_once BASE_PATH . '/app/Controllers/Cozinha/KitchenController.php';
 
@@ -111,6 +113,9 @@ function bootstrap(): App\Helpers\App
 
     $container->set('paymentMethodRepository', fn () => new App\Repositories\PaymentMethodRepository($container->get('db')));
     $container->set(App\Repositories\PaymentMethodRepository::class, fn () => $container->get('paymentMethodRepository'));
+
+    $container->set('orderRepository', fn () => new App\Repositories\OrderRepository($container->get('db')));
+    $container->set(App\Repositories\OrderRepository::class, fn () => $container->get('orderRepository'));
     $container->set('storeHoursService', function () use ($container, $appConfig): App\Services\StoreHoursService {
         return new App\Services\StoreHoursService(
             $container->get('db'),

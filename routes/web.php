@@ -11,6 +11,7 @@ use App\Controllers\Painel\AddonController;
 use App\Controllers\Painel\NeighborhoodController;
 use App\Controllers\Painel\PaymentMethodController;
 use App\Controllers\Painel\StoreHoursController;
+use App\Controllers\Painel\OrderController as PainelOrderController;
 use App\Controllers\Painel\DashboardController;
 use App\Controllers\Public\HomeController;
 use App\Controllers\Public\OrderController;
@@ -221,6 +222,28 @@ $router->post('/painel/horarios', [StoreHoursController::class, 'save'], [
     PermissionMiddleware::class,
 ]);
 $router->post('/painel/horarios/manual', [StoreHoursController::class, 'toggleManual'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+
+/* Rotas do Painel de Pedidos em Tempo Real */
+$router->get('/painel/pedidos', [PainelOrderController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->get('/painel/pedidos/polling', [PainelOrderController::class, 'poll'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->get('/painel/pedidos/{id}', [PainelOrderController::class, 'show'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/pedidos/{id}/status', [PainelOrderController::class, 'updateStatus'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
     PermissionMiddleware::class,
