@@ -157,11 +157,11 @@
 
 # Fase 8 - Variacoes
 
-- [ ] Criar variacao.
-- [ ] Editar variacao.
-- [ ] Excluir variacao.
-- [ ] Reordenar variacoes.
-- [ ] Validar preco.
+- [x] Criar variacao.
+- [x] Editar variacao.
+- [x] Excluir variacao.
+- [x] Reordenar variacoes.
+- [x] Validar preco.
 
 # Fase 9 - Grupos e Adicionais
 

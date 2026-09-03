@@ -98,6 +98,9 @@
                                                 <?php endif; ?>
                                             </td>
                                             <td style="padding: 10px 8px; text-align: right; display: flex; gap: 4px; justify-content: flex-end; align-items: center; min-height: 60px;">
+                                                <a href="/painel/produtos/<?= (int)$prod['id'] ?>/variacoes" class="bo-link bo-link-secondary" style="padding: 4px 8px; font-size: 0.8rem;" title="Gerenciar variações (Tamanhos/Opções)">
+                                                    📏 Variações
+                                                </a>
                                                 <button type="button" class="bo-link bo-link-secondary" style="padding: 4px 8px; font-size: 0.8rem;" 
                                                         onclick="editarProduto(<?= htmlspecialchars(json_encode($prod), ENT_QUOTES, 'UTF-8') ?>)">
                                                     Editar

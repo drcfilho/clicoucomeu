@@ -39,30 +39,80 @@ class ProductRepository
         return $stmt->fetchAll() ?: [];
     }
 
-    public function findVariationsByTenantId(int $tenantId): array
+    public function findVariationsByProductId(int $productId, int $tenantId): array
     {
         if ($this->db === null) {
             return [];
         }
 
         $stmt = $this->db->prepare(
-            'SELECT produto_id, id, nome, preco, ordem
+            'SELECT id, produto_id, nome, preco, ordem, ativo
              FROM produto_variacoes
-             WHERE tenant_id = :tenant_id AND ativo = 1
-             ORDER BY produto_id ASC, ordem ASC, id ASC'
+             WHERE produto_id = :produto_id AND tenant_id = :tenant_id AND ativo = 1
+             ORDER BY ordem ASC, id ASC'
         );
-        $stmt->execute(['tenant_id' => $tenantId]);
+        $stmt->execute(['produto_id' => $productId, 'tenant_id' => $tenantId]);
 
-        $grouped = [];
-        foreach ($stmt->fetchAll() ?: [] as $row) {
-            $grouped[(int) $row['produto_id']][] = [
-                'id' => (int) $row['id'],
-                'nome' => $row['nome'],
-                'preco' => $row['preco'] !== null ? (float) $row['preco'] : null,
-            ];
+        return $stmt->fetchAll() ?: [];
+    }
+
+    public function createVariation(array $data): int
+    {
+        if ($this->db === null) {
+            return 0;
         }
 
-        return $grouped;
+        if (!isset($data['ordem']) || $data['ordem'] === null) {
+            $stmt = $this->db->prepare('SELECT COALESCE(MAX(ordem), 0) + 1 FROM produto_variacoes WHERE produto_id = :produto_id');
+            $stmt->execute(['produto_id' => $data['produto_id']]);
+            $data['ordem'] = (int) $stmt->fetchColumn();
+        }
+
+        $stmt = $this->db->prepare(
+            'INSERT INTO produto_variacoes (tenant_id, produto_id, nome, preco, ordem, ativo)
+             VALUES (:tenant_id, :produto_id, :nome, :preco, :ordem, :ativo)'
+        );
+        $stmt->execute([
+            'tenant_id' => $data['tenant_id'],
+            'produto_id' => $data['produto_id'],
+            'nome' => $data['nome'],
+            'preco' => $data['preco'] !== null ? (float) $data['preco'] : null,
+            'ordem' => (int) $data['ordem'],
+            'ativo' => (int) ($data['ativo'] ?? 1),
+        ]);
+
+        return (int) $this->db->lastInsertId();
+    }
+
+    public function updateVariation(int $id, int $tenantId, array $data): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare(
+            'UPDATE produto_variacoes
+             SET nome = :nome, preco = :preco, ordem = :ordem
+             WHERE id = :id AND tenant_id = :tenant_id'
+        );
+
+        return $stmt->execute([
+            'id' => $id,
+            'tenant_id' => $tenantId,
+            'nome' => $data['nome'],
+            'preco' => $data['preco'] !== null ? (float) $data['preco'] : null,
+            'ordem' => (int) ($data['ordem'] ?? 0),
+        ]);
+    }
+
+    public function deleteVariation(int $id, int $tenantId): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare('DELETE FROM produto_variacoes WHERE id = :id AND tenant_id = :tenant_id');
+        return $stmt->execute(['id' => $id, 'tenant_id' => $tenantId]);
     }
 
     public function findAddonGroupsByTenantId(int $tenantId): array

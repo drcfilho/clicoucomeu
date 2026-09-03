@@ -173,6 +173,103 @@ class ProductController
         $response->redirect('/painel/produtos');
     }
 
+    /* Variações do Produto (ex: Broto, Média, Grande, 500ml, 1L) */
+    public function variations(Request $request, Response $response, array $params = []): void
+    {
+        $tenantId = (int) $request->getAttribute('tenant_id', 0);
+        $productId = (int) ($params['id'] ?? 0);
+
+        $product = $this->productRepo->findById($productId, $tenantId);
+        if (!$product) {
+            $this->session->setFlash('error', 'Produto não encontrado.');
+            $response->redirect('/painel/produtos');
+            return;
+        }
+
+        $variations = $this->productRepo->findVariationsByProductId($productId, $tenantId);
+
+        $response->view('painel.produtos.variacoes', [
+            'product' => $product,
+            'variations' => $variations,
+            'csrfToken' => $request->getAttribute('csrf_token'),
+            'session' => $this->session,
+        ]);
+    }
+
+    public function storeVariation(Request $request, Response $response, array $params = []): void
+    {
+        $tenantId = (int) $request->getAttribute('tenant_id', 0);
+        $productId = (int) ($params['id'] ?? 0);
+        $data = $request->getParsedBody();
+
+        $nome = trim((string) ($data['nome'] ?? ''));
+        $precoStr = str_replace(['R$', ' ', '.'], ['', '', ''], (string) ($data['preco'] ?? ''));
+        $precoStr = str_replace(',', '.', $precoStr);
+        $preco = $precoStr !== '' ? (float) $precoStr : null;
+
+        if (empty($nome)) {
+            $this->session->setFlash('error', 'O nome da variação é obrigatório.');
+            $response->redirect("/painel/produtos/{$productId}/variacoes");
+            return;
+        }
+
+        $this->productRepo->createVariation([
+            'tenant_id' => $tenantId,
+            'produto_id' => $productId,
+            'nome' => $nome,
+            'preco' => $preco,
+            'ordem' => isset($data['ordem']) && $data['ordem'] !== '' ? (int) $data['ordem'] : null,
+            'ativo' => 1,
+        ]);
+
+        $this->session->setFlash('success', 'Variação adicionada com sucesso!');
+        $response->redirect("/painel/produtos/{$productId}/variacoes");
+    }
+
+    public function updateVariation(Request $request, Response $response, array $params = []): void
+    {
+        $tenantId = (int) $request->getAttribute('tenant_id', 0);
+        $productId = (int) ($params['id'] ?? 0);
+        $varId = (int) ($params['varId'] ?? 0);
+        $data = $request->getParsedBody();
+
+        $nome = trim((string) ($data['nome'] ?? ''));
+        $precoStr = str_replace(['R$', ' ', '.'], ['', '', ''], (string) ($data['preco'] ?? ''));
+        $precoStr = str_replace(',', '.', $precoStr);
+        $preco = $precoStr !== '' ? (float) $precoStr : null;
+        $ordem = (int) ($data['ordem'] ?? 0);
+
+        if (empty($nome)) {
+            $this->session->setFlash('error', 'O nome da variação é obrigatório.');
+            $response->redirect("/painel/produtos/{$productId}/variacoes");
+            return;
+        }
+
+        $this->productRepo->updateVariation($varId, $tenantId, [
+            'nome' => $nome,
+            'preco' => $preco,
+            'ordem' => $ordem,
+        ]);
+
+        $this->session->setFlash('success', 'Variação atualizada com sucesso!');
+        $response->redirect("/painel/produtos/{$productId}/variacoes");
+    }
+
+    public function deleteVariation(Request $request, Response $response, array $params = []): void
+    {
+        $tenantId = (int) $request->getAttribute('tenant_id', 0);
+        $productId = (int) ($params['id'] ?? 0);
+        $varId = (int) ($params['varId'] ?? 0);
+
+        if ($this->productRepo->deleteVariation($varId, $tenantId)) {
+            $this->session->setFlash('success', 'Variação excluída com sucesso!');
+        } else {
+            $this->session->setFlash('error', 'Falha ao excluir variação.');
+        }
+
+        $response->redirect("/painel/produtos/{$productId}/variacoes");
+    }
+
     private function handleImageUpload(Request $request): ?string
     {
         if (!isset($_FILES['imagem']) || $_FILES['imagem']['error'] !== UPLOAD_ERR_OK) {

@@ -88,6 +88,26 @@ $router->post('/painel/produtos/{id}/excluir', [ProductController::class, 'delet
     TenantMiddleware::class,
     PermissionMiddleware::class,
 ]);
+$router->get('/painel/produtos/{id}/variacoes', [ProductController::class, 'variations'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/produtos/{id}/variacoes', [ProductController::class, 'storeVariation'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/produtos/{id}/variacoes/{varId}/editar', [ProductController::class, 'updateVariation'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/produtos/{id}/variacoes/{varId}/excluir', [ProductController::class, 'deleteVariation'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->get('/cozinha', [KitchenController::class, 'index'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
