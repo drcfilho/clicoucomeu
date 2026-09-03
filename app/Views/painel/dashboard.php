@@ -19,7 +19,9 @@
             </div>
             <div class="backoffice-actions">
                 <a class="bo-link bo-link-secondary" href="/cozinha">Ir para cozinha</a>
-                <a class="bo-link bo-link-primary" href="/admin">Superadmin</a>
+                <?php if (($_SESSION['perfil'] ?? '') === 'superadmin'): ?>
+                    <a class="bo-link bo-link-primary" href="/admin">Superadmin</a>
+                <?php endif; ?>
             </div>
         </header>
 
