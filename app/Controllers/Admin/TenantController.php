@@ -15,6 +15,8 @@ class TenantController
     private const FORM_KEY = 'admin_tenant_form';
     private const ERROR_KEY = 'admin_tenant_errors';
     private const SUCCESS_KEY = 'admin_tenant_success';
+    private const EDIT_FORM_KEY = 'admin_tenant_edit_form';
+    private const EDIT_ERROR_KEY = 'admin_tenant_edit_errors';
 
     public function __construct(private Container $container)
     {
@@ -110,6 +112,91 @@ class TenantController
         $session->set(self::SUCCESS_KEY, 'Tenant criado com sucesso. ID: ' . $tenantId);
 
         $response->redirect('/admin/tenants');
+    }
+
+    public function edit(Request $request, Response $response, array $params = []): void
+    {
+        /** @var TenantRepository $tenants */
+        $tenants = $this->container->get('tenantRepository');
+        $session = $this->container->get('session');
+        $csrf = $this->container->get('csrf');
+        $tenantId = (int) ($params['id'] ?? 0);
+        $tenant = $tenants->findById($tenantId);
+
+        if ($tenant === null) {
+            $response->view('errors.404', [
+                'message' => 'Tenant nao encontrado.',
+            ], 404);
+            return;
+        }
+
+        $response->view('admin.tenant-edit', [
+            'tenant' => $session->pull(self::EDIT_FORM_KEY, $tenant),
+            'errors' => $session->pull(self::EDIT_ERROR_KEY, []),
+            'success' => $session->pull(self::SUCCESS_KEY),
+            'csrfToken' => $csrf->token(),
+        ]);
+    }
+
+    public function update(Request $request, Response $response, array $params = []): void
+    {
+        $csrf = $this->container->get('csrf');
+        $session = $this->container->get('session');
+        $tenantId = (int) ($params['id'] ?? 0);
+
+        if (!$csrf->validate((string) $request->input('_csrf'))) {
+            $session->set(self::EDIT_ERROR_KEY, ['geral' => 'Token CSRF invalido.']);
+            $response->redirect('/admin/tenants/' . $tenantId . '/editar');
+        }
+
+        /** @var TenantRepository $tenants */
+        $tenants = $this->container->get('tenantRepository');
+        $existingTenant = $tenants->findById($tenantId);
+
+        if ($existingTenant === null) {
+            $response->view('errors.404', [
+                'message' => 'Tenant nao encontrado.',
+            ], 404);
+            return;
+        }
+
+        $form = $this->normalizeForm($request->all());
+        $form['id'] = $tenantId;
+        $session->set(self::EDIT_FORM_KEY, $form);
+
+        /** @var Validator $validator */
+        $validator = $this->container->get('validator');
+        $errors = $validator->required($form, ['nome', 'slug', 'timezone', 'status']);
+
+        if (!preg_match('/^[a-z0-9-]+$/', $form['slug'])) {
+            $errors['slug'] = 'Use apenas letras minusculas, numeros e hifen.';
+        }
+
+        if (!in_array($form['status'], ['ativo', 'bloqueado', 'cancelado'], true)) {
+            $errors['status'] = 'Status invalido.';
+        }
+
+        if ($form['uf'] !== '' && !preg_match('/^[A-Z]{2}$/', $form['uf'])) {
+            $errors['uf'] = 'Informe uma UF valida com 2 letras.';
+        }
+
+        $tenantWithSlug = $tenants->findBySlug($form['slug']);
+        if ($tenantWithSlug !== null && (int) $tenantWithSlug['id'] !== $tenantId) {
+            $errors['slug'] = 'Este slug ja esta em uso.';
+        }
+
+        if ($errors !== []) {
+            $session->set(self::EDIT_ERROR_KEY, $errors);
+            $response->redirect('/admin/tenants/' . $tenantId . '/editar');
+        }
+
+        $tenants->update($tenantId, $form);
+        $updatedTenant = $tenants->findById($tenantId);
+
+        $session->set(self::EDIT_FORM_KEY, $updatedTenant !== null ? $updatedTenant : $form);
+        $session->set(self::SUCCESS_KEY, 'Tenant atualizado com sucesso.');
+
+        $response->redirect('/admin/tenants/' . $tenantId . '/editar');
     }
 
     private function normalizeForm(array $data): array

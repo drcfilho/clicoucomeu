@@ -135,6 +135,9 @@
                             <span class="chip">Cidade: <?= htmlspecialchars(trim(((string) ($tenant['cidade'] ?? '')) . ' ' . ((string) ($tenant['uf'] ?? ''))), ENT_QUOTES, 'UTF-8') ?: 'n/d' ?></span>
                             <span class="chip">Criado em: <?= htmlspecialchars((string) ($tenant['criado_em'] ?? 'n/d'), ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
+                        <div class="meta">
+                            <a class="secondary" href="/admin/tenants/<?= (int) $tenant['id'] ?>/editar">Editar</a>
+                        </div>
                     </article>
                 <?php endforeach; ?>
             </div>
