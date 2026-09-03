@@ -22,6 +22,7 @@ require_once BASE_PATH . '/app/Middleware/AuthMiddleware.php';
 require_once BASE_PATH . '/app/Middleware/TenantMiddleware.php';
 require_once BASE_PATH . '/app/Middleware/PermissionMiddleware.php';
 require_once BASE_PATH . '/app/Helpers/TenantResolver.php';
+require_once BASE_PATH . '/app/Repositories/AddonRepository.php';
 require_once BASE_PATH . '/app/Repositories/CategoryRepository.php';
 require_once BASE_PATH . '/app/Repositories/ConfigurationRepository.php';
 require_once BASE_PATH . '/app/Repositories/NeighborhoodRepository.php';
@@ -36,6 +37,9 @@ require_once BASE_PATH . '/app/Controllers/AuthController.php';
 require_once BASE_PATH . '/app/Controllers/Public/HomeController.php';
 require_once BASE_PATH . '/app/Controllers/Public/OrderController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/DashboardController.php';
+require_once BASE_PATH . '/app/Controllers/Painel/CategoryController.php';
+require_once BASE_PATH . '/app/Controllers/Painel/ProductController.php';
+require_once BASE_PATH . '/app/Controllers/Painel/AddonController.php';
 require_once BASE_PATH . '/app/Controllers/Admin/TenantController.php';
 require_once BASE_PATH . '/app/Controllers/Cozinha/KitchenController.php';
 

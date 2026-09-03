@@ -7,6 +7,7 @@ use App\Controllers\Admin\TenantController;
 use App\Controllers\Cozinha\KitchenController;
 use App\Controllers\Painel\CategoryController;
 use App\Controllers\Painel\ProductController;
+use App\Controllers\Painel\AddonController;
 use App\Controllers\Painel\DashboardController;
 use App\Controllers\Public\HomeController;
 use App\Controllers\Public\OrderController;
@@ -104,6 +105,48 @@ $router->post('/painel/produtos/{id}/variacoes/{varId}/editar', [ProductControll
     PermissionMiddleware::class,
 ]);
 $router->post('/painel/produtos/{id}/variacoes/{varId}/excluir', [ProductController::class, 'deleteVariation'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+
+/* Rotas de Grupos e Adicionais */
+$router->get('/painel/adicionais', [AddonController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/adicionais', [AddonController::class, 'storeGroup'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/adicionais/{id}/editar', [AddonController::class, 'updateGroup'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/adicionais/{id}/excluir', [AddonController::class, 'deleteGroup'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->get('/painel/adicionais/{id}/itens', [AddonController::class, 'items'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/adicionais/{id}/itens', [AddonController::class, 'storeItem'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/adicionais/{id}/itens/{itemId}/editar', [AddonController::class, 'updateItem'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/adicionais/{id}/itens/{itemId}/excluir', [AddonController::class, 'deleteItem'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
     PermissionMiddleware::class,

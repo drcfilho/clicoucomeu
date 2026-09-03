@@ -165,16 +165,16 @@
 
 # Fase 9 - Grupos e Adicionais
 
-- [ ] Listar grupos.
-- [ ] Criar grupo.
-- [ ] Editar grupo.
-- [ ] Definir minimo.
-- [ ] Definir maximo.
-- [ ] Definir obrigatorio.
-- [ ] Criar adicional.
-- [ ] Editar adicional.
-- [ ] Excluir adicional.
-- [ ] Associar grupos a produtos.
+- [x] Listar grupos.
+- [x] Criar grupo.
+- [x] Editar grupo.
+- [x] Definir minimo.
+- [x] Definir maximo.
+- [x] Definir obrigatorio.
+- [x] Criar adicional.
+- [x] Editar adicional.
+- [x] Excluir adicional.
+- [x] Associar grupos a produtos.
 
 # Fase 10 - Bairros e Entrega
 
