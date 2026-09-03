@@ -369,6 +369,12 @@ $checkoutConfig = [
                                     <select id="checkout-payment" required></select>
                                 </label>
                             </div>
+                            <div id="change-field" style="display:none; margin-top: 10px;">
+                                <label>
+                                    Troco para quanto? (R$)
+                                    <input type="text" id="checkout-change" placeholder="Ex: 50,00 ou deixe em branco se nao precisar">
+                                </label>
+                            </div>
                             <div id="delivery-fields" style="display:none;">
                                 <div class="checkout-grid">
                                     <label>
@@ -394,6 +400,12 @@ $checkoutConfig = [
                                         <input type="text" id="checkout-reference">
                                     </label>
                                 </div>
+                            </div>
+                            <div class="checkout-grid">
+                                <label>
+                                    Cupom de Desconto
+                                    <input type="text" id="checkout-coupon" placeholder="Codigo do cupom (opcional)">
+                                </label>
                             </div>
                             <label>
                                 Observacoes gerais
@@ -631,6 +643,14 @@ $checkoutConfig = [
                 }
                 if (checkoutAddress) {
                     checkoutAddress.required = isDelivery;
+                }
+
+                const changeField = document.getElementById('change-field');
+                if (changeField && checkoutPayment) {
+                    const selectedMethodId = checkoutPayment.value;
+                    const method = (checkoutConfig.paymentMethods || []).find((m) => String(m.id) === String(selectedMethodId));
+                    const isMoney = method && (method.tipo === 'dinheiro' || method.pedir_troco);
+                    changeField.style.display = isMoney ? 'block' : 'none';
                 }
             };
 
@@ -1017,6 +1037,10 @@ $checkoutConfig = [
                 checkoutType.addEventListener('change', syncCheckoutVisibility);
             }
 
+            if (checkoutPayment) {
+                checkoutPayment.addEventListener('change', syncCheckoutVisibility);
+            }
+
             if (closeCheckoutModalButton) {
                 closeCheckoutModalButton.addEventListener('click', closeCheckoutModal);
             }
@@ -1042,6 +1066,9 @@ $checkoutConfig = [
                         return;
                     }
 
+                    const checkoutChange = document.getElementById('checkout-change');
+                    const checkoutCoupon = document.getElementById('checkout-coupon');
+
                     const payload = {
                         customer: {
                             name: checkoutName.value.trim(),
@@ -1057,7 +1084,9 @@ $checkoutConfig = [
                         },
                         payment: {
                             payment_method_id: Number(checkoutPayment.value || 0),
+                            change_for: checkoutChange ? checkoutChange.value.trim() : null,
                         },
+                        coupon_code: checkoutCoupon ? checkoutCoupon.value.trim() : null,
                         items: cart.map((item) => ({
                             product_id: Number(item.productId),
                             variation_id: item.variationId ? Number(item.variationId) : null,

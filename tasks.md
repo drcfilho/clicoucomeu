@@ -233,18 +233,18 @@
 
 # Fase 15 - Checkout
 
-- [ ] Escolher delivery/retirada.
-- [ ] Informar nome.
-- [ ] Informar WhatsApp.
-- [ ] Informar bairro.
-- [ ] Informar endereco.
-- [ ] Informar complemento.
-- [ ] Informar referencia.
-- [ ] Escolher pagamento.
-- [ ] Informar troco.
-- [ ] Aplicar cupom.
-- [ ] Revisar pedido.
-- [ ] Enviar pedido.
+- [x] Escolher delivery/retirada.
+- [x] Informar nome.
+- [x] Informar WhatsApp.
+- [x] Informar bairro.
+- [x] Informar endereco.
+- [x] Informar complemento.
+- [x] Informar referencia.
+- [x] Escolher pagamento.
+- [x] Informar troco.
+- [x] Aplicar cupom.
+- [x] Revisar pedido.
+- [x] Enviar pedido.
 
 # Fase 16 - Servico de Pedidos
 
