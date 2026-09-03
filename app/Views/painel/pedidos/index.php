@@ -226,11 +226,13 @@
                 `;
 
                 (o.itens || []).forEach(item => {
+                    const qty = parseInt(item.quantidade) || 1;
+                    const itemTotal = parseFloat(item.valor_total || 0);
                     html += `
                         <div style="border:1px solid #eee; padding:10px; border-radius:8px; background:#fafafa;">
                             <div style="display:flex; justify-content:space-between; font-weight:700;">
-                                <span>${item.quantidade}x ${item.produto_nome} ${item.variacao_nome ? '('+item.variacao_nome+')' : ''}</span>
-                                <span>R$ ${parseFloat(item.subtotal).toFixed(2).replace('.', ',')}</span>
+                                <span>${qty}x ${item.produto_nome} ${item.variacao_nome ? '('+item.variacao_nome+')' : ''}</span>
+                                <span>R$ ${itemTotal.toFixed(2).replace('.', ',')}</span>
                             </div>
                             ${(item.adicionais || []).length ? `<div style="font-size:0.85rem; color:#666; margin-top:4px;">+ Adicionais: ${item.adicionais.map(a => a.adicional_nome).join(', ')}</div>` : ''}
                             ${item.observacao ? `<div style="font-size:0.85rem; color:#d97706; margin-top:4px;">Obs: ${item.observacao}</div>` : ''}

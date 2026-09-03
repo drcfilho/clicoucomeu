@@ -45,7 +45,7 @@ class OrderRepository
 
         $stmt = $this->db->prepare(
             'SELECT p.*, 
-                    c.nome AS cliente_nome_cadastrado, c.telefone AS cliente_telefone
+                    c.nome AS cliente_nome_cadastrado, c.whatsapp AS cliente_telefone
              FROM pedidos p
              LEFT JOIN clientes c ON c.id = p.cliente_id
              WHERE p.id = :id AND p.tenant_id = :tenant_id'
@@ -59,10 +59,8 @@ class OrderRepository
 
         // Buscar itens
         $stmtItems = $this->db->prepare(
-            'SELECT pi.*, pr.nome AS produto_nome, v.nome AS variacao_nome
+            'SELECT pi.*
              FROM pedido_itens pi
-             LEFT JOIN produtos pr ON pr.id = pi.produto_id
-             LEFT JOIN produto_variacoes v ON v.id = pi.variacao_id
              WHERE pi.pedido_id = :pedido_id'
         );
         $stmtItems->execute(['pedido_id' => $orderId]);
@@ -71,10 +69,8 @@ class OrderRepository
         // Buscar adicionais para cada item
         foreach ($items as &$item) {
             $stmtAddons = $this->db->prepare(
-                'SELECT pia.*, a.nome AS adicional_nome, g.nome AS grupo_nome
+                'SELECT pia.*, pia.nome AS adicional_nome
                  FROM pedido_item_adicionais pia
-                 LEFT JOIN adicionais a ON a.id = pia.adicional_id
-                 LEFT JOIN grupos_adicionais g ON g.id = a.grupo_id
                  WHERE pia.pedido_item_id = :item_id'
             );
             $stmtAddons->execute(['item_id' => $item['id']]);
