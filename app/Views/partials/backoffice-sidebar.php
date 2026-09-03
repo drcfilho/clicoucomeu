@@ -2,6 +2,7 @@
 $backofficeSection = (string) ($backofficeSection ?? 'painel');
 $backofficeNav = [
     'painel' => ['label' => 'Painel', 'href' => '/painel'],
+    'categorias' => ['label' => 'Categorias', 'href' => '/painel/categorias'],
     'cozinha' => ['label' => 'Cozinha', 'href' => '/cozinha'],
     'admin' => ['label' => 'Superadmin', 'href' => '/admin'],
     'tenants' => ['label' => 'Tenants', 'href' => '/admin/tenants'],

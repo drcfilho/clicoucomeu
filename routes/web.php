@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Controllers\AuthController;
 use App\Controllers\Admin\TenantController;
 use App\Controllers\Cozinha\KitchenController;
+use App\Controllers\Painel\CategoryController;
 use App\Controllers\Painel\DashboardController;
 use App\Controllers\Public\HomeController;
 use App\Controllers\Public\OrderController;
@@ -27,6 +28,31 @@ $router->get('/admin', [TenantController::class, 'home'], [
     PermissionMiddleware::class,
 ]);
 $router->get('/painel', [DashboardController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->get('/painel/categorias', [CategoryController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/categorias', [CategoryController::class, 'store'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/categorias/{id}/editar', [CategoryController::class, 'update'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/categorias/{id}/toggle', [CategoryController::class, 'toggle'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/categorias/{id}/excluir', [CategoryController::class, 'delete'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
     PermissionMiddleware::class,

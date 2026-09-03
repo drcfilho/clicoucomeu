@@ -132,12 +132,12 @@
 
 # Fase 6 - Categorias
 
-- [ ] Listar categorias.
-- [ ] Criar categoria.
-- [ ] Editar categoria.
-- [ ] Ativar/desativar.
-- [ ] Excluir categoria.
-- [ ] Reordenar categorias.
+- [x] Listar categorias.
+- [x] Criar categoria.
+- [x] Editar categoria.
+- [x] Ativar/desativar.
+- [x] Excluir categoria.
+- [x] Reordenar categorias.
 
 # Fase 7 - Produtos
 
