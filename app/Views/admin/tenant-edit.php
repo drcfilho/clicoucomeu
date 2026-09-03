@@ -25,6 +25,10 @@
         .stat { border: 1px solid #e6dccd; border-radius: 16px; padding: 16px; background: #fff; }
         .stat strong { display: block; font-size: 1rem; margin-bottom: 6px; }
         .stat span { color: #5c4830; }
+        .badge { display: inline-flex; align-items: center; min-height: 28px; padding: 0 10px; border-radius: 999px; font-weight: 700; }
+        .badge-ativo { background: #dff4e4; color: #215c30; }
+        .badge-bloqueado { background: #fde7d6; color: #8a4a1a; }
+        .badge-cancelado { background: #f4d9dc; color: #8d2934; }
     </style>
 </head>
 <body>
@@ -44,7 +48,8 @@
             <div class="status-grid" style="margin-bottom: 20px;">
                 <div class="stat">
                     <strong>Status atual</strong>
-                    <span><?= htmlspecialchars((string) ($tenant['status'] ?? 'n/d'), ENT_QUOTES, 'UTF-8') ?></span>
+                    <?php $status = (string) ($tenant['status'] ?? 'n/d'); ?>
+                    <span class="badge badge-<?= htmlspecialchars($status, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(ucfirst($status), ENT_QUOTES, 'UTF-8') ?></span>
                 </div>
                 <div class="stat">
                     <strong>Plano atual</strong>
@@ -57,6 +62,10 @@
                 <div class="stat">
                     <strong>Timezone</strong>
                     <span><?= htmlspecialchars((string) ($tenant['timezone'] ?? 'n/d'), ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+                <div class="stat">
+                    <strong>Painel de acesso</strong>
+                    <span><?= htmlspecialchars('/' . (string) ($tenant['slug'] ?? ''), ENT_QUOTES, 'UTF-8') ?></span>
                 </div>
             </div>
 
