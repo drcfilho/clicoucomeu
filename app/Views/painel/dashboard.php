@@ -11,7 +11,7 @@
         <div class="backoffice-layout">
             <?php $backofficeSection = 'painel'; require __DIR__ . '/../partials/backoffice-sidebar.php'; ?>
             <div class="backoffice-content">
-        <section class="backoffice-topbar">
+        <header class="backoffice-topbar">
             <div class="backoffice-brand">
                 <span class="backoffice-kicker">Painel</span>
                 <h1 class="backoffice-title">Visao geral</h1>
@@ -21,7 +21,7 @@
                 <a class="bo-link bo-link-secondary" href="/cozinha">Ir para cozinha</a>
                 <a class="bo-link bo-link-primary" href="/admin">Superadmin</a>
             </div>
-        </section>
+        </header>
 
         <section class="bo-stats-grid">
             <article class="bo-stat">

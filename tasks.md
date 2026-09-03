@@ -124,7 +124,7 @@
 - [x] Criar layout mobile-first.
 - [x] Criar sidebar desktop.
 - [x] Criar navegacao mobile.
-- [ ] Criar header.
+- [x] Criar header.
 - [ ] Criar flash messages.
 - [ ] Criar componentes de modal.
 - [ ] Criar componente de confirmacao.

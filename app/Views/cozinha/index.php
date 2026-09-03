@@ -11,7 +11,7 @@
         <div class="backoffice-layout">
             <?php $backofficeSection = 'cozinha'; require __DIR__ . '/../partials/backoffice-sidebar.php'; ?>
             <div class="backoffice-content">
-        <section class="backoffice-topbar">
+        <header class="backoffice-topbar">
             <div class="backoffice-brand">
                 <span class="backoffice-kicker">Cozinha</span>
                 <h1 class="backoffice-title">Fila de preparo</h1>
@@ -20,7 +20,7 @@
             <div class="backoffice-actions">
                 <a class="bo-link bo-link-secondary" href="/painel">Voltar ao painel</a>
             </div>
-        </section>
+        </header>
 
         <section class="bo-cards-grid">
             <article class="bo-card">

@@ -11,7 +11,7 @@
         <div class="backoffice-layout">
             <?php $backofficeSection = 'tenants'; require __DIR__ . '/../partials/backoffice-sidebar.php'; ?>
             <div class="backoffice-content">
-        <section class="backoffice-topbar">
+        <header class="backoffice-topbar">
             <div class="backoffice-brand">
                 <span class="backoffice-kicker">Superadmin</span>
                 <h1 class="backoffice-title">Tenants</h1>
@@ -21,7 +21,7 @@
                 <a class="bo-link bo-link-secondary" href="/admin">Voltar</a>
                 <a class="bo-link bo-link-primary" href="/admin/tenants">Atualizar</a>
             </div>
-        </section>
+        </header>
 
         <section class="bo-panel">
             <h2 class="bo-section-title">Criar tenant</h2>

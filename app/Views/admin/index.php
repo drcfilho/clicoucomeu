@@ -11,7 +11,7 @@
         <div class="backoffice-layout">
             <?php $backofficeSection = 'admin'; require __DIR__ . '/../partials/backoffice-sidebar.php'; ?>
             <div class="backoffice-content">
-        <section class="backoffice-topbar">
+        <header class="backoffice-topbar">
             <div class="backoffice-brand">
                 <span class="backoffice-kicker">Superadmin</span>
                 <h1 class="backoffice-title">Area administrativa</h1>
@@ -21,7 +21,7 @@
                 <a class="bo-link bo-link-primary" href="/admin/tenants">Ir para tenants</a>
                 <a class="bo-link bo-link-secondary" href="/painel">Voltar ao painel</a>
             </div>
-        </section>
+        </header>
 
         <section class="bo-cards-grid">
             <article class="bo-card">
