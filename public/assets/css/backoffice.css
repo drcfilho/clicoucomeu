@@ -46,7 +46,41 @@ body.backoffice-body {
 }
 
 .backoffice-sidebar {
+    display: block;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    padding: 10px;
+    border: 1px solid rgba(229, 216, 196, 0.95);
+    border-radius: 18px;
+    background: rgba(255, 253, 248, 0.92);
+    box-shadow: var(--bo-shadow);
+}
+
+.backoffice-sidebar-brand {
     display: none;
+}
+
+.backoffice-sidebar-nav {
+    display: flex;
+    gap: 6px;
+    min-width: max-content;
+}
+
+.backoffice-sidebar-link {
+    display: block;
+    padding: 9px 12px;
+    border-radius: 12px;
+    color: var(--bo-muted);
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.backoffice-sidebar-link:hover,
+.backoffice-sidebar-link.is-active {
+    background: var(--bo-primary-soft);
+    color: var(--bo-text);
 }
 
 .backoffice-content {
@@ -335,14 +369,11 @@ button.bo-btn {
     }
 
     .backoffice-sidebar {
-        display: block;
         position: sticky;
         top: 24px;
+        margin-bottom: 0;
         padding: 18px 14px;
-        border: 1px solid rgba(229, 216, 196, 0.95);
         border-radius: 22px;
-        background: rgba(255, 253, 248, 0.92);
-        box-shadow: var(--bo-shadow);
     }
 
     .backoffice-sidebar-brand {
@@ -387,18 +418,8 @@ button.bo-btn {
     }
 
     .backoffice-sidebar-link {
-        display: block;
         padding: 11px 12px;
-        border-radius: 12px;
-        color: var(--bo-muted);
-        font-weight: 700;
-        text-decoration: none;
-    }
-
-    .backoffice-sidebar-link:hover,
-    .backoffice-sidebar-link.is-active {
-        background: var(--bo-primary-soft);
-        color: var(--bo-text);
+        font-size: 1rem;
     }
 
     .bo-stats-grid {
