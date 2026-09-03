@@ -137,6 +137,12 @@
                         </div>
                         <div class="meta">
                             <a class="secondary" href="/admin/tenants/<?= (int) $tenant['id'] ?>/editar">Editar</a>
+                            <?php if ($status !== 'ativo'): ?>
+                                <form method="post" action="/admin/tenants/<?= (int) $tenant['id'] ?>/ativar" style="display:inline-flex;">
+                                    <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string) $csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                                    <button class="primary" type="submit">Ativar</button>
+                                </form>
+                            <?php endif; ?>
                         </div>
                     </article>
                 <?php endforeach; ?>

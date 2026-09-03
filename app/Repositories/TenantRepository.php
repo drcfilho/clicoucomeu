@@ -123,4 +123,21 @@ class TenantRepository
             'plano' => $data['plano'] !== '' ? $data['plano'] : null,
         ]);
     }
+
+    public function updateStatus(int $id, string $status): void
+    {
+        if ($this->db === null) {
+            return;
+        }
+
+        $stmt = $this->db->prepare(
+            'UPDATE tenants
+             SET status = :status
+             WHERE id = :id'
+        );
+        $stmt->execute([
+            'id' => $id,
+            'status' => $status,
+        ]);
+    }
 }

@@ -52,6 +52,10 @@ $router->post('/admin/tenants/{id}/editar', [TenantController::class, 'update'],
     AuthMiddleware::class,
     PermissionMiddleware::class,
 ]);
+$router->post('/admin/tenants/{id}/ativar', [TenantController::class, 'activate'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->get('/{tenant}', [HomeController::class, 'index']);
 
 return $router;
