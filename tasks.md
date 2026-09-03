@@ -298,14 +298,14 @@
 
 # Fase 19 - Impressao
 
-- [ ] Criar layout 58 mm.
-- [ ] Criar layout 80 mm.
-- [ ] Criar layout A4.
-- [ ] Criar botao imprimir.
-- [ ] Ocultar controles no print.
-- [ ] Permitir configuracao de formato padrao.
-- [ ] Testar Chrome.
-- [ ] Testar Edge.
+- [x] Criar layout 58 mm.
+- [x] Criar layout 80 mm.
+- [x] Criar layout A4.
+- [x] Criar botao imprimir.
+- [x] Ocultar controles no print.
+- [x] Permitir configuracao de formato padrao.
+- [x] Testar Chrome.
+- [x] Testar Edge.
 
 # Fase 20 - Acompanhamento do Cliente
 

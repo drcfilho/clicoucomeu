@@ -52,6 +52,28 @@ class OrderController
         $response->json(['success' => true, 'order' => $order]);
     }
 
+    public function print(Request $request, Response $response, array $params = []): void
+    {
+        $tenantId = (int) $request->getAttribute('tenant_id', 0);
+        $id = (int) ($params['id'] ?? 0);
+        $format = (string) $request->input('format', '80mm');
+
+        $order = $this->orderRepo->findOrderDetailsById($id, $tenantId);
+        if (!$order) {
+            $response->view('errors.404', ['message' => 'Pedido não encontrado.'], 404);
+            return;
+        }
+
+        $tenantRepo = $this->container->get(\App\Repositories\TenantRepository::class);
+        $tenant = $tenantRepo->findById($tenantId);
+
+        $response->view('painel.pedidos.imprimir', [
+            'order' => $order,
+            'tenant' => $tenant,
+            'format' => $format,
+        ]);
+    }
+
     public function updateStatus(Request $request, Response $response, array $params = []): void
     {
         $tenantId = (int) $request->getAttribute('tenant_id', 0);

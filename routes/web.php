@@ -243,6 +243,11 @@ $router->get('/painel/pedidos/{id}', [PainelOrderController::class, 'show'], [
     TenantMiddleware::class,
     PermissionMiddleware::class,
 ]);
+$router->get('/painel/pedidos/{id}/imprimir', [PainelOrderController::class, 'print'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->post('/painel/pedidos/{id}/status', [PainelOrderController::class, 'updateStatus'], [
     AuthMiddleware::class,
     TenantMiddleware::class,

@@ -109,6 +109,7 @@
 
                                 <div class="order-actions">
                                     <button type="button" class="bo-link bo-link-secondary" style="font-size: 0.82rem;" onclick="verDetalhes(<?= (int)$o['id'] ?>)">🔍 Detalhes</button>
+                                    <a href="/painel/pedidos/<?= (int)$o['id'] ?>/imprimir" target="_blank" class="bo-link bo-link-secondary" style="font-size: 0.82rem; text-decoration:none;">🖨️ Imprimir</a>
                                     
                                     <?php if ($o['status'] === 'pendente'): ?>
                                         <form method="post" action="/painel/pedidos/<?= (int)$o['id'] ?>/status" style="display:inline;">
