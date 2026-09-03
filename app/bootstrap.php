@@ -27,6 +27,7 @@ require_once BASE_PATH . '/app/Repositories/ConfigurationRepository.php';
 require_once BASE_PATH . '/app/Repositories/NeighborhoodRepository.php';
 require_once BASE_PATH . '/app/Repositories/PaymentMethodRepository.php';
 require_once BASE_PATH . '/app/Repositories/ProductRepository.php';
+require_once BASE_PATH . '/app/Repositories/TenantRepository.php';
 require_once BASE_PATH . '/app/Repositories/UserRepository.php';
 require_once BASE_PATH . '/app/Services/AuthService.php';
 require_once BASE_PATH . '/app/Services/MenuService.php';
@@ -99,6 +100,9 @@ function bootstrap(): App\Helpers\App
     });
     $container->set('paymentMethodRepository', function () use ($container): App\Repositories\PaymentMethodRepository {
         return new App\Repositories\PaymentMethodRepository($container->get('db'));
+    });
+    $container->set('tenantRepository', function () use ($container): App\Repositories\TenantRepository {
+        return new App\Repositories\TenantRepository($container->get('db'));
     });
     $container->set('auth', function () use ($container): App\Services\AuthService {
         return new App\Services\AuthService(

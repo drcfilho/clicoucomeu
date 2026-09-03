@@ -7,6 +7,7 @@ namespace App\Controllers\Admin;
 use App\Helpers\Container;
 use App\Helpers\Request;
 use App\Helpers\Response;
+use App\Repositories\TenantRepository;
 
 class TenantController
 {
@@ -25,11 +26,11 @@ class TenantController
 
     public function index(Request $request, Response $response, array $params = []): void
     {
-        $response->json([
-            'success' => true,
-            'data' => [
-                'tenants' => [],
-            ],
+        /** @var TenantRepository $tenants */
+        $tenants = $this->container->get('tenantRepository');
+
+        $response->view('admin.tenants', [
+            'tenants' => $tenants->all(),
         ]);
     }
 }
