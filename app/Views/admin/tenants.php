@@ -22,6 +22,15 @@
         .chip.status-bloqueado { background: #fde7d6; color: #8a4a1a; }
         .chip.status-cancelado { background: #f4d9dc; color: #8d2934; }
         .empty { background: #fffdf8; border: 1px dashed #cfbea6; border-radius: 18px; padding: 28px; }
+        .panel { background: #fffdf8; border: 1px solid #e6dccd; border-radius: 18px; padding: 20px; margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+        label { display: grid; gap: 6px; font-size: 0.95rem; }
+        input, select { min-height: 42px; border: 1px solid #cfbea6; border-radius: 12px; padding: 0 12px; background: #fff; }
+        .submit-row { margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap; }
+        .alert { border-radius: 14px; padding: 14px 16px; margin-bottom: 16px; }
+        .alert-success { background: #dff4e4; color: #215c30; }
+        .alert-error { background: #f9e1e4; color: #862634; }
+        .error-list { margin: 0; padding-left: 18px; }
     </style>
 </head>
 <body>
@@ -36,6 +45,72 @@
                 <a class="primary" href="/admin/tenants">Atualizar</a>
             </div>
         </div>
+
+        <section class="panel">
+            <h2>Criar tenant</h2>
+
+            <?php if (!empty($success)): ?>
+                <div class="alert alert-success"><?= htmlspecialchars((string) $success, ENT_QUOTES, 'UTF-8') ?></div>
+            <?php endif; ?>
+
+            <?php if (!empty($errors)): ?>
+                <div class="alert alert-error">
+                    <strong>Corrija os campos abaixo:</strong>
+                    <ul class="error-list">
+                        <?php foreach ($errors as $error): ?>
+                            <li><?= htmlspecialchars((string) $error, ENT_QUOTES, 'UTF-8') ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <form method="post" action="/admin/tenants">
+                <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string) $csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+
+                <div class="form-grid">
+                    <label>
+                        Nome
+                        <input name="nome" value="<?= htmlspecialchars((string) ($form['nome'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" required>
+                    </label>
+                    <label>
+                        Slug
+                        <input name="slug" value="<?= htmlspecialchars((string) ($form['slug'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" required>
+                    </label>
+                    <label>
+                        WhatsApp
+                        <input name="whatsapp" value="<?= htmlspecialchars((string) ($form['whatsapp'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                    </label>
+                    <label>
+                        Cidade
+                        <input name="cidade" value="<?= htmlspecialchars((string) ($form['cidade'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                    </label>
+                    <label>
+                        UF
+                        <input name="uf" maxlength="2" value="<?= htmlspecialchars((string) ($form['uf'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
+                    </label>
+                    <label>
+                        Timezone
+                        <input name="timezone" value="<?= htmlspecialchars((string) ($form['timezone'] ?? 'America/Sao_Paulo'), ENT_QUOTES, 'UTF-8') ?>" required>
+                    </label>
+                    <label>
+                        Status
+                        <select name="status">
+                            <?php foreach (['ativo' => 'Ativo', 'bloqueado' => 'Bloqueado', 'cancelado' => 'Cancelado'] as $value => $label): ?>
+                                <option value="<?= htmlspecialchars($value, ENT_QUOTES, 'UTF-8') ?>" <?= (($form['status'] ?? 'ativo') === $value) ? 'selected' : '' ?>><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                    <label>
+                        Plano
+                        <input name="plano" value="<?= htmlspecialchars((string) ($form['plano'] ?? 'mvp'), ENT_QUOTES, 'UTF-8') ?>">
+                    </label>
+                </div>
+
+                <div class="submit-row">
+                    <button class="primary" type="submit">Criar tenant</button>
+                </div>
+            </form>
+        </section>
 
         <?php if ($tenants === []): ?>
             <div class="empty">

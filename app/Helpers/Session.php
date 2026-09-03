@@ -53,6 +53,14 @@ class Session
         return $_SESSION[$key] ?? $default;
     }
 
+    public function pull(string $key, mixed $default = null): mixed
+    {
+        $value = $this->get($key, $default);
+        unset($_SESSION[$key]);
+
+        return $value;
+    }
+
     public function set(string $key, mixed $value): void
     {
         $_SESSION[$key] = $value;

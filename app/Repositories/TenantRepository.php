@@ -28,4 +28,49 @@ class TenantRepository
 
         return is_array($rows) ? $rows : [];
     }
+
+    public function findBySlug(string $slug): ?array
+    {
+        if ($this->db === null) {
+            return null;
+        }
+
+        $stmt = $this->db->prepare(
+            'SELECT id, nome, slug, status, plano
+             FROM tenants
+             WHERE slug = :slug
+             LIMIT 1'
+        );
+        $stmt->execute(['slug' => $slug]);
+
+        $row = $stmt->fetch();
+
+        return is_array($row) ? $row : null;
+    }
+
+    public function create(array $data): int
+    {
+        if ($this->db === null) {
+            return 0;
+        }
+
+        $stmt = $this->db->prepare(
+            'INSERT INTO tenants
+             (nome, slug, whatsapp, cidade, uf, timezone, status, plano)
+             VALUES
+             (:nome, :slug, :whatsapp, :cidade, :uf, :timezone, :status, :plano)'
+        );
+        $stmt->execute([
+            'nome' => $data['nome'],
+            'slug' => $data['slug'],
+            'whatsapp' => $data['whatsapp'] !== '' ? $data['whatsapp'] : null,
+            'cidade' => $data['cidade'] !== '' ? $data['cidade'] : null,
+            'uf' => $data['uf'] !== '' ? $data['uf'] : null,
+            'timezone' => $data['timezone'],
+            'status' => $data['status'],
+            'plano' => $data['plano'] !== '' ? $data['plano'] : null,
+        ]);
+
+        return (int) $this->db->lastInsertId();
+    }
 }

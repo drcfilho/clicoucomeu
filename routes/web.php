@@ -40,6 +40,10 @@ $router->get('/admin/tenants', [TenantController::class, 'index'], [
     AuthMiddleware::class,
     PermissionMiddleware::class,
 ]);
+$router->post('/admin/tenants', [TenantController::class, 'store'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->get('/{tenant}', [HomeController::class, 'index']);
 
 return $router;
