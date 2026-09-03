@@ -129,9 +129,10 @@ class OrderService
                     throw new RuntimeException('Adicional invalido no carrinho');
                 }
 
-                $addonsTotal += (float) $addon['preco'];
                 $selectedAddons[] = $addon;
             }
+
+            $addonsTotal = $this->calculateAddonsTotal($selectedAddons);
 
             $lineTotal = ($unitPrice + $addonsTotal) * $quantity;
             $subtotal += $lineTotal;
@@ -274,6 +275,27 @@ class OrderService
             $this->db->rollBack();
             throw $exception;
         }
+    }
+
+    private function calculateAddonsTotal(array $addons): float
+    {
+        $total = 0.0;
+        $flavorPrices = [];
+
+        foreach ($addons as $addon) {
+            $price = (float) ($addon['preco'] ?? 0);
+            $groupName = (string) ($addon['grupo_nome'] ?? '');
+            $groupMax = (int) ($addon['grupo_maximo'] ?? 0);
+
+            if ($groupMax === 2 && stripos($groupName, 'sabor') !== false) {
+                $flavorPrices[] = $price;
+                continue;
+            }
+
+            $total += $price;
+        }
+
+        return $total + ($flavorPrices !== [] ? max($flavorPrices) : 0.0);
     }
 
     public function findPublicStatusByToken(string $token): ?array

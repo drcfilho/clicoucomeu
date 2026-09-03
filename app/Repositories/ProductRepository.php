@@ -81,7 +81,9 @@ class ProductRepository
                 g.obrigatorio,
                 a.id AS adicional_id,
                 a.nome AS adicional_nome,
-                a.preco AS adicional_preco
+                a.preco AS adicional_preco,
+                g.nome AS grupo_nome,
+                g.maximo AS grupo_maximo
              FROM produto_grupos_adicionais pga
              INNER JOIN grupos_adicionais g ON g.id = pga.grupo_id
              INNER JOIN adicionais a ON a.grupo_id = g.id
@@ -187,6 +189,8 @@ class ProductRepository
                 a.id AS adicional_id,
                 a.nome AS adicional_nome,
                 a.preco,
+                g.nome AS grupo_nome,
+                g.maximo AS grupo_maximo,
                 pga.produto_id
              FROM adicionais a
              INNER JOIN grupos_adicionais g ON g.id = a.grupo_id
@@ -204,6 +208,8 @@ class ProductRepository
                     'adicional_id' => $addonId,
                     'adicional_nome' => $row['adicional_nome'],
                     'preco' => $row['preco'],
+                    'grupo_nome' => $row['grupo_nome'],
+                    'grupo_maximo' => (int) $row['grupo_maximo'],
                     'produto_ids' => [],
                 ];
             }

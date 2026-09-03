@@ -516,15 +516,24 @@ $checkoutConfig = [
                     return 0;
                 }
 
+                return calculateAddonsTotal(getSelectedAddons());
+            };
+
+            const calculateAddonsTotal = (addons) => {
                 let total = 0;
-                modalOptions.querySelectorAll('input:checked').forEach((input) => {
-                    if (input.name === 'product_variation') {
+                const flavorPrices = [];
+
+                addons.forEach((addon) => {
+                    const isTwoFlavorGroup = Number(addon.groupMax || 0) === 2
+                        && String(addon.groupName || '').toLowerCase().includes('sabor');
+                    if (isTwoFlavorGroup) {
+                        flavorPrices.push(Number(addon.price || 0));
                         return;
                     }
-                    total += Number(input.dataset.price || 0);
+                    total += Number(addon.price || 0);
                 });
 
-                return total;
+                return total + (flavorPrices.length ? Math.max(...flavorPrices) : 0);
             };
 
             const updateModalTotal = () => {
@@ -679,6 +688,7 @@ $checkoutConfig = [
                             addons.push({
                                 groupId: group.id,
                                 groupName: group.nome,
+                                groupMax: Number(group.maximo || 0),
                                 id: option.id,
                                 name: option.nome,
                                 price: Number(option.preco || 0),
@@ -724,7 +734,7 @@ $checkoutConfig = [
                 const variation = getSelectedVariation();
                 const addons = getSelectedAddons();
                 const basePrice = variation ? Number(variation.preco || 0) : Number(currentProduct.preco || 0);
-                const addonsTotal = addons.reduce((sum, addon) => sum + Number(addon.price || 0), 0);
+                const addonsTotal = calculateAddonsTotal(addons);
                 const lineTotal = (basePrice + addonsTotal) * quantity;
                 const notes = (modalNotes.value || '').trim();
 
