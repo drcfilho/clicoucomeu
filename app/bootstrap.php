@@ -41,6 +41,7 @@ require_once BASE_PATH . '/app/Controllers/Painel/CategoryController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/ProductController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/AddonController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/NeighborhoodController.php';
+require_once BASE_PATH . '/app/Controllers/Painel/PaymentMethodController.php';
 require_once BASE_PATH . '/app/Controllers/Admin/TenantController.php';
 require_once BASE_PATH . '/app/Controllers/Cozinha/KitchenController.php';
 

@@ -9,6 +9,7 @@ use App\Controllers\Painel\CategoryController;
 use App\Controllers\Painel\ProductController;
 use App\Controllers\Painel\AddonController;
 use App\Controllers\Painel\NeighborhoodController;
+use App\Controllers\Painel\PaymentMethodController;
 use App\Controllers\Painel\DashboardController;
 use App\Controllers\Public\HomeController;
 use App\Controllers\Public\OrderController;
@@ -175,6 +176,33 @@ $router->post('/painel/bairros/{id}/toggle', [NeighborhoodController::class, 'to
     PermissionMiddleware::class,
 ]);
 $router->post('/painel/bairros/{id}/excluir', [NeighborhoodController::class, 'delete'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+
+/* Rotas de Formas de Pagamento */
+$router->get('/painel/pagamentos', [PaymentMethodController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/pagamentos', [PaymentMethodController::class, 'store'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/pagamentos/{id}/editar', [PaymentMethodController::class, 'update'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/pagamentos/{id}/toggle', [PaymentMethodController::class, 'toggle'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/pagamentos/{id}/excluir', [PaymentMethodController::class, 'delete'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
     PermissionMiddleware::class,

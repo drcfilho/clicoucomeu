@@ -187,14 +187,14 @@
 
 # Fase 11 - Pagamentos
 
-- [ ] Listar formas.
-- [ ] Criar forma.
-- [ ] Configurar dinheiro.
-- [ ] Configurar troco.
-- [ ] Configurar Pix.
-- [ ] Configurar credito.
-- [ ] Configurar debito.
-- [ ] Ativar/desativar.
+- [x] Listar formas.
+- [x] Criar forma.
+- [x] Configurar dinheiro.
+- [x] Configurar troco.
+- [x] Configurar Pix.
+- [x] Configurar credito.
+- [x] Configurar debito.
+- [x] Ativar/desativar.
 
 # Fase 12 - Horarios
 
