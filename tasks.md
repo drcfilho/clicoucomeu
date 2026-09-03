@@ -141,19 +141,19 @@
 
 # Fase 7 - Produtos
 
-- [ ] Listar produtos.
-- [ ] Filtrar por categoria.
-- [ ] Buscar produto.
-- [ ] Criar produto.
-- [ ] Editar produto.
-- [ ] Duplicar produto.
-- [ ] Ativar/desativar.
-- [ ] Marcar disponivel/esgotado.
-- [ ] Upload de imagem.
-- [ ] Validar MIME.
-- [ ] Limitar tamanho.
-- [ ] Redimensionar imagem.
-- [ ] Excluir produto logicamente.
+- [x] Listar produtos.
+- [x] Filtrar por categoria.
+- [x] Buscar produto.
+- [x] Criar produto.
+- [x] Editar produto.
+- [x] Duplicar produto.
+- [x] Ativar/desativar.
+- [x] Marcar disponivel/esgotado.
+- [x] Upload de imagem.
+- [x] Validar MIME.
+- [x] Limitar tamanho.
+- [x] Redimensionar imagem.
+- [x] Excluir produto logicamente.
 
 # Fase 8 - Variacoes
 

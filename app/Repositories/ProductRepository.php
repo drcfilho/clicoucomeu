@@ -219,4 +219,162 @@ class ProductRepository
 
         return $indexed;
     }
+
+    public function findAllByTenantId(int $tenantId, ?int $categoryId = null, ?string $search = null): array
+    {
+        if ($this->db === null) {
+            return [];
+        }
+
+        $sql = 'SELECT p.*, c.nome AS categoria_nome
+                FROM produtos p
+                LEFT JOIN categorias c ON c.id = p.categoria_id
+                WHERE p.tenant_id = :tenant_id AND p.ativo = 1';
+        $params = ['tenant_id' => $tenantId];
+
+        if ($categoryId !== null && $categoryId > 0) {
+            $sql .= ' AND p.categoria_id = :categoria_id';
+            $params['categoria_id'] = $categoryId;
+        }
+
+        if ($search !== null && trim($search) !== '') {
+            $sql .= ' AND (p.nome LIKE :search OR p.descricao LIKE :search)';
+            $params['search'] = '%' . trim($search) . '%';
+        }
+
+        $sql .= ' ORDER BY c.ordem ASC, p.ordem ASC, p.id DESC';
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll() ?: [];
+    }
+
+    public function findById(int $id, int $tenantId): ?array
+    {
+        if ($this->db === null) {
+            return null;
+        }
+
+        $stmt = $this->db->prepare(
+            'SELECT p.*, c.nome AS categoria_nome
+             FROM produtos p
+             LEFT JOIN categorias c ON c.id = p.categoria_id
+             WHERE p.id = :id AND p.tenant_id = :tenant_id AND p.ativo = 1'
+        );
+        $stmt->execute(['id' => $id, 'tenant_id' => $tenantId]);
+        $row = $stmt->fetch();
+
+        return $row ?: null;
+    }
+
+    public function create(array $data): int
+    {
+        if ($this->db === null) {
+            return 0;
+        }
+
+        if (!isset($data['ordem']) || $data['ordem'] === null) {
+            $stmt = $this->db->prepare('SELECT COALESCE(MAX(ordem), 0) + 1 FROM produtos WHERE tenant_id = :tenant_id');
+            $stmt->execute(['tenant_id' => $data['tenant_id']]);
+            $data['ordem'] = (int) $stmt->fetchColumn();
+        }
+
+        $stmt = $this->db->prepare(
+            'INSERT INTO produtos (tenant_id, categoria_id, nome, slug, descricao, preco, imagem, destaque, disponivel, ordem, ativo)
+             VALUES (:tenant_id, :categoria_id, :nome, :slug, :descricao, :preco, :imagem, :destaque, :disponivel, :ordem, :ativo)'
+        );
+        $stmt->execute([
+            'tenant_id' => $data['tenant_id'],
+            'categoria_id' => $data['categoria_id'],
+            'nome' => $data['nome'],
+            'slug' => $data['slug'] ?? strtolower(preg_replace('/[^a-z0-9]+/i', '-', $data['nome'])),
+            'descricao' => $data['descricao'] ?? null,
+            'preco' => $data['preco'],
+            'imagem' => $data['imagem'] ?? null,
+            'destaque' => (int) ($data['destaque'] ?? 0),
+            'disponivel' => (int) ($data['disponivel'] ?? 1),
+            'ordem' => (int) $data['ordem'],
+            'ativo' => (int) ($data['ativo'] ?? 1),
+        ]);
+
+        return (int) $this->db->lastInsertId();
+    }
+
+    public function update(int $id, int $tenantId, array $data): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare(
+            'UPDATE produtos
+             SET categoria_id = :categoria_id,
+                 nome = :nome,
+                 slug = :slug,
+                 descricao = :descricao,
+                 preco = :preco,
+                 imagem = :imagem,
+                 destaque = :destaque,
+                 disponivel = :disponivel,
+                 ordem = :ordem,
+                 atualizado_em = NOW()
+             WHERE id = :id AND tenant_id = :tenant_id'
+        );
+
+        return $stmt->execute([
+            'id' => $id,
+            'tenant_id' => $tenantId,
+            'categoria_id' => $data['categoria_id'],
+            'nome' => $data['nome'],
+            'slug' => $data['slug'] ?? strtolower(preg_replace('/[^a-z0-9]+/i', '-', $data['nome'])),
+            'descricao' => $data['descricao'] ?? null,
+            'preco' => $data['preco'],
+            'imagem' => $data['imagem'] ?? null,
+            'destaque' => (int) ($data['destaque'] ?? 0),
+            'disponivel' => (int) ($data['disponivel'] ?? 1),
+            'ordem' => (int) ($data['ordem'] ?? 0),
+        ]);
+    }
+
+    public function toggleAvailability(int $id, int $tenantId): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare(
+            'UPDATE produtos
+             SET disponivel = CASE WHEN disponivel = 1 THEN 0 ELSE 1 END, atualizado_em = NOW()
+             WHERE id = :id AND tenant_id = :tenant_id'
+        );
+
+        return $stmt->execute(['id' => $id, 'tenant_id' => $tenantId]);
+    }
+
+    public function softDelete(int $id, int $tenantId): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare(
+            'UPDATE produtos SET ativo = 0, atualizado_em = NOW() WHERE id = :id AND tenant_id = :tenant_id'
+        );
+
+        return $stmt->execute(['id' => $id, 'tenant_id' => $tenantId]);
+    }
+
+    public function duplicate(int $id, int $tenantId): ?int
+    {
+        $original = $this->findById($id, $tenantId);
+        if (!$original) {
+            return null;
+        }
+
+        $original['nome'] = $original['nome'] . ' (Cópia)';
+        $original['slug'] = $original['slug'] . '-copia-' . time();
+        $original['tenant_id'] = $tenantId;
+
+        return $this->create($original);
+    }
 }

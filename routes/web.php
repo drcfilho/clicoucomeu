@@ -6,6 +6,7 @@ use App\Controllers\AuthController;
 use App\Controllers\Admin\TenantController;
 use App\Controllers\Cozinha\KitchenController;
 use App\Controllers\Painel\CategoryController;
+use App\Controllers\Painel\ProductController;
 use App\Controllers\Painel\DashboardController;
 use App\Controllers\Public\HomeController;
 use App\Controllers\Public\OrderController;
@@ -53,6 +54,36 @@ $router->post('/painel/categorias/{id}/toggle', [CategoryController::class, 'tog
     PermissionMiddleware::class,
 ]);
 $router->post('/painel/categorias/{id}/excluir', [CategoryController::class, 'delete'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->get('/painel/produtos', [ProductController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/produtos', [ProductController::class, 'store'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/produtos/{id}/editar', [ProductController::class, 'update'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/produtos/{id}/disponibilidade', [ProductController::class, 'toggleAvailability'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/produtos/{id}/duplicar', [ProductController::class, 'duplicate'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/produtos/{id}/excluir', [ProductController::class, 'delete'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
     PermissionMiddleware::class,
