@@ -88,7 +88,7 @@
                                     <div>
                                         <span class="order-number">#<?= htmlspecialchars((string) $o['numero'], ENT_QUOTES, 'UTF-8') ?></span>
                                         <span style="color: var(--bo-muted); font-size: 0.84rem; margin-left: 8px;">
-                                            <?= date('H:i', strtotime($o['created_at'])) ?>
+                                            <?= !empty($o['criado_em']) ? date('H:i', strtotime($o['criado_em'])) : '' ?>
                                         </span>
                                     </div>
                                     <span class="order-status-badge status-<?= htmlspecialchars((string) $o['status'], ENT_QUOTES, 'UTF-8') ?>">

@@ -29,7 +29,7 @@ class OrderRepository
             $params['status'] = $status;
         }
 
-        $sql .= ' ORDER BY p.created_at DESC, p.id DESC LIMIT ' . (int) $limit;
+        $sql .= ' ORDER BY p.criado_em DESC, p.id DESC LIMIT ' . (int) $limit;
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
