@@ -20,14 +20,12 @@ class HomeController
         $appName = $this->container->get('config')['app']['name'];
 
         if ($slug === null) {
-            $response->view('public.home', [
+            $response->view('public.landing', [
                 'appName' => $appName,
-                'slug' => null,
-                'tenant' => null,
-                'settings' => [],
-                'neighborhoods' => [],
-                'paymentMethods' => [],
-                'categories' => [],
+                'featuredTenant' => [
+                    'name' => 'Piemonte Pizzaria',
+                    'slug' => 'piemonte',
+                ],
             ]);
             return;
         }
