@@ -178,12 +178,12 @@
 
 # Fase 10 - Bairros e Entrega
 
-- [ ] Listar bairros.
-- [ ] Criar bairro.
-- [ ] Editar taxa.
-- [ ] Definir pedido minimo.
-- [ ] Definir tempo estimado.
-- [ ] Ativar/desativar bairro.
+- [x] Listar bairros.
+- [x] Criar bairro.
+- [x] Editar taxa.
+- [x] Definir pedido minimo.
+- [x] Definir tempo estimado.
+- [x] Ativar/desativar bairro.
 
 # Fase 11 - Pagamentos
 

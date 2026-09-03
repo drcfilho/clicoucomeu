@@ -6,6 +6,7 @@ $backofficeNav = [
     'categorias' => ['label' => 'Categorias', 'href' => '/painel/categorias'],
     'produtos' => ['label' => 'Produtos', 'href' => '/painel/produtos'],
     'adicionais' => ['label' => 'Adicionais', 'href' => '/painel/adicionais'],
+    'bairros' => ['label' => 'Bairros / Taxas', 'href' => '/painel/bairros'],
     'cozinha' => ['label' => 'Cozinha', 'href' => '/cozinha'],
 ];
 

@@ -8,6 +8,7 @@ use App\Controllers\Cozinha\KitchenController;
 use App\Controllers\Painel\CategoryController;
 use App\Controllers\Painel\ProductController;
 use App\Controllers\Painel\AddonController;
+use App\Controllers\Painel\NeighborhoodController;
 use App\Controllers\Painel\DashboardController;
 use App\Controllers\Public\HomeController;
 use App\Controllers\Public\OrderController;
@@ -147,6 +148,33 @@ $router->post('/painel/adicionais/{id}/itens/{itemId}/editar', [AddonController:
     PermissionMiddleware::class,
 ]);
 $router->post('/painel/adicionais/{id}/itens/{itemId}/excluir', [AddonController::class, 'deleteItem'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+
+/* Rotas de Bairros e Taxas de Entrega */
+$router->get('/painel/bairros', [NeighborhoodController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/bairros', [NeighborhoodController::class, 'store'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/bairros/{id}/editar', [NeighborhoodController::class, 'update'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/bairros/{id}/toggle', [NeighborhoodController::class, 'toggle'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/bairros/{id}/excluir', [NeighborhoodController::class, 'delete'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
     PermissionMiddleware::class,
