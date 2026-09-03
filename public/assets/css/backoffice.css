@@ -1,0 +1,329 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bo-bg: #f5efe6;
+    --bo-surface: #fffdf8;
+    --bo-surface-strong: #ffffff;
+    --bo-text: #201912;
+    --bo-muted: #6d5d4d;
+    --bo-line: #e5d8c4;
+    --bo-primary: #1f1a15;
+    --bo-primary-soft: #ede3d3;
+    --bo-success: #215c30;
+    --bo-success-bg: #dff4e4;
+    --bo-warn: #8a4a1a;
+    --bo-warn-bg: #fde7d6;
+    --bo-danger: #8d2934;
+    --bo-danger-bg: #f4d9dc;
+    --bo-shadow: 0 18px 40px rgba(55, 35, 15, 0.08);
+}
+
+html,
+body {
+    margin: 0;
+    min-height: 100%;
+}
+
+body.backoffice-body {
+    font-family: system-ui, sans-serif;
+    color: var(--bo-text);
+    background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.92), transparent 24%),
+        linear-gradient(180deg, #fffbf7 0%, var(--bo-bg) 100%);
+}
+
+.backoffice-shell {
+    min-height: 100vh;
+    width: min(1180px, calc(100% - 20px));
+    margin: 0 auto;
+    padding: 18px 0 40px;
+}
+
+.backoffice-topbar {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.backoffice-brand {
+    background: rgba(255, 253, 248, 0.86);
+    border: 1px solid rgba(229, 216, 196, 0.95);
+    border-radius: 26px;
+    box-shadow: var(--bo-shadow);
+    padding: 18px;
+}
+
+.backoffice-kicker {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: var(--bo-primary-soft);
+    color: var(--bo-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.backoffice-title {
+    margin: 12px 0 6px;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    line-height: 1;
+}
+
+.backoffice-subtitle {
+    margin: 0;
+    color: var(--bo-muted);
+    line-height: 1.6;
+}
+
+.backoffice-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.bo-btn,
+.bo-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid var(--bo-line);
+    text-decoration: none;
+    background: rgba(255,255,255,0.82);
+    color: var(--bo-text);
+    font-weight: 700;
+}
+
+button.bo-btn {
+    cursor: pointer;
+}
+
+.bo-btn-primary,
+.bo-link-primary {
+    background: var(--bo-primary);
+    color: #fffdf8;
+    border-color: var(--bo-primary);
+}
+
+.bo-btn-secondary,
+.bo-link-secondary {
+    background: transparent;
+    color: var(--bo-muted);
+}
+
+.backoffice-grid {
+    display: grid;
+    gap: 18px;
+}
+
+.bo-panel,
+.bo-card,
+.bo-stat {
+    background: rgba(255, 253, 248, 0.92);
+    border: 1px solid rgba(229, 216, 196, 0.95);
+    border-radius: 22px;
+    box-shadow: var(--bo-shadow);
+}
+
+.bo-panel,
+.bo-card {
+    padding: 18px;
+}
+
+.bo-section-title,
+.bo-card-title {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+}
+
+.bo-section-text,
+.bo-card-text {
+    margin: 0;
+    color: var(--bo-muted);
+    line-height: 1.6;
+}
+
+.bo-form-grid,
+.bo-stats-grid,
+.bo-cards-grid {
+    display: grid;
+    gap: 14px;
+}
+
+.bo-form-grid {
+    grid-template-columns: 1fr;
+}
+
+.bo-stats-grid,
+.bo-cards-grid {
+    grid-template-columns: 1fr;
+}
+
+.bo-field {
+    display: grid;
+    gap: 6px;
+    font-size: 0.95rem;
+}
+
+.bo-field input,
+.bo-field select,
+.bo-field textarea {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid var(--bo-line);
+    border-radius: 14px;
+    padding: 0 12px;
+    background: var(--bo-surface-strong);
+    color: var(--bo-text);
+    font: inherit;
+}
+
+.bo-field textarea {
+    min-height: 96px;
+    padding: 12px;
+    resize: vertical;
+}
+
+.bo-form-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.bo-alert {
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+}
+
+.bo-alert-success {
+    color: var(--bo-success);
+    background: var(--bo-success-bg);
+}
+
+.bo-alert-error {
+    color: var(--bo-danger);
+    background: #f9e1e4;
+}
+
+.bo-list-errors {
+    margin: 8px 0 0;
+    padding-left: 18px;
+}
+
+.bo-meta-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.bo-chip,
+.bo-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: var(--bo-primary-soft);
+    color: var(--bo-muted);
+    font-size: 0.9rem;
+}
+
+.bo-badge-ativo {
+    background: var(--bo-success-bg);
+    color: var(--bo-success);
+}
+
+.bo-badge-bloqueado {
+    background: var(--bo-warn-bg);
+    color: var(--bo-warn);
+}
+
+.bo-badge-cancelado {
+    background: var(--bo-danger-bg);
+    color: var(--bo-danger);
+}
+
+.bo-stat {
+    padding: 16px;
+}
+
+.bo-stat strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 1rem;
+}
+
+.bo-stat span {
+    color: var(--bo-muted);
+}
+
+.bo-empty {
+    padding: 24px;
+    border: 1px dashed var(--bo-line);
+    border-radius: 20px;
+    background: rgba(255,255,255,0.7);
+    color: var(--bo-muted);
+}
+
+.bo-code {
+    margin: 0;
+    padding: 14px;
+    border-radius: 16px;
+    border: 1px solid var(--bo-line);
+    background: #fff;
+    overflow: auto;
+    font-size: 0.9rem;
+}
+
+.bo-inline-form {
+    display: inline-flex;
+}
+
+@media (min-width: 760px) {
+    .backoffice-shell {
+        width: min(1180px, calc(100% - 32px));
+        padding-top: 24px;
+    }
+
+    .backoffice-topbar {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+    }
+
+    .bo-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .bo-cards-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .bo-form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    .bo-stats-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .bo-cards-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .bo-form-grid.bo-form-grid-4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}

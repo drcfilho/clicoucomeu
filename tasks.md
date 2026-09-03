@@ -7,7 +7,7 @@
 
 ## Status em 2026-09-03
 
-- Itens concluidos: 72 de 290
+- Itens concluidos: 73 de 290
 - Base tecnica pronta: estrutura do projeto, schema SQL, bootstrap PHP, roteamento, login base e importacao inicial do tenant Piemonte
 - Principais pendencias: CRUDs reais do painel, cardapio publico conectado ao banco, checkout, pedidos e seguranca operacional
 
@@ -121,7 +121,7 @@
 
 # Fase 5 - Painel Base
 
-- [ ] Criar layout mobile-first.
+- [x] Criar layout mobile-first.
 - [ ] Criar sidebar desktop.
 - [ ] Criar navegacao mobile.
 - [ ] Criar header.
