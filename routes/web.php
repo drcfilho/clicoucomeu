@@ -60,6 +60,10 @@ $router->post('/admin/tenants/{id}/bloquear', [TenantController::class, 'block']
     AuthMiddleware::class,
     PermissionMiddleware::class,
 ]);
+$router->post('/admin/tenants/{id}/admin', [TenantController::class, 'createAdmin'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->get('/{tenant}', [HomeController::class, 'index']);
 
 return $router;

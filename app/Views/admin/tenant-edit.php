@@ -104,6 +104,44 @@
                 </div>
             </form>
         </section>
+
+        <section class="panel" style="margin-top: 18px;">
+            <h2>Criar admin do tenant</h2>
+
+            <?php if (!empty($adminErrors)): ?>
+                <div class="alert alert-error">
+                    <strong>Corrija os campos abaixo:</strong>
+                    <ul class="error-list">
+                        <?php foreach ($adminErrors as $error): ?>
+                            <li><?= htmlspecialchars((string) $error, ENT_QUOTES, 'UTF-8') ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <form method="post" action="/admin/tenants/<?= (int) ($tenant['id'] ?? 0) ?>/admin">
+                <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string) $csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+
+                <div class="form-grid">
+                    <label>
+                        Nome do admin
+                        <input name="admin_nome" value="<?= htmlspecialchars((string) ($adminForm['nome'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" required>
+                    </label>
+                    <label>
+                        Usuario
+                        <input name="admin_usuario" value="<?= htmlspecialchars((string) ($adminForm['usuario'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" required>
+                    </label>
+                    <label>
+                        Senha inicial
+                        <input name="admin_senha" type="password" value="<?= htmlspecialchars((string) ($adminForm['senha'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" required>
+                    </label>
+                </div>
+
+                <div class="submit-row">
+                    <button class="primary" type="submit">Criar admin</button>
+                </div>
+            </form>
+        </section>
     </main>
 </body>
 </html>

@@ -8,6 +8,7 @@ use App\Helpers\Container;
 use App\Helpers\Request;
 use App\Helpers\Response;
 use App\Repositories\TenantRepository;
+use App\Repositories\UserRepository;
 use App\Validation\Validator;
 
 class TenantController
@@ -17,6 +18,8 @@ class TenantController
     private const SUCCESS_KEY = 'admin_tenant_success';
     private const EDIT_FORM_KEY = 'admin_tenant_edit_form';
     private const EDIT_ERROR_KEY = 'admin_tenant_edit_errors';
+    private const ADMIN_FORM_KEY = 'admin_tenant_admin_form';
+    private const ADMIN_ERROR_KEY = 'admin_tenant_admin_errors';
 
     public function __construct(private Container $container)
     {
@@ -133,6 +136,12 @@ class TenantController
         $response->view('admin.tenant-edit', [
             'tenant' => $session->pull(self::EDIT_FORM_KEY, $tenant),
             'errors' => $session->pull(self::EDIT_ERROR_KEY, []),
+            'adminForm' => $session->pull(self::ADMIN_FORM_KEY, [
+                'nome' => '',
+                'usuario' => '',
+                'senha' => '',
+            ]),
+            'adminErrors' => $session->pull(self::ADMIN_ERROR_KEY, []),
             'success' => $session->pull(self::SUCCESS_KEY),
             'csrfToken' => $csrf->token(),
         ]);
@@ -253,6 +262,69 @@ class TenantController
         $session->set(self::SUCCESS_KEY, 'Tenant bloqueado com sucesso.');
 
         $response->redirect('/admin/tenants');
+    }
+
+    public function createAdmin(Request $request, Response $response, array $params = []): void
+    {
+        $csrf = $this->container->get('csrf');
+        $session = $this->container->get('session');
+        $tenantId = (int) ($params['id'] ?? 0);
+
+        if (!$csrf->validate((string) $request->input('_csrf'))) {
+            $session->set(self::ADMIN_ERROR_KEY, ['geral' => 'Token CSRF invalido.']);
+            $response->redirect('/admin/tenants/' . $tenantId . '/editar');
+        }
+
+        /** @var TenantRepository $tenants */
+        $tenants = $this->container->get('tenantRepository');
+        $tenant = $tenants->findById($tenantId);
+
+        if ($tenant === null) {
+            $response->view('errors.404', [
+                'message' => 'Tenant nao encontrado.',
+            ], 404);
+            return;
+        }
+
+        $form = [
+            'nome' => trim((string) $request->input('admin_nome')),
+            'usuario' => strtolower(trim((string) $request->input('admin_usuario'))),
+            'senha' => trim((string) $request->input('admin_senha')),
+        ];
+        $session->set(self::ADMIN_FORM_KEY, $form);
+
+        /** @var Validator $validator */
+        $validator = $this->container->get('validator');
+        $errors = $validator->required($form, ['nome', 'usuario', 'senha']);
+
+        if (!preg_match('/^[a-z0-9._-]+$/', $form['usuario'])) {
+            $errors['usuario'] = 'Usuario invalido. Use letras minusculas, numeros, ponto, hifen ou underscore.';
+        }
+
+        if (strlen($form['senha']) < 6) {
+            $errors['senha'] = 'A senha deve ter pelo menos 6 caracteres.';
+        }
+
+        /** @var UserRepository $users */
+        $users = $this->container->get('userRepository');
+        if ($users->findByUsernameForTenant($tenantId, $form['usuario']) !== null) {
+            $errors['usuario'] = 'Este usuario ja existe neste tenant.';
+        }
+
+        if ($errors !== []) {
+            $session->set(self::ADMIN_ERROR_KEY, $errors);
+            $response->redirect('/admin/tenants/' . $tenantId . '/editar');
+        }
+
+        $userId = $users->createTenantAdmin($tenantId, $form);
+        $session->set(self::ADMIN_FORM_KEY, [
+            'nome' => '',
+            'usuario' => '',
+            'senha' => '',
+        ]);
+        $session->set(self::SUCCESS_KEY, 'Admin do tenant criado com sucesso. ID: ' . $userId);
+
+        $response->redirect('/admin/tenants/' . $tenantId . '/editar');
     }
 
     private function normalizeForm(array $data): array
