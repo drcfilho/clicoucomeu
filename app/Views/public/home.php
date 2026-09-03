@@ -584,7 +584,6 @@ $checkoutConfig = [
                         <div class="cart-item-head">
                             <div>
                                 <h3 class="cart-item-name">${item.productName}</h3>
-                                <div class="cart-item-meta">Quantidade: ${item.quantity}</div>
                             </div>
                             <div class="cart-item-price">${formatCurrency(item.total)}</div>
                         </div>
@@ -593,8 +592,13 @@ $checkoutConfig = [
                             ${item.addons.length ? `Adicionais: ${item.addons.map((addon) => addon.groupName + ': ' + addon.name).join(', ')}<br>` : ''}
                             ${item.notes ? `Obs: ${item.notes}` : ''}
                         </div>
-                        <div class="cart-item-meta" style="margin-top:10px;">
-                            <button class="secondary-btn" type="button" data-remove-cart-item="${index}">Remover</button>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 12px;">
+                            <div class="qty">
+                                <button type="button" data-decrease-cart-item="${index}">-</button>
+                                <span>${item.quantity}</span>
+                                <button type="button" data-increase-cart-item="${index}">+</button>
+                            </div>
+                            <button class="secondary-btn" type="button" data-remove-cart-item="${index}" style="color: #dc2626;">Remover</button>
                         </div>
                     </article>
                 `).join('');
@@ -947,17 +951,48 @@ $checkoutConfig = [
 
             if (cartItems) {
                 cartItems.addEventListener('click', (event) => {
-                    const button = event.target.closest('[data-remove-cart-item]');
-                    if (!button) {
+                    const removeBtn = event.target.closest('[data-remove-cart-item]');
+                    const increaseBtn = event.target.closest('[data-increase-cart-item]');
+                    const decreaseBtn = event.target.closest('[data-decrease-cart-item]');
+
+                    if (removeBtn) {
+                        const index = Number(removeBtn.getAttribute('data-remove-cart-item'));
+                        if (!Number.isNaN(index)) {
+                            cart.splice(index, 1);
+                            saveCart();
+                            renderCartFab();
+                            renderCartModal();
+                        }
                         return;
                     }
 
-                    const index = Number(button.getAttribute('data-remove-cart-item'));
-                    if (!Number.isNaN(index)) {
-                        cart.splice(index, 1);
-                        saveCart();
-                        renderCartFab();
-                        renderCartModal();
+                    if (increaseBtn) {
+                        const index = Number(increaseBtn.getAttribute('data-increase-cart-item'));
+                        if (!Number.isNaN(index) && cart[index]) {
+                            cart[index].quantity += 1;
+                            const unitPrice = cart[index].unitBasePrice + cart[index].addonsTotal;
+                            cart[index].total = unitPrice * cart[index].quantity;
+                            saveCart();
+                            renderCartFab();
+                            renderCartModal();
+                        }
+                        return;
+                    }
+
+                    if (decreaseBtn) {
+                        const index = Number(decreaseBtn.getAttribute('data-decrease-cart-item'));
+                        if (!Number.isNaN(index) && cart[index]) {
+                            if (cart[index].quantity > 1) {
+                                cart[index].quantity -= 1;
+                                const unitPrice = cart[index].unitBasePrice + cart[index].addonsTotal;
+                                cart[index].total = unitPrice * cart[index].quantity;
+                            } else {
+                                cart.splice(index, 1);
+                            }
+                            saveCart();
+                            renderCartFab();
+                            renderCartModal();
+                        }
                     }
                 });
             }

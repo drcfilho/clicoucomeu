@@ -223,13 +223,13 @@
 
 # Fase 14 - Carrinho
 
-- [ ] Criar estado do carrinho.
-- [ ] Adicionar item.
-- [ ] Editar item.
-- [ ] Remover item.
-- [ ] Alterar quantidade.
-- [ ] Calcular subtotal no frontend apenas para UX.
-- [ ] Persistir carrinho em localStorage.
+- [x] Criar estado do carrinho.
+- [x] Adicionar item.
+- [x] Editar item.
+- [x] Remover item.
+- [x] Alterar quantidade.
+- [x] Calcular subtotal no frontend apenas para UX.
+- [x] Persistir carrinho em localStorage.
 
 # Fase 15 - Checkout
 
