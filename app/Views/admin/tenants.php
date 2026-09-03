@@ -142,6 +142,11 @@
                                     <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string) $csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                                     <button class="primary" type="submit">Ativar</button>
                                 </form>
+                            <?php else: ?>
+                                <form method="post" action="/admin/tenants/<?= (int) $tenant['id'] ?>/bloquear" style="display:inline-flex;">
+                                    <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string) $csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                                    <button class="secondary" type="submit">Bloquear</button>
+                                </form>
                             <?php endif; ?>
                         </div>
                     </article>

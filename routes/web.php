@@ -56,6 +56,10 @@ $router->post('/admin/tenants/{id}/ativar', [TenantController::class, 'activate'
     AuthMiddleware::class,
     PermissionMiddleware::class,
 ]);
+$router->post('/admin/tenants/{id}/bloquear', [TenantController::class, 'block'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->get('/{tenant}', [HomeController::class, 'index']);
 
 return $router;

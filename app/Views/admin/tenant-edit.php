@@ -97,6 +97,8 @@
                     <button class="primary" type="submit">Salvar alteracoes</button>
                     <?php if (($tenant['status'] ?? 'ativo') !== 'ativo'): ?>
                         <button class="secondary" type="submit" formaction="/admin/tenants/<?= (int) ($tenant['id'] ?? 0) ?>/ativar">Ativar tenant</button>
+                    <?php else: ?>
+                        <button class="secondary" type="submit" formaction="/admin/tenants/<?= (int) ($tenant['id'] ?? 0) ?>/bloquear">Bloquear tenant</button>
                     <?php endif; ?>
                     <a class="secondary" href="/<?= htmlspecialchars((string) ($tenant['slug'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noreferrer">Abrir tenant</a>
                 </div>

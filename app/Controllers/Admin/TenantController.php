@@ -227,6 +227,34 @@ class TenantController
         $response->redirect('/admin/tenants');
     }
 
+    public function block(Request $request, Response $response, array $params = []): void
+    {
+        $csrf = $this->container->get('csrf');
+        $session = $this->container->get('session');
+        $tenantId = (int) ($params['id'] ?? 0);
+
+        if (!$csrf->validate((string) $request->input('_csrf'))) {
+            $session->set(self::ERROR_KEY, ['geral' => 'Token CSRF invalido.']);
+            $response->redirect('/admin/tenants');
+        }
+
+        /** @var TenantRepository $tenants */
+        $tenants = $this->container->get('tenantRepository');
+        $tenant = $tenants->findById($tenantId);
+
+        if ($tenant === null) {
+            $response->view('errors.404', [
+                'message' => 'Tenant nao encontrado.',
+            ], 404);
+            return;
+        }
+
+        $tenants->updateStatus($tenantId, 'bloqueado');
+        $session->set(self::SUCCESS_KEY, 'Tenant bloqueado com sucesso.');
+
+        $response->redirect('/admin/tenants');
+    }
+
     private function normalizeForm(array $data): array
     {
         return [
