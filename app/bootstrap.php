@@ -60,7 +60,7 @@ function bootstrap(): App\Helpers\App
         (bool) $appConfig['debug']
     ));
 
-    $container->set('db', fn (): ?PDO => App\Helpers\Database::connect($dbConfig));
+    $container->set('db', fn (): ?PDO => App\Helpers\Database::connect($dbConfig, $appConfig['timezone']));
     $container->set('request', fn (): App\Helpers\Request => App\Helpers\Request::capture());
     $container->set('response', function () use ($container): App\Helpers\Response {
         return new App\Helpers\Response($container->get('view'));
