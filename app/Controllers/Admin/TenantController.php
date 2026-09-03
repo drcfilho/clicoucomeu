@@ -13,6 +13,7 @@ use App\Validation\Validator;
 
 class TenantController
 {
+    private const PLAN_OPTIONS = ['mvp', 'starter', 'pro', 'enterprise'];
     private const FORM_KEY = 'admin_tenant_form';
     private const ERROR_KEY = 'admin_tenant_errors';
     private const SUCCESS_KEY = 'admin_tenant_success';
@@ -82,6 +83,10 @@ class TenantController
 
         if (!in_array($form['status'], ['ativo', 'bloqueado', 'cancelado'], true)) {
             $errors['status'] = 'Status invalido.';
+        }
+
+        if (!in_array($form['plano'], self::PLAN_OPTIONS, true)) {
+            $errors['plano'] = 'Plano invalido.';
         }
 
         if ($form['uf'] !== '' && !preg_match('/^[A-Z]{2}$/', $form['uf'])) {
@@ -185,6 +190,10 @@ class TenantController
             $errors['status'] = 'Status invalido.';
         }
 
+        if (!in_array($form['plano'], self::PLAN_OPTIONS, true)) {
+            $errors['plano'] = 'Plano invalido.';
+        }
+
         if ($form['uf'] !== '' && !preg_match('/^[A-Z]{2}$/', $form['uf'])) {
             $errors['uf'] = 'Informe uma UF valida com 2 letras.';
         }
@@ -204,6 +213,52 @@ class TenantController
 
         $session->set(self::EDIT_FORM_KEY, $updatedTenant !== null ? $updatedTenant : $form);
         $session->set(self::SUCCESS_KEY, 'Tenant atualizado com sucesso.');
+
+        $response->redirect('/admin/tenants/' . $tenantId . '/editar');
+    }
+
+    public function updatePlan(Request $request, Response $response, array $params = []): void
+    {
+        $csrf = $this->container->get('csrf');
+        $session = $this->container->get('session');
+        $tenantId = (int) ($params['id'] ?? 0);
+
+        if (!$csrf->validate((string) $request->input('_csrf'))) {
+            $session->set(self::EDIT_ERROR_KEY, ['geral' => 'Token CSRF invalido.']);
+            $response->redirect('/admin/tenants/' . $tenantId . '/editar');
+        }
+
+        $plan = trim((string) $request->input('plano'));
+
+        if (!in_array($plan, self::PLAN_OPTIONS, true)) {
+            $session->set(self::EDIT_ERROR_KEY, ['plano' => 'Plano invalido.']);
+            $response->redirect('/admin/tenants/' . $tenantId . '/editar');
+        }
+
+        /** @var TenantRepository $tenants */
+        $tenants = $this->container->get('tenantRepository');
+        $tenant = $tenants->findById($tenantId);
+
+        if ($tenant === null) {
+            $response->view('errors.404', [
+                'message' => 'Tenant nao encontrado.',
+            ], 404);
+            return;
+        }
+
+        $payload = [
+            'nome' => (string) $tenant['nome'],
+            'slug' => (string) $tenant['slug'],
+            'whatsapp' => (string) ($tenant['whatsapp'] ?? ''),
+            'cidade' => (string) ($tenant['cidade'] ?? ''),
+            'uf' => (string) ($tenant['uf'] ?? ''),
+            'timezone' => (string) $tenant['timezone'],
+            'status' => (string) $tenant['status'],
+            'plano' => $plan,
+        ];
+
+        $tenants->update($tenantId, $payload);
+        $session->set(self::SUCCESS_KEY, 'Plano atualizado com sucesso.');
 
         $response->redirect('/admin/tenants/' . $tenantId . '/editar');
     }

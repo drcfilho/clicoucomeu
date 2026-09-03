@@ -21,6 +21,10 @@
         .alert-success { background: #dff4e4; color: #215c30; }
         .alert-error { background: #f9e1e4; color: #862634; }
         .error-list { margin: 0; padding-left: 18px; }
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
+        .stat { border: 1px solid #e6dccd; border-radius: 16px; padding: 16px; background: #fff; }
+        .stat strong { display: block; font-size: 1rem; margin-bottom: 6px; }
+        .stat span { color: #5c4830; }
     </style>
 </head>
 <body>
@@ -36,6 +40,27 @@
         </div>
 
         <section class="panel">
+            <h2>Status do tenant</h2>
+            <div class="status-grid" style="margin-bottom: 20px;">
+                <div class="stat">
+                    <strong>Status atual</strong>
+                    <span><?= htmlspecialchars((string) ($tenant['status'] ?? 'n/d'), ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+                <div class="stat">
+                    <strong>Plano atual</strong>
+                    <span><?= htmlspecialchars((string) ($tenant['plano'] ?? 'n/d'), ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+                <div class="stat">
+                    <strong>Slug publico</strong>
+                    <span>/<?= htmlspecialchars((string) ($tenant['slug'] ?? ''), ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+                <div class="stat">
+                    <strong>Timezone</strong>
+                    <span><?= htmlspecialchars((string) ($tenant['timezone'] ?? 'n/d'), ENT_QUOTES, 'UTF-8') ?></span>
+                </div>
+            </div>
+
+            <h2>Dados do tenant</h2>
             <?php if (!empty($success)): ?>
                 <div class="alert alert-success"><?= htmlspecialchars((string) $success, ENT_QUOTES, 'UTF-8') ?></div>
             <?php endif; ?>
@@ -101,6 +126,26 @@
                         <button class="secondary" type="submit" formaction="/admin/tenants/<?= (int) ($tenant['id'] ?? 0) ?>/bloquear">Bloquear tenant</button>
                     <?php endif; ?>
                     <a class="secondary" href="/<?= htmlspecialchars((string) ($tenant['slug'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noreferrer">Abrir tenant</a>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel" style="margin-top: 18px;">
+            <h2>Definir plano</h2>
+            <form method="post" action="/admin/tenants/<?= (int) ($tenant['id'] ?? 0) ?>/plano">
+                <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string) $csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                <div class="form-grid">
+                    <label>
+                        Plano do tenant
+                        <select name="plano">
+                            <?php foreach (['mvp' => 'MVP', 'starter' => 'Starter', 'pro' => 'Pro', 'enterprise' => 'Enterprise'] as $value => $label): ?>
+                                <option value="<?= htmlspecialchars($value, ENT_QUOTES, 'UTF-8') ?>" <?= (($tenant['plano'] ?? 'mvp') === $value) ? 'selected' : '' ?>><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </label>
+                </div>
+                <div class="submit-row">
+                    <button class="primary" type="submit">Salvar plano</button>
                 </div>
             </form>
         </section>

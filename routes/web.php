@@ -64,6 +64,10 @@ $router->post('/admin/tenants/{id}/admin', [TenantController::class, 'createAdmi
     AuthMiddleware::class,
     PermissionMiddleware::class,
 ]);
+$router->post('/admin/tenants/{id}/plano', [TenantController::class, 'updatePlan'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->get('/{tenant}', [HomeController::class, 'index']);
 
 return $router;

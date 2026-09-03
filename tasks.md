@@ -7,7 +7,7 @@
 
 ## Status em 2026-09-03
 
-- Itens concluidos: 70 de 290
+- Itens concluidos: 71 de 290
 - Base tecnica pronta: estrutura do projeto, schema SQL, bootstrap PHP, roteamento, login base e importacao inicial do tenant Piemonte
 - Principais pendencias: CRUDs reais do painel, cardapio publico conectado ao banco, checkout, pedidos e seguranca operacional
 
@@ -116,7 +116,7 @@
 - [x] Ativar tenant.
 - [x] Bloquear tenant.
 - [x] Criar admin do tenant.
-- [ ] Definir plano.
+- [x] Definir plano.
 - [ ] Visualizar status do tenant.
 
 # Fase 5 - Painel Base
