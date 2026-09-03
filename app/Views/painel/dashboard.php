@@ -23,6 +23,8 @@
             </div>
         </header>
 
+        <?php require __DIR__ . '/../partials/flash-messages.php'; ?>
+
         <section class="bo-stats-grid">
             <article class="bo-stat">
                 <strong>Pedidos hoje</strong>

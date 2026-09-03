@@ -125,7 +125,7 @@
 - [x] Criar sidebar desktop.
 - [x] Criar navegacao mobile.
 - [x] Criar header.
-- [ ] Criar flash messages.
+- [x] Criar flash messages.
 - [ ] Criar componentes de modal.
 - [ ] Criar componente de confirmacao.
 - [ ] Criar componente de loading.

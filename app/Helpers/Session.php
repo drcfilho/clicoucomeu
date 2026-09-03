@@ -76,6 +76,33 @@ class Session
         session_regenerate_id(true);
     }
 
+    public function setFlash(string $type, string $message): void
+    {
+        $_SESSION['_flash'][$type][] = $message;
+    }
+
+    public function getFlash(string $type = null): array
+    {
+        if ($type === null) {
+            $flashes = $_SESSION['_flash'] ?? [];
+            unset($_SESSION['_flash']);
+            return $flashes;
+        }
+
+        $flashes = $_SESSION['_flash'][$type] ?? [];
+        unset($_SESSION['_flash'][$type]);
+        return $flashes;
+    }
+
+    public function hasFlash(string $type = null): bool
+    {
+        if ($type === null) {
+            return !empty($_SESSION['_flash']);
+        }
+
+        return !empty($_SESSION['_flash'][$type]);
+    }
+
     public function destroy(): void
     {
         $_SESSION = [];

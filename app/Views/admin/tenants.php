@@ -23,6 +23,8 @@
             </div>
         </header>
 
+        <?php require __DIR__ . '/../partials/flash-messages.php'; ?>
+
         <section class="bo-panel">
             <h2 class="bo-section-title">Criar tenant</h2>
 
