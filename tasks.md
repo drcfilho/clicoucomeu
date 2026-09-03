@@ -213,13 +213,13 @@
 - [x] Exibir status aberto/fechado.
 - [x] Listar categorias.
 - [x] Listar produtos.
-- [ ] Implementar busca.
-- [ ] Implementar destaques.
-- [ ] Criar tela/modal de produto.
-- [ ] Exibir variacoes.
-- [ ] Exibir adicionais.
-- [ ] Validar selecao minima/maxima.
-- [ ] Campo de observacao.
+- [x] Implementar busca.
+- [x] Implementar destaques.
+- [x] Criar tela/modal de produto.
+- [x] Exibir variacoes.
+- [x] Exibir adicionais.
+- [x] Validar selecao minima/maxima.
+- [x] Campo de observacao.
 
 # Fase 14 - Carrinho
 
