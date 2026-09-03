@@ -7,7 +7,7 @@
 
 ## Status em 2026-09-03
 
-- Itens concluidos: 62 de 290
+- Itens concluidos: 63 de 290
 - Base tecnica pronta: estrutura do projeto, schema SQL, bootstrap PHP, roteamento, login base e importacao inicial do tenant Piemonte
 - Principais pendencias: CRUDs reais do painel, cardapio publico conectado ao banco, checkout, pedidos e seguranca operacional
 
@@ -16,7 +16,7 @@
 - Fase 0 quase concluida, faltando apenas a pagina 404
 - Fase 1 concluida no schema e seeds iniciais
 - Fase 2 concluida
-- Fase 3 concluida no fluxo base de autenticacao, faltando apenas autorizacao por perfil
+- Fase 3 concluida
 - Fase 13 iniciada com rota publica por slug
 - Fase 27 iniciada com criacao do superadmin, tenant Piemonte e migracao inicial do Sheets para o banco
 
@@ -36,7 +36,7 @@
 - Fase 11: listar e editar formas de pagamento
 - Fase 12: listar e editar horarios de funcionamento
 - Fase 13: ligar cardapio publico ao banco e exibir categorias e produtos reais
-- Fase 24: concluir controle efetivo por perfil e endurecimento operacional
+- Fase 24: endurecimento operacional do login, pedidos e sessoes
 
 ---
 
@@ -105,7 +105,7 @@
 - [x] Regenerar ID de sessao.
 - [x] Implementar timeout de sessao.
 - [x] Criar protecao contra brute force simples.
-- [ ] Criar controle por perfil.
+- [x] Criar controle por perfil.
 
 # Fase 4 - Superadmin
 

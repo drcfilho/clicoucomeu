@@ -30,6 +30,7 @@ $router->get('/painel', [DashboardController::class, 'index'], [
 $router->get('/cozinha', [KitchenController::class, 'index'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
+    PermissionMiddleware::class,
 ]);
 $router->get('/admin/tenants', [TenantController::class, 'index'], [
     AuthMiddleware::class,
