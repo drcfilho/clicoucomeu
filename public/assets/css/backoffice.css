@@ -41,6 +41,18 @@ body.backoffice-body {
     padding: 18px 0 40px;
 }
 
+.backoffice-layout {
+    display: block;
+}
+
+.backoffice-sidebar {
+    display: none;
+}
+
+.backoffice-content {
+    min-width: 0;
+}
+
 .backoffice-topbar {
     display: grid;
     gap: 14px;
@@ -315,6 +327,80 @@ button.bo-btn {
 }
 
 @media (min-width: 1024px) {
+    .backoffice-layout {
+        display: grid;
+        grid-template-columns: 220px minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+    }
+
+    .backoffice-sidebar {
+        display: block;
+        position: sticky;
+        top: 24px;
+        padding: 18px 14px;
+        border: 1px solid rgba(229, 216, 196, 0.95);
+        border-radius: 22px;
+        background: rgba(255, 253, 248, 0.92);
+        box-shadow: var(--bo-shadow);
+    }
+
+    .backoffice-sidebar-brand {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 4px 6px 18px;
+        border-bottom: 1px solid var(--bo-line);
+    }
+
+    .backoffice-sidebar-brand strong,
+    .backoffice-sidebar-brand span {
+        display: block;
+    }
+
+    .backoffice-sidebar-brand strong {
+        font-size: 0.95rem;
+    }
+
+    .backoffice-sidebar-brand div span {
+        margin-top: 2px;
+        color: var(--bo-muted);
+        font-size: 0.78rem;
+    }
+
+    .backoffice-sidebar-mark {
+        display: grid;
+        width: 36px;
+        height: 36px;
+        place-items: center;
+        border-radius: 12px;
+        background: var(--bo-primary);
+        color: #fffdf8;
+        font-size: 0.78rem;
+        font-weight: 800;
+    }
+
+    .backoffice-sidebar-nav {
+        display: grid;
+        gap: 6px;
+        padding-top: 14px;
+    }
+
+    .backoffice-sidebar-link {
+        display: block;
+        padding: 11px 12px;
+        border-radius: 12px;
+        color: var(--bo-muted);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .backoffice-sidebar-link:hover,
+    .backoffice-sidebar-link.is-active {
+        background: var(--bo-primary-soft);
+        color: var(--bo-text);
+    }
+
     .bo-stats-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }

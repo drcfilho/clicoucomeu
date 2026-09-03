@@ -122,7 +122,7 @@
 # Fase 5 - Painel Base
 
 - [x] Criar layout mobile-first.
-- [ ] Criar sidebar desktop.
+- [x] Criar sidebar desktop.
 - [ ] Criar navegacao mobile.
 - [ ] Criar header.
 - [ ] Criar flash messages.

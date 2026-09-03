@@ -8,6 +8,9 @@
 </head>
 <body class="backoffice-body">
     <main class="backoffice-shell">
+        <div class="backoffice-layout">
+            <?php $backofficeSection = 'painel'; require __DIR__ . '/../partials/backoffice-sidebar.php'; ?>
+            <div class="backoffice-content">
         <section class="backoffice-topbar">
             <div class="backoffice-brand">
                 <span class="backoffice-kicker">Painel</span>
@@ -44,6 +47,8 @@
             <p class="bo-section-text">Enquanto as proximas tasks do dashboard nao entram, esta area expõe os dados atuais em um bloco legivel no celular.</p>
             <pre class="bo-code"><?= htmlspecialchars(json_encode($metrics, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8') ?></pre>
         </section>
+            </div>
+        </div>
     </main>
 </body>
 </html>

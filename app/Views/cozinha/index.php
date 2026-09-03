@@ -8,6 +8,9 @@
 </head>
 <body class="backoffice-body">
     <main class="backoffice-shell">
+        <div class="backoffice-layout">
+            <?php $backofficeSection = 'cozinha'; require __DIR__ . '/../partials/backoffice-sidebar.php'; ?>
+            <div class="backoffice-content">
         <section class="backoffice-topbar">
             <div class="backoffice-brand">
                 <span class="backoffice-kicker">Cozinha</span>
@@ -33,6 +36,8 @@
                 <p class="bo-card-text">Espaco preparado para marcacao de pronto e transicao de status sem depender de telas densas.</p>
             </article>
         </section>
+            </div>
+        </div>
     </main>
 </body>
 </html>

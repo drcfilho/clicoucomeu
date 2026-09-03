@@ -8,6 +8,9 @@
 </head>
 <body class="backoffice-body">
     <main class="backoffice-shell">
+        <div class="backoffice-layout">
+            <?php $backofficeSection = 'tenants'; require __DIR__ . '/../partials/backoffice-sidebar.php'; ?>
+            <div class="backoffice-content">
         <section class="backoffice-topbar">
             <div class="backoffice-brand">
                 <span class="backoffice-kicker">Superadmin</span>
@@ -131,6 +134,8 @@
                 <?php endforeach; ?>
             </section>
         <?php endif; ?>
+            </div>
+        </div>
     </main>
 </body>
 </html>

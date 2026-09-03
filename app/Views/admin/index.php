@@ -8,6 +8,9 @@
 </head>
 <body class="backoffice-body">
     <main class="backoffice-shell">
+        <div class="backoffice-layout">
+            <?php $backofficeSection = 'admin'; require __DIR__ . '/../partials/backoffice-sidebar.php'; ?>
+            <div class="backoffice-content">
         <section class="backoffice-topbar">
             <div class="backoffice-brand">
                 <span class="backoffice-kicker">Superadmin</span>
@@ -34,6 +37,8 @@
                 <p class="bo-card-text">O backoffice agora organiza informacoes essenciais do tenant em cards e formularios empilhados para telas pequenas.</p>
             </article>
         </section>
+            </div>
+        </div>
     </main>
 </body>
 </html>
