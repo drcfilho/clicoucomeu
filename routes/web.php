@@ -253,6 +253,16 @@ $router->get('/cozinha', [KitchenController::class, 'index'], [
     TenantMiddleware::class,
     PermissionMiddleware::class,
 ]);
+$router->get('/cozinha/polling', [KitchenController::class, 'poll'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/cozinha/{id}/status', [KitchenController::class, 'updateStatus'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->get('/admin/tenants', [TenantController::class, 'index'], [
     AuthMiddleware::class,
     PermissionMiddleware::class,

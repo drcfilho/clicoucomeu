@@ -287,14 +287,14 @@
 
 # Fase 18 - Tela da Cozinha
 
-- [ ] Criar rota `/cozinha/`.
-- [ ] Criar autenticacao cozinha.
-- [ ] Exibir apenas pedidos relevantes.
-- [ ] Criar layout de alto contraste.
-- [ ] Mostrar tempo decorrido.
-- [ ] Mostrar observacoes em destaque.
-- [ ] Criar polling.
-- [ ] Marcar pronto.
+- [x] Criar rota `/cozinha/`.
+- [x] Criar autenticacao cozinha.
+- [x] Exibir apenas pedidos relevantes.
+- [x] Criar layout de alto contraste.
+- [x] Mostrar tempo decorrido.
+- [x] Mostrar observacoes em destaque.
+- [x] Criar polling.
+- [x] Marcar pronto.
 
 # Fase 19 - Impressao
 
