@@ -7,7 +7,7 @@
 
 ## Status em 2026-09-03
 
-- Itens concluidos: 63 de 290
+- Itens concluidos: 64 de 290
 - Base tecnica pronta: estrutura do projeto, schema SQL, bootstrap PHP, roteamento, login base e importacao inicial do tenant Piemonte
 - Principais pendencias: CRUDs reais do painel, cardapio publico conectado ao banco, checkout, pedidos e seguranca operacional
 
@@ -29,7 +29,7 @@
 
 ## Proximo Sprint
 
-- Fase 4: concluir Superadmin com CRUD de tenants e usuarios administradores
+- Fase 4: concluir Superadmin com listagem e CRUD de tenants e usuarios administradores
 - Fase 6: listar, criar, editar, ativar e ordenar categorias
 - Fase 7: listar, criar, editar e controlar disponibilidade de produtos
 - Fase 10: listar e editar bairros e taxas de entrega
@@ -109,7 +109,7 @@
 
 # Fase 4 - Superadmin
 
-- [ ] Criar `/admin/`.
+- [x] Criar `/admin/`.
 - [ ] Listar tenants.
 - [ ] Criar tenant.
 - [ ] Editar tenant.

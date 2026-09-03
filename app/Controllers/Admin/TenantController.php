@@ -14,6 +14,15 @@ class TenantController
     {
     }
 
+    public function home(Request $request, Response $response, array $params = []): void
+    {
+        $session = $this->container->get('session');
+
+        $response->view('admin.index', [
+            'nome' => (string) $session->get('nome', 'Superadmin'),
+        ]);
+    }
+
     public function index(Request $request, Response $response, array $params = []): void
     {
         $response->json([

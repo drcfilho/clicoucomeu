@@ -22,6 +22,10 @@ $router->post('/logout', [AuthController::class, 'logout'], [
 ]);
 $router->get('/', [HomeController::class, 'index']);
 $router->get('/pedido/{token}', [OrderController::class, 'showPage']);
+$router->get('/admin', [TenantController::class, 'home'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->get('/painel', [DashboardController::class, 'index'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
