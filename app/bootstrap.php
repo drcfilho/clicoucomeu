@@ -33,6 +33,7 @@ require_once BASE_PATH . '/app/Repositories/UserRepository.php';
 require_once BASE_PATH . '/app/Services/AuthService.php';
 require_once BASE_PATH . '/app/Services/MenuService.php';
 require_once BASE_PATH . '/app/Services/OrderService.php';
+require_once BASE_PATH . '/app/Services/StoreHoursService.php';
 require_once BASE_PATH . '/app/Controllers/AuthController.php';
 require_once BASE_PATH . '/app/Controllers/Public/HomeController.php';
 require_once BASE_PATH . '/app/Controllers/Public/OrderController.php';
@@ -42,6 +43,7 @@ require_once BASE_PATH . '/app/Controllers/Painel/ProductController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/AddonController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/NeighborhoodController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/PaymentMethodController.php';
+require_once BASE_PATH . '/app/Controllers/Painel/StoreHoursController.php';
 require_once BASE_PATH . '/app/Controllers/Admin/TenantController.php';
 require_once BASE_PATH . '/app/Controllers/Cozinha/KitchenController.php';
 
@@ -106,6 +108,13 @@ function bootstrap(): App\Helpers\App
     });
     $container->set('paymentMethodRepository', function () use ($container): App\Repositories\PaymentMethodRepository {
         return new App\Repositories\PaymentMethodRepository($container->get('db'));
+    });
+    $container->set('storeHoursService', function () use ($container, $appConfig): App\Services\StoreHoursService {
+        return new App\Services\StoreHoursService(
+            $container->get('db'),
+            $appConfig['timezone'],
+            (bool) ($appConfig['dev']['bypass_store_hours'] ?? false)
+        );
     });
     $container->set('tenantRepository', function () use ($container): App\Repositories\TenantRepository {
         return new App\Repositories\TenantRepository($container->get('db'));

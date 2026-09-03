@@ -10,6 +10,7 @@ use App\Controllers\Painel\ProductController;
 use App\Controllers\Painel\AddonController;
 use App\Controllers\Painel\NeighborhoodController;
 use App\Controllers\Painel\PaymentMethodController;
+use App\Controllers\Painel\StoreHoursController;
 use App\Controllers\Painel\DashboardController;
 use App\Controllers\Public\HomeController;
 use App\Controllers\Public\OrderController;
@@ -203,6 +204,23 @@ $router->post('/painel/pagamentos/{id}/toggle', [PaymentMethodController::class,
     PermissionMiddleware::class,
 ]);
 $router->post('/painel/pagamentos/{id}/excluir', [PaymentMethodController::class, 'delete'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+
+/* Rotas de Horários de Funcionamento */
+$router->get('/painel/horarios', [StoreHoursController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/horarios', [StoreHoursController::class, 'save'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/horarios/manual', [StoreHoursController::class, 'toggleManual'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
     PermissionMiddleware::class,

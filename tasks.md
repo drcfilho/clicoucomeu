@@ -198,13 +198,13 @@
 
 # Fase 12 - Horarios
 
-- [ ] Criar tela semanal.
-- [ ] Editar abertura.
-- [ ] Editar fechamento.
-- [ ] Marcar dia fechado.
-- [ ] Criar servico de calculo aberto/fechado.
-- [ ] Implementar fechamento manual.
-- [ ] Implementar fechamento temporario.
+- [x] Criar tela semanal.
+- [x] Editar abertura.
+- [x] Editar fechamento.
+- [x] Marcar dia fechado.
+- [x] Criar servico de calculo aberto/fechado.
+- [x] Implementar fechamento manual.
+- [x] Implementar fechamento temporario.
 
 # Fase 13 - Cardapio Publico
 
