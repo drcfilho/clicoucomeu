@@ -304,7 +304,7 @@
                     <a href="#recursos">Recursos</a>
                     <a href="#fluxo">Fluxo</a>
                     <a href="/login">Entrar</a>
-                    <a class="primary" href="/<?= htmlspecialchars((string) ($featuredTenant['slug'] ?? 'piemonte'), ENT_QUOTES, 'UTF-8') ?>">Ver cardapio</a>
+                    <a class="primary" href="/<?= htmlspecialchars((string) ($realTestTenant['slug'] ?? 'piemonte'), ENT_QUOTES, 'UTF-8') ?>">Ver cardapio</a>
                 </nav>
             </header>
 
@@ -318,7 +318,7 @@
                         para produzir e entregar.
                     </p>
                     <div class="hero-actions">
-                        <a class="cta primary" href="/<?= htmlspecialchars((string) ($featuredTenant['slug'] ?? 'piemonte'), ENT_QUOTES, 'UTF-8') ?>">Abrir demonstracao</a>
+                        <a class="cta primary" href="/<?= htmlspecialchars((string) ($realTestTenant['slug'] ?? 'piemonte'), ENT_QUOTES, 'UTF-8') ?>">Abrir cardapio real</a>
                         <a class="cta" href="/admin">Area administrativa</a>
                         <a class="cta" href="/login">Login do sistema</a>
                     </div>
@@ -340,13 +340,13 @@
 
                 <aside class="hero-card">
                     <div>
-                        <div class="eyebrow">Demo ativa</div>
+                        <div class="eyebrow">Tenant real de testes</div>
                         <h2 style="margin:16px 0 10px; font-size:2rem; line-height:1.02;">
-                            <?= htmlspecialchars((string) ($featuredTenant['name'] ?? 'Tenant demo'), ENT_QUOTES, 'UTF-8') ?>
+                            <?= htmlspecialchars((string) ($realTestTenant['name'] ?? 'Tenant real'), ENT_QUOTES, 'UTF-8') ?>
                         </h2>
                         <p style="margin:0; color:var(--muted); line-height:1.65;">
-                            A vitrine principal ja aponta para um tenant real. Use a demonstracao para validar o cardapio,
-                            o fluxo de selecao e o fechamento do pedido.
+                            A Piemonte nao e demo. Ela e um tenant real que sera usado nos testes operacionais e de cardapio.
+                            O cardapio demo do sistema sera criado depois, em separado.
                         </p>
                     </div>
                     <div class="device">
@@ -427,10 +427,10 @@
             <section class="cta-band">
                 <div>
                     <h2>Quer testar agora?</h2>
-                    <p>Abra a demonstracao principal do tenant Piemonte ou entre nas areas internas para validar o fluxo administrativo que ja foi construido.</p>
+                    <p>Abra o tenant real Piemonte para testes operacionais ou entre nas areas internas. O tenant demo ainda sera criado em uma etapa futura.</p>
                 </div>
                 <div class="cta-stack">
-                    <a class="cta primary" href="/<?= htmlspecialchars((string) ($featuredTenant['slug'] ?? 'piemonte'), ENT_QUOTES, 'UTF-8') ?>">Abrir demo</a>
+                    <a class="cta primary" href="/<?= htmlspecialchars((string) ($realTestTenant['slug'] ?? 'piemonte'), ENT_QUOTES, 'UTF-8') ?>">Abrir Piemonte</a>
                     <a class="cta" href="/login">Entrar no sistema</a>
                 </div>
             </section>

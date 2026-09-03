@@ -22,8 +22,8 @@ class HomeController
         if ($slug === null) {
             $response->view('public.landing', [
                 'appName' => $appName,
-                'featuredTenant' => [
-                    'name' => 'Piemonte Pizzaria',
+                'realTestTenant' => [
+                    'name' => 'Piemonte',
                     'slug' => 'piemonte',
                 ],
             ]);
