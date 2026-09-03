@@ -6,6 +6,8 @@ namespace App\Helpers;
 
 class Request
 {
+    private array $attributes = [];
+
     public function __construct(
         private array $server,
         private array $get,
@@ -13,6 +15,27 @@ class Request
         private array $files,
         private array $cookie
     ) {
+    }
+
+    public function setAttribute(string $name, mixed $value): void
+    {
+        $this->attributes[$name] = $value;
+    }
+
+    public function getAttribute(string $name, mixed $default = null): mixed
+    {
+        return $this->attributes[$name] ?? $_SESSION[$name] ?? $default;
+    }
+
+    public function withAttribute(string $name, mixed $value): self
+    {
+        $this->attributes[$name] = $value;
+        return $this;
+    }
+
+    public function getParsedBody(): array
+    {
+        return $this->post;
     }
 
     public static function capture(): self
