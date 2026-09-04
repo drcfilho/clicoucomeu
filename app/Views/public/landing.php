@@ -422,8 +422,8 @@
                 <nav class="nav">
                     <a href="#vantagens">Vantagens</a>
                     <a href="#como-funciona">Como Funciona</a>
-                    <a href="/login">Área do Cliente</a>
-                    <a class="primary" href="/<?= htmlspecialchars((string) ($realTestTenant['slug'] ?? 'piemonte'), ENT_QUOTES, 'UTF-8') ?>">Ver Demonstração</a>
+                    <a href="/login">Área do Estabelecimento</a>
+                    <a class="primary" href="/piemonte">Ver Cardápio Piemonte</a>
                 </nav>
             </header>
 
@@ -557,8 +557,9 @@
                 </div>
             </section>
 
-            <footer>
-                <p>© <?= date('Y') ?> <?= htmlspecialchars((string) $appName, ENT_QUOTES, 'UTF-8') ?> - Todos os direitos reservados. Feito para fortalecer o comércio local.</p>
+            <footer style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 24px 0; border-top: 1px solid var(--line); font-size: 0.88rem; color: var(--muted);">
+                <p style="margin: 0;">© <?= date('Y') ?> <?= htmlspecialchars((string) $appName, ENT_QUOTES, 'UTF-8') ?> - Todos os direitos reservados.</p>
+                <a href="/login" style="color: var(--muted); opacity: 0.5; font-size: 0.78rem; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">🔐 Acesso Restrito / Superadmin</a>
             </footer>
         </div>
     </div>

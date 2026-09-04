@@ -21,7 +21,16 @@ class AuthController
         $csrf = $this->container->get('csrf');
 
         if ($session->has('usuario_id')) {
-            $response->redirect('/painel');
+            $tenantSlug = (string) $session->get('tenant_slug', '');
+            $perfil = (string) $session->get('perfil', '');
+            if ($perfil === 'superadmin' && !$tenantSlug) {
+                $response->redirect('/admin');
+            } elseif ($tenantSlug !== '') {
+                $response->redirect("/{$tenantSlug}/painel");
+            } else {
+                $response->redirect('/painel');
+            }
+            return;
         }
 
         $response->view('auth.login', [
