@@ -38,6 +38,18 @@ class AddonController
         ]);
     }
 
+    public function gerador(Request $request, Response $response, array $params = []): void
+    {
+        $tenantId = (int) $request->getAttribute('tenant_id', 0);
+        $products = $this->productRepo->findAllByTenantId($tenantId);
+
+        $response->view('painel.adicionais.gerador', [
+            'products' => $products,
+            'csrfToken' => $request->getAttribute('csrf_token'),
+            'session' => $this->session,
+        ]);
+    }
+
     public function storeGroup(Request $request, Response $response, array $params = []): void
     {
         $tenantId = (int) $request->getAttribute('tenant_id', 0);

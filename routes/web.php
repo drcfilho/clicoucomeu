@@ -202,6 +202,16 @@ $router->post('/{tenant}/painel/produtos/{id}/variacoes/{varId}/excluir', [Produ
 ]);
 
 /* Rotas de Grupos e Adicionais */
+$router->get('/painel/adicionais/gerador', [AddonController::class, 'gerador'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->get('/{tenant}/painel/adicionais/gerador', [AddonController::class, 'gerador'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->get('/painel/adicionais', [AddonController::class, 'index'], [
     AuthMiddleware::class,
     TenantMiddleware::class,

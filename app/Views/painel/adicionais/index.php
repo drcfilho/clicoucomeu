@@ -18,6 +18,7 @@
                         <p class="backoffice-subtitle">Crie grupos como "Bordas Recheadas", "Molhos" ou "Adicionais" e associe aos produtos.</p>
                     </div>
                     <div class="backoffice-actions">
+                        <a href="<?= htmlspecialchars(url('painel/adicionais/gerador'), ENT_QUOTES, 'UTF-8') ?>" class="bo-link" style="background: #0f172a; color: #fff; border: none;">🎨 Abrir Gerador Visual (Dante Testa)</a>
                         <button type="button" class="bo-link bo-link-primary" onclick="openModal('modal-novo-grupo')">+ Novo Grupo</button>
                     </div>
                 </header>
