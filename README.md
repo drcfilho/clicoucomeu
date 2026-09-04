@@ -27,6 +27,24 @@ O **Clicou Comeu** é um sistema completo, rápido e intuitivo de **Cardápio Di
 
 ---
 
+## 💳 Matriz de Planos & Recursos
+
+O sistema possui controle nativo de permissões e travas com base nos planos de assinatura:
+
+| Funcionalidade / Benefício | ⏳ MVP / Degustação | 🚀 Starter | ⚡ Pro | 🏢 Enterprise |
+| :--- | :---: | :---: | :---: | :---: |
+| **Valor** | Grátis (7 dias) | R$ 49/mês | R$ 99/mês | Sob Consulta |
+| **Limite de Produtos** | Até 20 produtos | Ilimitado | Ilimitado | Ilimitado |
+| **Cardápio Digital & QR Code** | ✅ | ✅ | ✅ | ✅ |
+| **Pedidos via WhatsApp** | ✅ | ✅ | ✅ | ✅ |
+| **Alerta Sonoro no Painel** | ✅ | ✅ | ✅ | ✅ |
+| **Cupons de Desconto** | ✅ | ✅ | ✅ | ✅ |
+| **Cozinha KDS (`/cozinha`)** | ❌ | ❌ | ✅ | ✅ |
+| **Relatórios de Desempenho** | ❌ | ❌ | ✅ | ✅ |
+| **Multi-Filiais / Suporte Dedicado** | ❌ | ❌ | ❌ | ✅ |
+
+---
+
 ## 🛠️ Requisitos do Servidor
 
 - **PHP:** >= 8.1 (extensões `pdo`, `pdo_mysql`, `mbstring`, `json`, `session`).
