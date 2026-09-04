@@ -348,27 +348,40 @@ class OrderService
 
         foreach ($calculatedItems as $item) {
             $prodName = (string) $item['product']['nome'];
-            $msg .= "• *{$prodName}*\n";
+            $sku = sprintf('%04d', (int) $item['product']['id']);
+            $msg .= "• *{$prodName}* ({$sku})\n";
 
+            $details = [];
             if ($item['variation'] !== null && !empty($item['variation']['nome'])) {
-                $msg .= "  └ ✓ " . (string) $item['variation']['nome'] . "\n";
+                $details[] = "Tamanho: " . (string) $item['variation']['nome'];
             }
 
+            // Agrupa adicionais por nome do grupo
+            $groupedAddons = [];
             foreach ($item['addons'] as $addon) {
-                $msg .= "  └ ✓ " . (string) $addon['adicional_nome'] . "\n";
+                $gName = !empty($addon['grupo_nome']) ? (string) $addon['grupo_nome'] : 'Adicionais';
+                $groupedAddons[$gName][] = (string) $addon['adicional_nome'];
+            }
+
+            foreach ($groupedAddons as $gName => $aNames) {
+                $details[] = "{$gName}: " . implode(', ', $aNames);
             }
 
             if (!empty($item['notes'])) {
-                $msg .= "  └ Obs: " . $item['notes'] . "\n";
+                $details[] = "Obs: " . $item['notes'];
+            }
+
+            if (!empty($details)) {
+                $msg .= "  └ ✓ " . implode(' ', $details) . "\n";
             }
 
             $qty = (int) $item['quantity'];
-            $unitPrice = (float) $item['unit_price'];
+            $effectiveUnitPrice = ($item['unit_price'] + $item['addons_total']);
             $lineTotal = (float) $item['line_total'];
 
-            $msg .= "  └ 📊 Qtd: {$qty}x\n";
-            $msg .= "  └ 💰 Unitário: R$ " . number_format($unitPrice, 2, ',', '.') . "\n";
-            $msg .= "  └ 🧮 Subtotal: R$ " . number_format($lineTotal, 2, ',', '.') . "\n\n\n";
+            $msg .= "  └  Qtd: {$qty}x\n";
+            $msg .= "  └  Unitário: R$ " . number_format($effectiveUnitPrice, 2, ',', '.') . "\n";
+            $msg .= "  └  Subtotal: R$ " . number_format($lineTotal, 2, ',', '.') . "\n\n";
         }
 
         $msg .= "━━━━━━━━━━━━━━\n";
