@@ -3,566 +3,606 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= htmlspecialchars((string) $appName, ENT_QUOTES, 'UTF-8') ?> | A Plataforma de Delivery que Vende Mais</title>
+    <title><?= htmlspecialchars((string) $appName, ENT_QUOTES, 'UTF-8') ?> — Venda Mais sem Comissões | Cardápio Digital & Sistema para Delivery</title>
     <style>
         :root {
-            --bg: #fdfaf6;
-            --paper: #ffffff;
-            --ink: #18110b;
-            --muted: #574f46;
-            --line: rgba(135, 78, 23, 0.12);
-            --accent: #d94111;
-            --accent-hover: #b8330a;
-            --accent-2: #f2994a;
-            --accent-green: #1b8755;
-            --shadow: 0 20px 50px rgba(180, 60, 10, 0.08);
-            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.05);
+            --primary: #e11d48;
+            --primary-hover: #be123c;
+            --primary-soft: rgba(225, 29, 72, 0.1);
+            --accent-green: #16a34a;
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --body-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-lg: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+            --shadow-xl: 0 25px 50px -12px rgba(225, 29, 72, 0.25);
         }
 
         * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body {
             margin: 0;
-            color: var(--ink);
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background:
-                radial-gradient(circle at 10% 10%, rgba(242, 153, 74, 0.1), transparent 30%),
-                radial-gradient(circle at 90% 20%, rgba(217, 65, 17, 0.08), transparent 35%),
-                linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
-            line-height: 1.5;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
         }
 
-        a { color: inherit; text-decoration: none; }
-        .shell { min-height: 100vh; overflow: hidden; }
+        a { text-decoration: none; color: inherit; }
         .container { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
-        
-        /* Navigation */
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            padding: 20px 0;
+
+        /* Announcement Bar */
+        .announcement-bar {
+            background: linear-gradient(90deg, #1e1b4b, #312e81);
+            color: #e0e7ff;
+            text-align: center;
+            padding: 10px 16px;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+        .announcement-bar span {
+            background: #4338ca;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            margin-right: 6px;
+            text-transform: uppercase;
+        }
+
+        /* Topbar Header */
+        .header {
             position: sticky;
             top: 0;
-            z-index: 40;
-            backdrop-filter: blur(16px);
-            background: rgba(253, 250, 246, 0.85);
-            border-bottom: 1px solid var(--line);
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
         }
-        .brand { display: flex; align-items: center; gap: 12px; }
-        .brand-mark {
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+        }
+        .logo-mark {
             width: 44px;
             height: 44px;
+            background: linear-gradient(135deg, var(--primary), #f43f5e);
             border-radius: 12px;
             display: grid;
             place-items: center;
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: #ffffff;
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            box-shadow: 0 10px 20px rgba(217, 65, 17, 0.3);
-        }
-        .brand-copy strong { display: block; font-size: 1.1rem; font-weight: 800; letter-spacing: -0.02em; }
-        .brand-copy span { display: block; color: var(--muted); font-size: 0.82rem; font-weight: 500; }
-        .nav { display: flex; gap: 12px; align-items: center; }
-        .nav a, .cta {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 46px;
-            padding: 0 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-        }
-        .nav a:not(.primary) {
-            color: var(--ink);
-        }
-        .nav a:not(.primary):hover {
-            color: var(--accent);
-            background: rgba(217, 65, 17, 0.05);
-        }
-        .cta.primary, .nav .primary {
-            color: #ffffff;
-            border: none;
-            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-            box-shadow: 0 10px 24px rgba(217, 65, 17, 0.28);
-        }
-        .cta.primary:hover, .nav .primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 30px rgba(217, 65, 17, 0.38);
-        }
-        .cta.secondary {
-            background: #ffffff;
-            border: 1px solid var(--line);
-            color: var(--ink);
-            box-shadow: var(--shadow-card);
-        }
-        .cta.secondary:hover {
-            background: #faf8f5;
-            border-color: rgba(135, 78, 23, 0.25);
+            color: #fff;
+            font-size: 1.4rem;
+            box-shadow: 0 8px 16px rgba(225, 29, 72, 0.3);
         }
 
-        /* Hero */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+        .nav-links a:hover { color: var(--primary); }
+
+        .btn-header {
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(225, 29, 72, 0.3);
+        }
+        .btn-header:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* HERO SECTION */
         .hero {
-            padding: 56px 0 40px;
+            padding: 60px 0 80px;
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
-            gap: 32px;
+            gap: 40px;
             align-items: center;
         }
-        .hero-copy {
-            position: relative;
-        }
-        .eyebrow {
+        .badge-hero {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            min-height: 34px;
-            padding: 0 14px;
+            padding: 6px 14px;
             border-radius: 999px;
-            background: rgba(27, 135, 85, 0.1);
-            color: var(--accent-green);
-            font-size: 0.85rem;
+            background: var(--primary-soft);
+            color: var(--primary);
             font-weight: 700;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
         }
-        .eyebrow-dot {
+        .badge-pulse {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--accent-green);
-            display: inline-block;
-            box-shadow: 0 0 10px var(--accent-green);
+            background: var(--primary);
+            box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7);
+            animation: pulse 1.6s infinite;
         }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(225, 29, 72, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+        }
+
         .hero h1 {
-            margin: 20px 0 18px;
-            font-size: clamp(2.4rem, 4.5vw, 3.8rem);
-            line-height: 1.08;
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            color: var(--ink);
+            font-size: clamp(2.2rem, 4vw, 3.4rem);
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin: 0 0 20px;
         }
         .hero h1 span {
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            background: linear-gradient(135deg, var(--primary), #f43f5e);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         .hero p {
-            margin: 0;
             font-size: 1.15rem;
-            line-height: 1.6;
-            color: var(--muted);
-            max-width: 54ch;
+            color: var(--text-muted);
+            margin: 0 0 32px;
+            max-width: 540px;
         }
+
         .hero-actions {
-            margin-top: 32px;
             display: flex;
-            gap: 14px;
             flex-wrap: wrap;
-        }
-        .hero-meta {
-            margin-top: 36px;
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 16px;
-            padding-top: 24px;
-            border-top: 1px solid var(--line);
+            align-items: center;
         }
-        .metric strong { display: block; font-size: 1.8rem; font-weight: 800; color: var(--ink); }
-        .metric span { display: block; color: var(--muted); margin-top: 2px; font-size: 0.88rem; font-weight: 500; }
-
-        /* Showcase Preview Card */
-        .hero-card {
-            border-radius: 28px;
-            padding: 24px;
-            background: #ffffff;
-            border: 1px solid var(--line);
-            box-shadow: var(--shadow);
-        }
-        .card-header {
-            margin-bottom: 20px;
-        }
-        .card-header badge {
-            background: rgba(217, 65, 17, 0.1);
-            color: var(--accent);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .card-header h2 {
-            margin: 8px 0 4px;
-            font-size: 1.6rem;
-            font-weight: 800;
-        }
-        .card-header p {
-            margin: 0;
-            color: var(--muted);
-            font-size: 0.92rem;
-        }
-
-        .device {
-            border-radius: 24px;
-            padding: 12px;
-            background: #1e1915;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        }
-        .device-screen {
+        .btn-cta-lg {
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            color: #fff;
+            padding: 18px 36px;
             border-radius: 16px;
-            overflow: hidden;
-            background: #faf8f5;
-            padding: 16px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-xl);
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
         }
-        .device-bar {
+        .btn-cta-lg:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 30px 60px -15px rgba(225, 29, 72, 0.4);
+        }
+
+        .btn-secondary-lg {
+            background: #fff;
+            border: 2px solid var(--border-color);
+            color: var(--text-dark);
+            padding: 16px 28px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        .btn-secondary-lg:hover {
+            border-color: var(--text-dark);
+            background: #f1f5f9;
+        }
+
+        .hero-guarantee {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 28px;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+        .hero-guarantee item { display: flex; align-items: center; gap: 6px; }
+
+        /* HERO CARD PREVIEW */
+        .hero-preview {
+            position: relative;
+        }
+        .preview-card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            padding: 28px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .preview-title { font-weight: 800; font-size: 1.1rem; }
+        .live-badge {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.78rem;
+        }
+
+        .order-simulation { display: grid; gap: 14px; }
+        .sim-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8fafc;
+            padding: 14px 16px;
+            border-radius: 16px;
+            border: 1px solid #f1f5f9;
+        }
+        .sim-info strong { display: block; font-size: 0.95rem; }
+        .sim-info span { font-size: 0.8rem; color: var(--text-muted); }
+        .sim-price { font-weight: 800; color: var(--primary); }
+
+        .sim-total-box {
+            background: #1e293b;
+            color: #fff;
+            padding: 16px 20px;
+            border-radius: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
+            margin-top: 10px;
         }
-        .device-pill {
-            min-height: 28px;
-            padding: 0 10px;
-            border-radius: 999px;
-            display: inline-flex;
-            align-items: center;
-            background: rgba(27, 135, 85, 0.12);
-            color: var(--accent-green);
-            font-size: 0.78rem;
-            font-weight: 700;
-        }
-        .device-list { display: grid; gap: 10px; }
-        .device-item {
-            display: grid;
-            grid-template-columns: 50px 1fr auto;
-            gap: 12px;
-            align-items: center;
-            border-radius: 14px;
-            padding: 10px;
-            background: #ffffff;
-            border: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-        .device-thumb {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #ffc880, #d94111);
-            display: grid;
-            place-items: center;
-            font-size: 1.4rem;
-        }
-        .device-item strong { display: block; font-size: 0.92rem; font-weight: 700; }
-        .device-item span { display: block; color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
-        .device-item b { color: var(--accent); font-size: 0.92rem; font-weight: 800; }
+        .sim-total-box span { color: #94a3b8; font-size: 0.9rem; }
+        .sim-total-box strong { font-size: 1.25rem; color: #4ade80; }
 
-        /* Features Section */
-        .section-header {
-            text-align: center;
-            max-width: 650px;
-            margin: 60px auto 40px;
+        /* PROOF / COMPARISON SECTION */
+        .comparison-section {
+            padding: 80px 0;
+            background: #fff;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
         }
-        .section-header h2 {
-            font-size: clamp(2rem, 3.5vw, 2.8rem);
-            font-weight: 800;
-            letter-spacing: -0.03em;
+        .section-title-center {
+            text-align: center;
+            max-width: 680px;
+            margin: 0 auto 50px;
+        }
+        .section-title-center h2 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
             margin: 0 0 12px;
         }
-        .section-header p {
-            color: var(--muted);
+        .section-title-center p {
+            color: var(--text-muted);
             font-size: 1.1rem;
             margin: 0;
         }
 
-        .feature-grid {
+        .comparison-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 24px;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 960px;
+            margin: 0 auto;
         }
-        .feature {
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 32px 24px;
-            border: 1px solid var(--line);
-            box-shadow: var(--shadow-card);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .comp-card {
+            border-radius: 24px;
+            padding: 36px 30px;
+            border: 2px solid;
         }
-        .feature:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        .comp-card.bad {
+            background: #fff5f5;
+            border-color: #fca5a5;
         }
-        .feature-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
-            background: rgba(217, 65, 17, 0.08);
-            color: var(--accent);
-            display: grid;
-            place-items: center;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+        .comp-card.good {
+            background: #f0fdf4;
+            border-color: #86efac;
+            box-shadow: 0 20px 40px -15px rgba(22, 163, 74, 0.15);
         }
-        .feature h3 {
-            margin: 0 0 10px;
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
-        .feature p {
-            margin: 0;
-            color: var(--muted);
-            line-height: 1.6;
-            font-size: 0.98rem;
-        }
-
-        /* Steps Section */
-        .flow {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 24px;
-        }
-        .flow-card {
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 32px 24px;
-            border: 1px solid var(--line);
-            position: relative;
-        }
-        .flow-num {
-            display: inline-grid;
-            place-items: center;
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            color: #ffffff;
+        .comp-card h3 {
+            font-size: 1.4rem;
             font-weight: 800;
-            font-size: 1.2rem;
-            box-shadow: 0 8px 18px rgba(217, 65, 17, 0.25);
+            margin: 0 0 20px;
         }
-        .flow-card h3 {
-            margin: 0 0 10px;
-            font-size: 1.2rem;
-            font-weight: 700;
+        .comp-card.bad h3 { color: #991b1b; }
+        .comp-card.good h3 { color: #166534; }
+
+        .comp-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+        .comp-list li { display: flex; align-items: flex-start; gap: 10px; font-weight: 600; font-size: 0.98rem; }
+        .comp-card.bad li { color: #7f1d1d; }
+        .comp-card.good li { color: #14532d; }
+
+        /* FEATURES GRID */
+        .features-section { padding: 90px 0; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 28px;
         }
-        .flow-card p {
-            margin: 0;
-            color: var(--muted);
-            line-height: 1.6;
-            font-size: 0.96rem;
+        .feature-box {
+            background: #fff;
+            border-radius: 20px;
+            padding: 32px 26px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
+            transition: transform 0.25s ease;
+        }
+        .feature-box:hover { transform: translateY(-4px); }
+        .feature-icon-wrapper {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            display: grid;
+            place-items: center;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+        }
+        .feature-box h3 { font-size: 1.25rem; font-weight: 800; margin: 0 0 10px; }
+        .feature-box p { color: var(--text-muted); margin: 0; font-size: 0.95rem; line-height: 1.55; }
+
+        /* CTA BANNER HIGH CONVERSION */
+        .cta-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            border-radius: 32px;
+            padding: 60px 48px;
+            color: #fff;
+            text-align: center;
+            margin: 40px 0 80px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-banner h2 {
+            font-size: clamp(2rem, 3.5vw, 2.8rem);
+            font-weight: 900;
+            margin: 0 0 16px;
+            letter-spacing: -0.02em;
+        }
+        .cta-banner p {
+            color: #94a3b8;
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto 36px;
         }
 
-        /* Banner CTA */
-        .cta-band {
-            margin: 70px 0 60px;
-            border-radius: 28px;
-            padding: 48px 40px;
-            background: linear-gradient(135deg, #18110b 0%, #342113 100%);
-            color: #ffffff;
+        /* FOOTER DISCRETO */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 32px 0;
+            color: var(--text-muted);
+            font-size: 0.88rem;
             display: flex;
             justify-content: space-between;
-            gap: 32px;
             align-items: center;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+            flex-wrap: wrap;
+            gap: 16px;
         }
-        .cta-band h2 {
-            margin: 0 0 10px;
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: #ffffff;
+        .footer-restricted {
+            color: var(--text-muted);
+            opacity: 0.6;
+            font-size: 0.8rem;
+            transition: opacity 0.2s;
         }
-        .cta-band p {
-            margin: 0;
-            color: rgba(255,255,255,0.78);
-            max-width: 52ch;
-            font-size: 1.08rem;
-        }
-        .cta-stack { display: flex; gap: 14px; flex-wrap: wrap; }
+        .footer-restricted:hover { opacity: 1; color: var(--primary); }
 
-        /* Footer */
-        footer {
-            padding: 30px 0;
-            border-top: 1px solid var(--line);
-            text-align: center;
-            color: var(--muted);
-            font-size: 0.9rem;
-        }
-
-        @media (max-width: 980px) {
-            .hero, .feature-grid, .flow { grid-template-columns: 1fr; }
-            .cta-band { flex-direction: column; align-items: flex-start; text-align: left; }
-        }
-        @media (max-width: 720px) {
-            .topbar { position: static; padding: 14px 0; }
-            .hero { padding-top: 20px; }
-            .hero-meta { grid-template-columns: 1fr; gap: 12px; }
-            .nav { display: none; } /* Mobile simplificado */
-            .container { width: min(100%, calc(100% - 24px)); }
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: 1fr; text-align: center; }
+            .hero p { margin-left: auto; margin-right: auto; }
+            .hero-actions { justify-content: center; }
+            .hero-guarantee { justify-content: center; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
-    <div class="shell">
-        <div class="container">
-            <header class="topbar">
-                <div class="brand">
-                    <div class="brand-mark">🍕</div>
-                    <div class="brand-copy">
-                        <strong><?= htmlspecialchars((string) $appName, ENT_QUOTES, 'UTF-8') ?></strong>
-                        <span>Cardápio Digital & Sistema para Delivery</span>
-                    </div>
-                </div>
-                <nav class="nav">
-                    <a href="#vantagens">Vantagens</a>
-                    <a href="#como-funciona">Como Funciona</a>
-                    <a href="/login">Área do Estabelecimento</a>
-                    <a class="primary" href="/piemonte">Ver Cardápio Piemonte</a>
-                </nav>
-            </header>
 
-            <section class="hero">
-                <div class="hero-copy">
-                    <div class="eyebrow">
-                        <span class="eyebrow-dot"></span>
-                        Aumente suas vendas diretas sem pagar comissões
-                    </div>
-                    <h1>Seu delivery <span>vendendo no piloto automático</span> com cardápio próprio.</h1>
-                    <p>
-                        Receba pedidos direto no seu WhatsApp e painel de gestão. Sem intermediários, com taxas zeradas sobre vendas e pagamento rápido no seu caixa.
-                    </p>
-                    <div class="hero-actions">
-                        <a class="cta primary" href="/<?= htmlspecialchars((string) ($realTestTenant['slug'] ?? 'piemonte'), ENT_QUOTES, 'UTF-8') ?>">Testar Cardápio Ao Vivo</a>
-                        <a class="cta secondary" href="/login">Acessar Meu Painel</a>
-                    </div>
-                    <div class="hero-meta">
-                        <div class="metric">
-                            <strong>0% Comissoes</strong>
-                            <span>Lucro 100% do seu restaurante em cada pedido.</span>
-                        </div>
-                        <div class="metric">
-                            <strong>2x Mais Rapido</strong>
-                            <span>Checkout otimizado para o cliente pedir em segundos.</span>
-                        </div>
-                        <div class="metric">
-                            <strong>Total Controle</strong>
-                            <span>Altere preços, adicionais e horários quando quiser.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <aside class="hero-card">
-                    <div class="card-header">
-                        <badge>Demonstração Interativa</badge>
-                        <h2>Cardápio em Ação</h2>
-                        <p>Veja exatamente como seu cliente vai visualizar seu restaurante no celular:</p>
-                    </div>
-                    <div class="device">
-                        <div class="device-screen">
-                            <div class="device-bar">
-                                <strong style="font-size:0.95rem; color:#18110b;"><?= htmlspecialchars((string) ($realTestTenant['name'] ?? 'Pizzaria Piemonte'), ENT_QUOTES, 'UTF-8') ?></strong>
-                                <span class="device-pill">● Aberto Agora</span>
-                            </div>
-                            <div class="device-list">
-                                <div class="device-item">
-                                    <div class="device-thumb">🍕</div>
-                                    <div>
-                                        <strong>Pizza Artesanal Grande</strong>
-                                        <span>Bordas recheadas, 2 sabores e adicionais</span>
-                                    </div>
-                                    <b>R$ 59,90</b>
-                                </div>
-                                <div class="device-item">
-                                    <div class="device-thumb">🥤</div>
-                                    <div>
-                                        <strong>Combo Delivery Especial</strong>
-                                        <span>Pizza + Bebida com entrega grátis</span>
-                                    </div>
-                                    <b>R$ 74,90</b>
-                                </div>
-                                <div class="device-item">
-                                    <div class="device-thumb">🚀</div>
-                                    <div>
-                                        <strong>Acompanhamento em Tempo Real</strong>
-                                        <span>Cliente vê a pizza saindo para entrega</span>
-                                    </div>
-                                    <b style="color:var(--accent-green);">Ativo</b>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
-            </section>
-
-            <div class="section-header" id="vantagens">
-                <h2>Tudo o que seu restaurante precisa para crescer</h2>
-                <p>Abandone os PDFs lentos e os aplicativos que ficam com a maior parte do seu lucro.</p>
-            </div>
-
-            <section class="feature-grid">
-                <article class="feature">
-                    <div class="feature-icon">📲</div>
-                    <h3>Cardápio Digital Inteligente</h3>
-                    <p>Organizado por categorias, opções de tamanhos, sabores divididos e adicionais. Muito simples para o cliente escolher e montar o pedido.</p>
-                </article>
-                <article class="feature">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Checkout Rápido & Sem Erros</h3>
-                    <p>Cálculo automático de taxa de entrega por bairro, cupons de desconto e confirmação instantânea de endereço e pagamento.</p>
-                </article>
-                <article class="feature">
-                    <div class="feature-icon">🍳</div>
-                    <h3>Gestão de Pedidos & Cozinha</h3>
-                    <p>Painel completo para acompanhar pedidos em produção, gerenciar entregas e organizar a fila da cozinha em tempo real.</p>
-                </article>
-            </section>
-
-            <div class="section-header" id="como-funciona">
-                <h2>Como funciona para o seu negócio</h2>
-                <p>Em apenas 3 passos simples você já está pronto para receber pedidos online.</p>
-            </div>
-
-            <section class="flow">
-                <article class="flow-card">
-                    <div class="flow-num">1</div>
-                    <h3>Cadastre seu Cardápio</h3>
-                    <p>Insira seus produtos, fotos, adicionais e bairros atendidos de forma rápida no painel intuitivo.</p>
-                </article>
-                <article class="flow-card">
-                    <div class="flow-num">2</div>
-                    <h3>Divulgue seu Link Exclusivo</h3>
-                    <p>Coloque o link do seu cardápio na bio do Instagram, WhatsApp e redes sociais para seus clientes pedirem direto.</p>
-                </article>
-                <article class="flow-card">
-                    <div class="flow-num">3</div>
-                    <h3>Receba Pedidos e Fature</h3>
-                    <p>Os pedidos chegam organizados no seu painel e impressora, prontos para a produção e entrega sem complicação.</p>
-                </article>
-            </section>
-
-            <section class="cta-band">
-                <div>
-                    <h2>Pronto para modernizar seu delivery?</h2>
-                    <p>Experimente nosso cardápio na prática agora mesmo ou acesse o painel administrativo.</p>
-                </div>
-                <div class="cta-stack">
-                    <a class="cta primary" href="/<?= htmlspecialchars((string) ($realTestTenant['slug'] ?? 'piemonte'), ENT_QUOTES, 'UTF-8') ?>">Experimentar Cardápio</a>
-                    <a class="cta secondary" href="/login">Acessar Painel</a>
-                </div>
-            </section>
-
-            <footer style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding: 24px 0; border-top: 1px solid var(--line); font-size: 0.88rem; color: var(--muted);">
-                <p style="margin: 0;">© <?= date('Y') ?> <?= htmlspecialchars((string) $appName, ENT_QUOTES, 'UTF-8') ?> - Todos os direitos reservados.</p>
-                <a href="/login" style="color: var(--muted); opacity: 0.5; font-size: 0.78rem; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">🔐 Acesso Restrito / Superadmin</a>
-            </footer>
-        </div>
+    <!-- Top Notice -->
+    <div class="announcement-bar">
+        <span>Novidade</span> Aumente o lucro do seu delivery economizando até 100% das taxas sobre vendas!
     </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <div class="logo">
+                <div class="logo-mark">🚀</div>
+                <span><?= htmlspecialchars((string) $appName, ENT_QUOTES, 'UTF-8') ?></span>
+            </div>
+            <nav class="nav-links">
+                <a href="#comparativo">Por que usar?</a>
+                <a href="#recursos">Recursos</a>
+                <a href="#como-funciona">Como Funciona</a>
+            </nav>
+            <div>
+                <a class="btn-header" href="/login">Área do Cliente</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div>
+                <div class="badge-hero">
+                    <span class="badge-pulse"></span> Sistema Oficial para Restaurantes & Delivery
+                </div>
+                <h1>Receba pedidos direto no <span>seu WhatsApp</span> sem taxas de comissão.</h1>
+                <p>
+                    Tenha seu próprio cardápio digital completo, aceite pedidos online com cálculo de entrega automático por bairro e gerencie sua cozinha no piloto automático.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn-cta-lg" href="/login">
+                        ⚡ Começar Agora Grátis
+                    </a>
+                    <a class="btn-secondary-lg" href="#recursos">
+                        Conhecer Recursos
+                    </a>
+                </div>
+                <div class="hero-guarantee">
+                    <span>✓ Sem taxa por pedido</span>
+                    <span>✓ Sem fidelidade</span>
+                    <span>✓ Configuração em 5 min</span>
+                </div>
+            </div>
+
+            <!-- Interactive Preview Simulation -->
+            <div class="hero-preview">
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <div class="preview-title">📱 Simulação de Pedido Real</div>
+                        <span class="live-badge">● Painel em Tempo Real</span>
+                    </div>
+                    <div class="order-simulation">
+                        <div class="sim-item">
+                            <div class="sim-info">
+                                <strong>1x Pizza Grande (2 Sabores)</strong>
+                                <span>Calabresa / 4 Queijos + Borda Cheddar</span>
+                            </div>
+                            <span class="sim-price">R$ 54,90</span>
+                        </div>
+                        <div class="sim-item">
+                            <div class="sim-info">
+                                <strong>1x Guaraná 2 Litros</strong>
+                                <span>Gelado</span>
+                            </div>
+                            <span class="sim-price">R$ 12,00</span>
+                        </div>
+                        <div class="sim-item">
+                            <div class="sim-info">
+                                <strong>🛵 Entrega (Bairro Centro)</strong>
+                                <span>Cálculo automático por bairro</span>
+                            </div>
+                            <span class="sim-price">R$ 6,00</span>
+                        </div>
+                        <div class="sim-total-box">
+                            <span>Total Líquido (100% Seu)</span>
+                            <strong>R$ 72,90</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Comparison Section -->
+    <section class="comparison-section" id="comparativo">
+        <div class="container">
+            <div class="section-title-center">
+                <h2>Pare de rasgar dinheiro com comissões abusivas</h2>
+                <p>Veja a diferença real entre vender por aplicativos terceiros e ter sua própria plataforma direta.</p>
+            </div>
+
+            <div class="comparison-grid">
+                <div class="comp-card bad">
+                    <h3>❌ Aplicativos Tradicionais</h3>
+                    <ul class="comp-list">
+                        <li>❌ Cobram de 12% a 27% sobre CADA pedido realizado</li>
+                        <li>❌ Seus clientes pertencem aos aplicativos, não a você</li>
+                        <li>❌ Repasse do dinheiro demora semanas para cair na conta</li>
+                        <li>❌ Concorrentes aparecem ao lado do seu restaurante</li>
+                    </ul>
+                </div>
+
+                <div class="comp-card good">
+                    <h3>✅ Com o <?= htmlspecialchars((string) $appName, ENT_QUOTES, 'UTF-8') ?></h3>
+                    <ul class="comp-list">
+                        <li>✅ 0% de comissão. O lucro das vendas é 100% seu</li>
+                        <li>✅ Base de dados e contatos de clientes sob seu controle</li>
+                        <li>✅ Recebimento imediato no seu caixa (PIX / Dinheiro)</li>
+                        <li>✅ Link exclusivo e personalizado para o seu negócio</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="recursos">
+        <div class="container">
+            <div class="section-title-center">
+                <h2>Tudo o que seu estabelecimento precisa em um só lugar</h2>
+                <p>Ferramentas projetadas por quem entende a rotina e as necessidades de um delivery acelerado.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper">📱</div>
+                    <h3>Cardápio Digital Responsivo</h3>
+                    <p>Interface ultra rápida para o cliente escolher tamanhos, adicionais, bordas e sabores divididos sem dúvidas ou erros.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper">📍</div>
+                    <h3>Taxa de Entrega por Bairro</h3>
+                    <p>Cadastre os bairros que você atende com suas respectivas taxas e tempos de entrega estimados de forma 100% automatizada.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper">🚨</div>
+                    <h3>Painel de Pedidos & Som</h3>
+                    <p>Acompanhe a chegada dos pedidos com alertas sonoros automáticos para sua equipe não perder nenhuma venda.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper">🍳</div>
+                    <h3>Tela de Cozinha (KDS)</h3>
+                    <p>Visualização limpa para a equipe de produção focada apenas nos itens, adicionais e observações sem poluição visual.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper">🎟️</div>
+                    <h3>Cupons de Desconto</h3>
+                    <p>Crie promoções estratégicas com cupons de valor fixo ou percentual e defina limites de uso para impulsionar dias fracos.</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon-wrapper">💵</div>
+                    <h3>Troco Dinâmico & PIX Copia e Cola</h3>
+                    <p>Facilite o pagamento para seu cliente com cálculo automático de troco em dinheiro e exibição da chave PIX instantânea.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner -->
+    <div class="container">
+        <section class="cta-banner" id="como-funciona">
+            <h2>Pronto para escalar seu delivery hoje?</h2>
+            <p>Cadastre seus produtos em poucos minutos e comece a vender diretamente pelo seu link oficial sem pagar nenhuma comissão.</p>
+            <a class="btn-cta-lg" href="/login">
+                🚀 Criar Meu Cardápio Agora
+            </a>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div>
+                © <?= date('Y') ?> <?= htmlspecialchars((string) $appName, ENT_QUOTES, 'UTF-8') ?> — Todos os direitos reservados.
+            </div>
+            <a href="/login" class="footer-restricted">🔐 Acesso Restrito / Superadmin</a>
+        </footer>
+    </div>
+
 </body>
 </html>
-

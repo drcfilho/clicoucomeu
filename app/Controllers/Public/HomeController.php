@@ -22,10 +22,6 @@ class HomeController
         if ($slug === null) {
             $response->view('public.landing', [
                 'appName' => $appName,
-                'realTestTenant' => [
-                    'name' => 'Piemonte',
-                    'slug' => 'piemonte',
-                ],
             ]);
             return;
         }
