@@ -40,6 +40,7 @@ require_once BASE_PATH . '/app/Services/OrderService.php';
 require_once BASE_PATH . '/app/Services/StoreHoursService.php';
 require_once BASE_PATH . '/app/Services/CouponService.php';
 require_once BASE_PATH . '/app/Services/PlanService.php';
+require_once BASE_PATH . '/app/Services/BackupService.php';
 require_once BASE_PATH . '/app/Controllers/AuthController.php';
 require_once BASE_PATH . '/app/Controllers/Public/HomeController.php';
 require_once BASE_PATH . '/app/Controllers/Public/OrderController.php';
@@ -54,7 +55,9 @@ require_once BASE_PATH . '/app/Controllers/Painel/StoreHoursController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/CouponController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/SettingsController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/OrderController.php';
+require_once BASE_PATH . '/app/Controllers/Painel/TenantBackupController.php';
 require_once BASE_PATH . '/app/Controllers/Admin/TenantController.php';
+require_once BASE_PATH . '/app/Controllers/Admin/BackupController.php';
 require_once BASE_PATH . '/app/Controllers/Cozinha/KitchenController.php';
 
 function bootstrap(): App\Helpers\App
