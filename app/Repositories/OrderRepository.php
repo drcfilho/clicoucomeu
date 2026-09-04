@@ -96,13 +96,14 @@ class OrderRepository
             $stmt->execute(['status' => $newStatus, 'id' => $orderId, 'tenant_id' => $tenantId]);
 
             $stmtHist = $this->db->prepare(
-                'INSERT INTO pedido_historicos (pedido_id, usuario_id, status, observacao)
-                 VALUES (:pedido_id, :usuario_id, :status, :observacao)'
+                'INSERT INTO pedido_historico_status (tenant_id, pedido_id, usuario_id, status_novo, observacao)
+                 VALUES (:tenant_id, :pedido_id, :usuario_id, :status_novo, :observacao)'
             );
             $stmtHist->execute([
+                'tenant_id' => $tenantId,
                 'pedido_id' => $orderId,
-                'usuario_id' => $userId,
-                'status' => $newStatus,
+                'usuario_id' => $userId > 0 ? $userId : null,
+                'status_novo' => $newStatus,
                 'observacao' => 'Status alterado via painel para ' . $newStatus,
             ]);
 
