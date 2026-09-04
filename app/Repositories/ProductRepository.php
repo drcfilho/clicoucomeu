@@ -39,6 +39,33 @@ class ProductRepository
         return $stmt->fetchAll() ?: [];
     }
 
+    public function findVariationsByTenantId(int $tenantId): array
+    {
+        if ($this->db === null) {
+            return [];
+        }
+
+        $stmt = $this->db->prepare(
+            'SELECT id, produto_id, nome, preco, ordem
+             FROM produto_variacoes
+             WHERE tenant_id = :tenant_id AND ativo = 1
+             ORDER BY ordem ASC, id ASC'
+        );
+        $stmt->execute(['tenant_id' => $tenantId]);
+
+        $grouped = [];
+        foreach ($stmt->fetchAll() ?: [] as $row) {
+            $productId = (int) $row['produto_id'];
+            $grouped[$productId][] = [
+                'id' => (int) $row['id'],
+                'nome' => $row['nome'],
+                'preco' => $row['preco'] !== null ? (float) $row['preco'] : null,
+            ];
+        }
+
+        return $grouped;
+    }
+
     public function findVariationsByProductId(int $productId, int $tenantId): array
     {
         if ($this->db === null) {
