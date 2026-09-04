@@ -139,6 +139,8 @@ class TenantRepository
             'id' => $id,
             'status' => $status,
         ]);
+    }
+
     public function extendTrial(int $id, int $extraDays = 7): bool
     {
         if ($this->db === null) {
