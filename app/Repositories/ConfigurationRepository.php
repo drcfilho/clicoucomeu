@@ -34,4 +34,23 @@ class ConfigurationRepository
 
         return $config;
     }
+
+    public function saveConfig(int $tenantId, string $chave, ?string $valor): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare(
+            'INSERT INTO configuracoes (tenant_id, chave, valor)
+             VALUES (:tenant_id, :chave, :valor)
+             ON DUPLICATE KEY UPDATE valor = VALUES(valor), atualizado_em = CURRENT_TIMESTAMP'
+        );
+
+        return $stmt->execute([
+            'tenant_id' => $tenantId,
+            'chave' => $chave,
+            'valor' => $valor,
+        ]);
+    }
 }

@@ -255,6 +255,18 @@ $router->post('/painel/cupons/{id}/excluir', [CouponController::class, 'delete']
     PermissionMiddleware::class,
 ]);
 
+/* Rotas de Configurações do Tenant */
+$router->get('/painel/configuracoes', [\App\Controllers\Painel\SettingsController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/configuracoes', [\App\Controllers\Painel\SettingsController::class, 'save'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+
 /* Rotas do Painel de Pedidos em Tempo Real */
 $router->get('/painel/pedidos', [PainelOrderController::class, 'index'], [
     AuthMiddleware::class,

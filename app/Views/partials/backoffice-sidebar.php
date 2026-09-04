@@ -11,6 +11,7 @@ $backofficeNav = [
     'pagamentos' => ['label' => 'Pagamentos', 'href' => '/painel/pagamentos'],
     'cupons' => ['label' => 'Cupons 🎟️', 'href' => '/painel/cupons'],
     'horarios' => ['label' => 'Horários', 'href' => '/painel/horarios'],
+    'configuracoes' => ['label' => 'Configurações ⚙️', 'href' => '/painel/configuracoes'],
     'cozinha' => ['label' => 'Cozinha', 'href' => '/cozinha'],
 ];
 
