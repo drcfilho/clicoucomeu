@@ -36,5 +36,19 @@ class TenantMiddleware
             }
             exit;
         }
+
+        // Validação de expiração do plano Degustação (7 dias)
+        $tenantId = (int) $session->get('tenant_id', 0);
+        if ($tenantId > 0 && $sessionPerfil !== 'superadmin') {
+            /** @var \App\Repositories\TenantRepository $tenantRepo */
+            $tenantRepo = $container->get(\App\Repositories\TenantRepository::class);
+            $tenant = $tenantRepo->findById($tenantId);
+            if ($tenant && \App\Services\PlanService::getRemainingTrialDays($tenant) === 0) {
+                // Atualiza sessão com plano expirado
+                $session->set('tenant_trial_expired', true);
+            } else {
+                $session->set('tenant_trial_expired', false);
+            }
+        }
     }
 }

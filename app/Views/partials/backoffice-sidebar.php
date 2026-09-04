@@ -54,12 +54,20 @@ if ($sessionPerfil === 'superadmin') {
 
     <?php
     $tenantPlano = $_SESSION['tenant_plano'] ?? 'mvp';
+    $isTrialExpired = !empty($_SESSION['tenant_trial_expired']);
     if ($tenantPlano === 'mvp'):
     ?>
-        <div style="padding: 10px; margin-bottom: 12px; background: rgba(245, 158, 11, 0.15); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.3); color: #fbbf24; font-size: 12px;">
-            <strong>⏳ Plano Degustação</strong>
-            <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 11px;">7 dias grátis ativos (Limite: 20 produtos).</p>
-        </div>
+        <?php if ($isTrialExpired): ?>
+            <div style="padding: 10px; margin-bottom: 12px; background: rgba(239, 68, 68, 0.2); border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; font-size: 12px;">
+                <strong>⚠️ Degustação Expirada</strong>
+                <p style="margin: 4px 0 0 0; color: #f8fafc; font-size: 11px;">Seu período de teste de 7 dias expirou. Fale com o suporte para assinar um plano.</p>
+            </div>
+        <?php else: ?>
+            <div style="padding: 10px; margin-bottom: 12px; background: rgba(245, 158, 11, 0.15); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.3); color: #fbbf24; font-size: 12px;">
+                <strong>⏳ Plano Degustação</strong>
+                <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 11px;">7 dias grátis ativos (Limite: 20 produtos).</p>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 
     <nav class="backoffice-sidebar-nav">
