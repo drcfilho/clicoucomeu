@@ -215,9 +215,9 @@ class BackupService
             $rows = $pdo->query("SELECT * FROM `{$table}`")->fetchAll(PDO::FETCH_ASSOC);
             foreach ($rows as $row) {
                 $keys = array_map(fn($k) => "`$k`", array_keys($row));
-                $vals = array_map(function ($v) {
+                $vals = array_map(function ($v) use ($pdo) {
                     if ($v === null) return 'NULL';
-                    return $this->pdo->quote((string)$v);
+                    return $pdo->quote((string)$v);
                 }, array_values($row));
 
                 $out .= "INSERT INTO `{$table}` (" . implode(', ', $keys) . ") VALUES (" . implode(', ', $vals) . ");\n";
