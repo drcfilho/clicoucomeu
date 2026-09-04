@@ -10,3 +10,6 @@
 !/public/uploads/produtos/.gitkeep
 .DS_Store
 Thumbs.db
+tmp_*
+.venv/
+docs/security-audit/
