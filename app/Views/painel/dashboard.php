@@ -65,7 +65,7 @@
 <body class="backoffice-body">
     <main class="backoffice-shell">
         <div class="backoffice-layout">
-            <?php $backofficeSection = 'painel'; require __DIR__ . '/../partials/backoffice-sidebar.php'; ?>
+            <?php $backofficeSection = 'painel'; require __DIR__ . '/../../partials/backoffice-sidebar.php'; ?>
             <div class="backoffice-content">
                 <header class="backoffice-topbar">
                     <div class="backoffice-brand">
