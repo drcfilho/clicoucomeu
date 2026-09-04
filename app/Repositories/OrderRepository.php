@@ -26,7 +26,13 @@ class OrderRepository
 
         if ($status !== null && $status !== '') {
             $sql .= ' AND p.status = :status';
-            $params['status'] = $status;
+            if ($status === 'pendente') {
+                $params['status'] = 'novo';
+            } elseif ($status === 'saiu_entrega') {
+                $params['status'] = 'saiu_para_entrega';
+            } else {
+                $params['status'] = $status;
+            }
         }
 
         $sql .= ' ORDER BY p.criado_em DESC, p.id DESC LIMIT ' . (int) $limit;
@@ -142,8 +148,12 @@ class OrderRepository
 
         foreach ($rows as $row) {
             $status = (string) $row['status'];
-            if (array_key_exists($status, $counts)) {
-                $counts[$status] = (int) $row['total'];
+            if ($status === 'novo') {
+                $counts['pendente'] += (int) $row['total'];
+            } elseif ($status === 'saiu_para_entrega') {
+                $counts['saiu_entrega'] += (int) $row['total'];
+            } elseif (array_key_exists($status, $counts)) {
+                $counts[$status] += (int) $row['total'];
             }
         }
 

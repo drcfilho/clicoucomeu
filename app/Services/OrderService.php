@@ -214,7 +214,7 @@ class OrderService
                 'desconto' => $discount,
                 'total' => $total,
                 'observacao' => trim((string) ($payload['notes'] ?? '')) ?: null,
-                'status' => 'pendente',
+                'status' => 'novo',
             ]);
 
             $orderId = (int) $this->db->lastInsertId();
@@ -270,7 +270,7 @@ class OrderService
             $historyStmt->execute([
                 'tenant_id' => $tenantId,
                 'pedido_id' => $orderId,
-                'status_novo' => 'pendente',
+                'status_novo' => 'novo',
                 'observacao' => 'Pedido criado pelo cliente no cardapio publico',
             ]);
 

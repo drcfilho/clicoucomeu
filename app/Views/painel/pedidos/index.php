@@ -83,7 +83,8 @@
                         </div>
                     <?php else: ?>
                         <?php foreach ($orders as $o): ?>
-                            <article class="order-card <?= $o['status'] === 'pendente' ? 'is-new' : '' ?>" id="order-card-<?= (int)$o['id'] ?>">
+                            <?php $isNew = in_array($o['status'], ['novo', 'pendente'], true); ?>
+                            <article class="order-card <?= $isNew ? 'is-new' : '' ?>" id="order-card-<?= (int)$o['id'] ?>">
                                 <div class="order-head">
                                     <div>
                                         <span class="order-number">#<?= htmlspecialchars((string) $o['numero'], ENT_QUOTES, 'UTF-8') ?></span>
@@ -91,8 +92,8 @@
                                             <?= !empty($o['criado_em']) ? date('H:i', strtotime($o['criado_em'])) : '' ?>
                                         </span>
                                     </div>
-                                    <span class="order-status-badge status-<?= htmlspecialchars((string) $o['status'], ENT_QUOTES, 'UTF-8') ?>">
-                                        <?= htmlspecialchars((string) $o['status'], ENT_QUOTES, 'UTF-8') ?>
+                                    <span class="order-status-badge status-<?= $isNew ? 'pendente' : htmlspecialchars((string) $o['status'], ENT_QUOTES, 'UTF-8') ?>">
+                                        <?= $isNew ? 'novo' : htmlspecialchars((string) $o['status'], ENT_QUOTES, 'UTF-8') ?>
                                     </span>
                                 </div>
 
@@ -111,7 +112,7 @@
                                     <button type="button" class="bo-link bo-link-secondary" style="font-size: 0.82rem;" onclick="verDetalhes(<?= (int)$o['id'] ?>)">🔍 Detalhes</button>
                                     <a href="/painel/pedidos/<?= (int)$o['id'] ?>/imprimir" target="_blank" class="bo-link bo-link-secondary" style="font-size: 0.82rem; text-decoration:none;">🖨️ Imprimir</a>
                                     
-                                    <?php if ($o['status'] === 'pendente'): ?>
+                                    <?php if ($isNew): ?>
                                         <form method="post" action="/painel/pedidos/<?= (int)$o['id'] ?>/status" style="display:inline;">
                                             <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string)$csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                                             <input type="hidden" name="status" value="aceito">
@@ -137,7 +138,7 @@
                                                 <?= $o['tipo_recebimento'] === 'delivery' ? '🛵 Saiu p/ Entrega' : '📦 Entregue / Finalizar' ?>
                                             </button>
                                         </form>
-                                    <?php elseif ($o['status'] === 'saiu_entrega'): ?>
+                                    <?php elseif ($o['status'] === 'saiu_entrega' || $o['status'] === 'saiu_para_entrega'): ?>
                                         <form method="post" action="/painel/pedidos/<?= (int)$o['id'] ?>/status" style="display:inline;">
                                             <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string)$csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                                             <input type="hidden" name="status" value="finalizado">
