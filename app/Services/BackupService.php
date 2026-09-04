@@ -16,8 +16,12 @@ class BackupService
     {
         $configPath = BASE_PATH . '/app/Config/database.php';
         if (file_exists($configPath)) {
-            $config = require $configPath;
-            $conn = $config['connections']['mysql'] ?? [];
+            require_once $configPath;
+            if (function_exists('App\Config\databaseConfig')) {
+                $conn = \App\Config\databaseConfig();
+            } else {
+                $conn = [];
+            }
             $this->dbConfig = [
                 'host' => $conn['host'] ?? '127.0.0.1',
                 'port' => $conn['port'] ?? 3306,
