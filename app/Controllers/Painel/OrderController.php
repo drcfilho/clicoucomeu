@@ -82,14 +82,21 @@ class OrderController
         $newStatus = (string) ($data['status'] ?? '');
         $userId = (int) ($this->session->get('usuario_id') ?? 0);
 
-        $allowedStatuses = ['pendente', 'aceito', 'em_preparo', 'pronto', 'saiu_entrega', 'finalizado', 'cancelado'];
+        $allowedStatuses = ['pendente', 'aceito', 'em_preparo', 'preparando', 'pronto', 'saiu_entrega', 'saiu_para_entrega', 'finalizado', 'cancelado'];
         if (!in_array($newStatus, $allowedStatuses, true)) {
             $this->session->setFlash('error', 'Status inválido.');
             $response->redirect('/painel/pedidos');
             return;
         }
 
-        if ($this->orderRepo->updateOrderStatus($id, $tenantId, $newStatus, $userId)) {
+        $dbStatus = $newStatus;
+        if ($newStatus === 'em_preparo') {
+            $dbStatus = 'preparando';
+        } elseif ($newStatus === 'saiu_entrega') {
+            $dbStatus = 'saiu_para_entrega';
+        }
+
+        if ($this->orderRepo->updateOrderStatus($id, $tenantId, $dbStatus, $userId)) {
             $this->session->setFlash('success', "Status do pedido #{$id} alterado para {$newStatus}!");
         } else {
             $this->session->setFlash('error', 'Falha ao atualizar status do pedido.');

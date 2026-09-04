@@ -57,7 +57,7 @@
                 <?php 
                 $createdTs = strtotime($o['criado_em']);
                 $minutesAgo = floor((time() - $createdTs) / 60);
-                $isPreparing = $o['status'] === 'em_preparo';
+                $isPreparing = in_array($o['status'], ['em_preparo', 'preparando'], true);
                 ?>
                 <article class="kds-card <?= $isPreparing ? 'is-preparing' : 'is-new' ?>">
                     <div class="kds-card-head">
@@ -97,7 +97,7 @@
                     </div>
 
                     <div class="kds-card-foot">
-                        <?php if ($o['status'] === 'em_preparo'): ?>
+                        <?php if ($isPreparing): ?>
                             <form method="post" action="/cozinha/<?= (int)$o['id'] ?>/status">
                                 <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string)$csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                                 <input type="hidden" name="status" value="pronto">
@@ -106,7 +106,7 @@
                         <?php else: ?>
                             <form method="post" action="/cozinha/<?= (int)$o['id'] ?>/status">
                                 <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string)$csrfToken, ENT_QUOTES, 'UTF-8') ?>">
-                                <input type="hidden" name="status" value="em_preparo">
+                                <input type="hidden" name="status" value="preparando">
                                 <button type="submit" class="kds-btn kds-btn-start">🔥 Iniciar Preparo</button>
                             </form>
                         <?php endif; ?>

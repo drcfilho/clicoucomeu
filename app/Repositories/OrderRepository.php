@@ -27,6 +27,8 @@ class OrderRepository
         if ($status !== null && $status !== '') {
             if ($status === 'pendente') {
                 $sql .= " AND p.status IN ('novo', 'pendente')";
+            } elseif ($status === 'em_preparo') {
+                $sql .= " AND p.status IN ('em_preparo', 'preparando')";
             } elseif ($status === 'saiu_entrega') {
                 $sql .= " AND p.status IN ('saiu_entrega', 'saiu_para_entrega')";
             } else {
@@ -170,6 +172,8 @@ class OrderRepository
             $status = (string) $row['status'];
             if ($status === 'novo') {
                 $counts['pendente'] += (int) $row['total'];
+            } elseif ($status === 'preparando') {
+                $counts['em_preparo'] += (int) $row['total'];
             } elseif ($status === 'saiu_para_entrega') {
                 $counts['saiu_entrega'] += (int) $row['total'];
             } elseif (array_key_exists($status, $counts)) {
