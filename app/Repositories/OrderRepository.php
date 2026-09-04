@@ -287,10 +287,10 @@ class OrderRepository
             $params['end_date'] = $endDate;
         }
 
-        $sql = "SELECT forma_pagamento, COUNT(*) as qtd, SUM(total) as valor_total
+        $sql = "SELECT forma_pagamento_nome AS forma_pagamento, COUNT(*) as qtd, SUM(total) as valor_total
                 FROM pedidos
                 WHERE tenant_id = :tenant_id AND status NOT IN ('cancelado') {$dateFilter}
-                GROUP BY forma_pagamento
+                GROUP BY forma_pagamento_nome
                 ORDER BY qtd DESC";
 
         $stmt = $this->db->prepare($sql);
@@ -317,10 +317,10 @@ class OrderRepository
             $params['end_date'] = $endDate;
         }
 
-        $sql = "SELECT cliente_bairro AS bairro, COUNT(*) as qtd, SUM(total) as valor_total
+        $sql = "SELECT bairro_nome AS bairro, COUNT(*) as qtd, SUM(total) as valor_total
                 FROM pedidos
-                WHERE tenant_id = :tenant_id AND status NOT IN ('cancelado') AND cliente_bairro IS NOT NULL AND cliente_bairro != '' {$dateFilter}
-                GROUP BY cliente_bairro
+                WHERE tenant_id = :tenant_id AND status NOT IN ('cancelado') AND bairro_nome IS NOT NULL AND bairro_nome != '' {$dateFilter}
+                GROUP BY bairro_nome
                 ORDER BY qtd DESC
                 LIMIT " . (int) $limit;
 
