@@ -369,13 +369,22 @@ $checkoutConfig = [
                                     <select id="checkout-payment" required></select>
                                 </label>
                             </div>
-                            <div id="change-field" style="display:none; margin-top: 10px;">
-                                <label>
-                                    Troco para quanto? (R$)
-                                    <input type="text" id="checkout-change" placeholder="Ex: 50,00 ou deixe em branco se nao precisar">
-                                </label>
-                            </div>
-                            <div id="delivery-fields" style="display:none;">
+                             <div id="pix-field" style="display:none; margin-top: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 14px;">
+                                 <strong style="color: #166534; font-size: 0.95rem; display: block; margin-bottom: 6px;">🔑 Chave PIX para pagamento:</strong>
+                                 <div style="display: flex; gap: 8px; align-items: center;">
+                                     <input type="text" id="pix-key-input" readonly style="background: #fff; border: 1px solid #cbd5e1; font-weight: 700; color: #0f172a; flex: 1;">
+                                     <button type="button" id="btn-copy-pix" class="bo-link bo-link-primary" style="padding: 8px 12px; white-space: nowrap; cursor: pointer;">📋 Copiar</button>
+                                 </div>
+                                 <small id="pix-copied-msg" style="color: #16a34a; font-weight: 800; display: none; margin-top: 6px;">✓ Chave PIX copiada para a área de transferência!</small>
+                             </div>
+                             <div id="change-field" style="display:none; margin-top: 10px;">
+                                 <label>
+                                     Troco para quanto? (R$)
+                                     <input type="text" id="checkout-change" placeholder="Ex: 50,00 ou deixe em branco se nao precisar">
+                                 </label>
+                                 <div id="change-calculated-info" style="display:none; margin-top: 6px; padding: 10px; border-radius: 8px; font-weight: 800; font-size: 0.92rem;"></div>
+                             </div>
+                             <div id="delivery-fields" style="display:none;">
                                 <div class="checkout-grid">
                                     <label>
                                         Bairro
@@ -645,14 +654,95 @@ $checkoutConfig = [
                     checkoutAddress.required = isDelivery;
                 }
 
+                const pixField = document.getElementById('pix-field');
+                const pixKeyInput = document.getElementById('pix-key-input');
                 const changeField = document.getElementById('change-field');
-                if (changeField && checkoutPayment) {
-                    const selectedMethodId = checkoutPayment.value;
-                    const method = (checkoutConfig.paymentMethods || []).find((m) => String(m.id) === String(selectedMethodId));
+                const checkoutChange = document.getElementById('checkout-change');
+                const changeInfo = document.getElementById('change-calculated-info');
+
+                const selectedMethodId = checkoutPayment ? checkoutPayment.value : null;
+                const method = (checkoutConfig.paymentMethods || []).find((m) => String(m.id) === String(selectedMethodId));
+
+                // Tratamento do PIX
+                if (pixField && pixKeyInput) {
+                    const isPix = method && (method.tipo === 'pix' || (method.dados_pix && method.dados_pix.trim() !== ''));
+                    if (isPix && method.dados_pix) {
+                        pixKeyInput.value = method.dados_pix;
+                        pixField.style.display = 'block';
+                    } else {
+                        pixField.style.display = 'none';
+                    }
+                }
+
+                // Tratamento do Dinheiro & Troco
+                if (changeField) {
                     const isMoney = method && (method.tipo === 'dinheiro' || method.pedir_troco);
                     changeField.style.display = isMoney ? 'block' : 'none';
+                    if (!isMoney && checkoutChange) {
+                        checkoutChange.value = '';
+                    }
+                }
+
+                calculateDynamicChange();
+            };
+
+            const calculateDynamicChange = () => {
+                const checkoutChange = document.getElementById('checkout-change');
+                const changeInfo = document.getElementById('change-calculated-info');
+                if (!checkoutChange || !changeInfo) return;
+
+                const rawVal = checkoutChange.value.replace('R$', '').replace(' ', '').replace('.', '').replace(',', '.');
+                const changeFor = parseFloat(rawVal);
+
+                let orderTotalVal = getCartTotals().total;
+                if (checkoutType && checkoutType.value === 'delivery' && checkoutNeighborhood) {
+                    const selectedBairroId = checkoutNeighborhood.value;
+                    const bairro = (checkoutConfig.neighborhoods || []).find((n) => String(n.id) === String(selectedBairroId));
+                    if (bairro) {
+                        orderTotalVal += Number(bairro.taxa_entrega || 0);
+                    }
+                }
+
+                if (isNaN(changeFor) || changeFor <= 0) {
+                    changeInfo.style.display = 'none';
+                    return;
+                }
+
+                changeInfo.style.display = 'block';
+                if (changeFor < orderTotalVal) {
+                    changeInfo.style.background = '#fef2f2';
+                    changeInfo.style.color = '#dc2626';
+                    changeInfo.style.border = '1px solid #fca5a5';
+                    changeInfo.textContent = `⚠️ O valor informado (${formatCurrency(changeFor)}) é menor do que o total do pedido (${formatCurrency(orderTotalVal)}).`;
+                } else {
+                    const changeAmount = changeFor - orderTotalVal;
+                    changeInfo.style.background = '#f0fdf4';
+                    changeInfo.style.color = '#166534';
+                    changeInfo.style.border = '1px solid #86efac';
+                    changeInfo.textContent = `💵 Troco a devolver: ${formatCurrency(changeAmount)} (Pagamento de ${formatCurrency(changeFor)} em dinheiro).`;
                 }
             };
+
+            const btnCopyPix = document.getElementById('btn-copy-pix');
+            if (btnCopyPix) {
+                btnCopyPix.addEventListener('click', () => {
+                    const pixInput = document.getElementById('pix-key-input');
+                    const msg = document.getElementById('pix-copied-msg');
+                    if (pixInput && pixInput.value) {
+                        navigator.clipboard.writeText(pixInput.value).then(() => {
+                            if (msg) {
+                                msg.style.display = 'block';
+                                setTimeout(() => { msg.style.display = 'none'; }, 3000);
+                            }
+                        });
+                    }
+                });
+            }
+
+            const checkoutChangeInput = document.getElementById('checkout-change');
+            if (checkoutChangeInput) {
+                checkoutChangeInput.addEventListener('input', calculateDynamicChange);
+            }
 
             const openCheckoutModal = () => {
                 if (!checkoutModal) {
