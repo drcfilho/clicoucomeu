@@ -66,25 +66,9 @@
                     </div>
 
                     <div class="kds-card-body" style="padding: 16px; color: #000000; font-size: 0.95rem; line-height: 1.4;">
-                        <div style="text-align: center; font-weight: bold; border-bottom: 1px dashed #000; padding-bottom: 8px; margin-bottom: 8px;">
-                            --- FICHA DE PRODUÇÃO / COZINHA ---<br>
-                            Data: <?= date('d/m/Y H:i', strtotime($o['criado_em'])) ?>
-                        </div>
-
-                        <div style="border-bottom: 1px dashed #000; padding-bottom: 8px; margin-bottom: 8px;">
-                            <strong>CLIENTE:</strong> <?= htmlspecialchars((string)$o['cliente_nome'], ENT_QUOTES, 'UTF-8') ?><br>
-                            <strong>TELEFONE:</strong> <?= htmlspecialchars((string)$o['cliente_whatsapp'], ENT_QUOTES, 'UTF-8') ?><br>
-                            <strong>TIPO:</strong> <span style="background: #000; color: #fff; padding: 2px 6px; font-weight: bold; text-transform: uppercase;"><?= htmlspecialchars((string)$o['tipo_recebimento'], ENT_QUOTES, 'UTF-8') ?></span><br>
-                            <?php if ($o['tipo_recebimento'] === 'delivery'): ?>
-                                <strong>ENDEREÇO:</strong> <?= htmlspecialchars((string)($o['endereco'] ?? ''), ENT_QUOTES, 'UTF-8') ?>, <?= htmlspecialchars((string)($o['numero_endereco'] ?? ''), ENT_QUOTES, 'UTF-8') ?><br>
-                                <strong>BAIRRO:</strong> <?= htmlspecialchars((string)($o['bairro_nome'] ?? ''), ENT_QUOTES, 'UTF-8') ?><br>
-                                <?php if (!empty($o['complemento'])): ?>
-                                    <strong>COMPL:</strong> <?= htmlspecialchars((string)$o['complemento'], ENT_QUOTES, 'UTF-8') ?><br>
-                                <?php endif; ?>
-                                <?php if (!empty($o['referencia'])): ?>
-                                    <strong>REF:</strong> <?= htmlspecialchars((string)$o['referencia'], ENT_QUOTES, 'UTF-8') ?><br>
-                                <?php endif; ?>
-                            <?php endif; ?>
+                        <div style="border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 900; font-size: 1.1rem;">TIPO:</span>
+                            <span style="background: #000; color: #fff; padding: 4px 10px; font-weight: 900; border-radius: 6px; text-transform: uppercase; font-size: 1.1rem;"><?= htmlspecialchars((string)$o['tipo_recebimento'], ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
 
                         <?php if (!empty($o['observacao'])): ?>
@@ -97,17 +81,16 @@
                             ITENS DO PEDIDO:
                         </div>
 
-                        <div style="display: grid; gap: 10px; border-bottom: 1px dashed #000; padding-bottom: 10px; margin-bottom: 8px;">
+                        <div style="display: grid; gap: 10px;">
                             <?php foreach ($o['itens'] as $item): ?>
-                                <div style="border: 1px solid #ddd; padding: 8px; border-radius: 6px; background: #fafafa;">
-                                    <div style="font-size: 1.1rem; font-weight: 900; color: #000;">
+                                <div style="border: 1px solid #ddd; padding: 10px; border-radius: 6px; background: #fafafa;">
+                                    <div style="font-size: 1.15rem; font-weight: 900; color: #000;">
                                         <?= (int)$item['quantidade'] ?>x <?= htmlspecialchars((string)$item['produto_nome'], ENT_QUOTES, 'UTF-8') ?>
                                         <?= !empty($item['variacao_nome']) ? ' (' . htmlspecialchars((string)$item['variacao_nome'], ENT_QUOTES, 'UTF-8') . ')' : '' ?>
-                                        <span style="float: right; font-weight: 700;">R$ <?= number_format((float)($item['valor_total'] ?? 0), 2, ',', '.') ?></span>
                                     </div>
                                     
                                     <?php if (!empty($item['adicionais'])): ?>
-                                        <div style="padding-left: 12px; font-size: 0.9rem; color: #333; margin-top: 4px;">
+                                        <div style="padding-left: 12px; font-size: 0.95rem; color: #1e293b; font-weight: 700; margin-top: 4px;">
                                             <?php foreach ($item['adicionais'] as $add): ?>
                                                 + <?= htmlspecialchars((string)$add['adicional_nome'], ENT_QUOTES, 'UTF-8') ?><br>
                                             <?php endforeach; ?>
@@ -122,16 +105,6 @@
                                 </div>
                             <?php endforeach; ?>
                         </div>
-
-                        <div style="display: flex; justify-content: space-between; font-weight: 800; font-size: 1.05rem;">
-                            <span>PAGAMENTO: <?= htmlspecialchars((string)($o['forma_pagamento_nome'] ?? ''), ENT_QUOTES, 'UTF-8') ?></span>
-                            <span>TOTAL: R$ <?= number_format((float)$o['total'], 2, ',', '.') ?></span>
-                        </div>
-                        <?php if ((float)($o['troco_para'] ?? 0) > 0): ?>
-                            <div style="font-weight: bold; color: #b91c1c;">
-                                TROCO PARA: R$ <?= number_format((float)$o['troco_para'], 2, ',', '.') ?> (Troco: R$ <?= number_format((float)$o['troco_para'] - (float)$o['total'], 2, ',', '.') ?>)
-                            </div>
-                        <?php endif; ?>
                     </div>
 
                     <div class="kds-card-foot" style="background: #f1f5f9; border-top: 2px solid #000;">
