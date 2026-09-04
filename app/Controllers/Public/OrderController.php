@@ -64,6 +64,18 @@ class OrderController
 
     public function createPublic(Request $request, Response $response, array $params = []): void
     {
+        $ip = $request->ip();
+        if (!\App\Helpers\RateLimiter::check('create_order_' . $ip, 10, 60)) {
+            $response->json([
+                'success' => false,
+                'error' => [
+                    'code' => 'TOO_MANY_REQUESTS',
+                    'message' => 'Muitas requisições enviadas. Aguarde um momento.',
+                ],
+            ], 429);
+            return;
+        }
+
         try {
             $result = $this->container->get('orderService')->createPublicOrder(
                 (string) ($params['tenant'] ?? ''),

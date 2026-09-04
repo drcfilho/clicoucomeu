@@ -43,6 +43,13 @@ class AuthController
             $response->redirect('/login');
         }
 
+        $ip = $request->ip();
+        if (!\App\Helpers\RateLimiter::check('login_' . $ip, 5, 60)) {
+            $session->set('auth_error', 'Muitas tentativas incorretas. Aguarde 1 minuto para tentar novamente.');
+            $response->redirect('/login');
+            return;
+        }
+
         $data = $request->all();
         $errors = $validator->required($data, ['usuario', 'senha']);
 
