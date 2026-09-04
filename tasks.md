@@ -339,14 +339,14 @@
 
 # Fase 23 - Configuracoes do Tenant
 
-- [ ] Editar nome.
-- [ ] Editar logo.
-- [ ] Editar WhatsApp.
-- [ ] Editar cores.
-- [ ] Editar endereco.
-- [ ] Definir timezone.
-- [ ] Definir tipo de impressao.
-- [ ] Definir mensagem de loja fechada.
+- [x] Editar nome.
+- [x] Editar logo.
+- [x] Editar WhatsApp.
+- [x] Editar cores.
+- [x] Editar endereco.
+- [x] Definir timezone.
+- [x] Definir tipo de impressao.
+- [x] Definir mensagem de loja fechada.
 
 # Fase 24 - Seguranca
 
