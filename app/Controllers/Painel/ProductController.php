@@ -77,7 +77,7 @@ class ProductController
         // Processar upload de imagem se enviado
         $imagemPath = $this->handleImageUpload($request);
 
-        $this->productRepo->create([
+        $productId = $this->productRepo->create([
             'tenant_id' => $tenantId,
             'categoria_id' => $categoriaId,
             'nome' => $nome,
@@ -89,7 +89,32 @@ class ProductController
             'ativo' => 1,
         ]);
 
-        $this->session->setFlash('success', 'Produto criado com sucesso!');
+        // Processar variações dinâmicas enviadas no form
+        $varNomes = (array) ($data['var_nome'] ?? []);
+        $varPrecos = (array) ($data['var_preco'] ?? []);
+
+        if ($productId > 0 && !empty($varNomes)) {
+            foreach ($varNomes as $idx => $vNome) {
+                $vNomeTrim = trim((string) $vNome);
+                if (empty($vNomeTrim)) continue;
+
+                $vPrecoRaw = (string) ($varPrecos[$idx] ?? '');
+                $vPrecoStr = str_replace(['R$', ' ', '.'], ['', '', ''], $vPrecoRaw);
+                $vPrecoStr = str_replace(',', '.', $vPrecoStr);
+                $vPreco = $vPrecoRaw !== '' ? (float) $vPrecoStr : null;
+
+                $this->productRepo->createVariation([
+                    'tenant_id' => $tenantId,
+                    'produto_id' => $productId,
+                    'nome' => $vNomeTrim,
+                    'preco' => $vPreco,
+                    'ordem' => $idx + 1,
+                    'ativo' => 1,
+                ]);
+            }
+        }
+
+        $this->session->setFlash('success', 'Produto cadastrado com sucesso!');
         $response->redirect('/painel/produtos');
     }
 

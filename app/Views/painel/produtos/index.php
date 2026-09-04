@@ -175,6 +175,18 @@
                         <textarea name="descricao" rows="3" placeholder="Ingredientes e detalhes do produto..."></textarea>
                     </label>
 
+                    <!-- Seção Dinâmica de Variações (Tamanhos/Opções) -->
+                    <div style="border: 1px solid var(--bo-line); border-radius: 10px; padding: 14px; background: #f8fafc;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <strong style="font-size: 0.92rem; color: #0f172a;">📏 Variações / Tamanhos (Opcional)</strong>
+                            <button type="button" class="bo-link bo-link-secondary" onclick="addNovoProdutoVariacaoRow()" style="padding: 4px 8px; font-size: 0.8rem;">+ Adicionar Variação</button>
+                        </div>
+                        <p style="font-size: 0.78rem; color: var(--bo-muted); margin-bottom: 10px;">Crie opções como "Pequeno", "Médio", "Grande" ou sabores/opções específicas.</p>
+                        <div id="novo-produto-variacoes-container" style="display: grid; gap: 8px;">
+                            <!-- Linhas inseridas via JS -->
+                        </div>
+                    </div>
+
                     <div style="display: flex; gap: 20px;">
                         <label class="bo-field" style="flex-direction: row; align-items: center; gap: 8px;">
                             <input type="checkbox" name="disponivel" value="1" checked>
@@ -257,6 +269,18 @@
 
     <script src="<?= htmlspecialchars(asset('assets/js/backoffice.js'), ENT_QUOTES, 'UTF-8') ?>"></script>
     <script>
+        function addNovoProdutoVariacaoRow(nome = '', preco = '') {
+            const container = document.getElementById('novo-produto-variacoes-container');
+            const row = document.createElement('div');
+            row.style.cssText = 'display: flex; gap: 8px; align-items: center;';
+            row.innerHTML = `
+                <input type="text" name="var_nome[]" value="${nome}" placeholder="Nome da variação (ex: Grande 500ml)" style="flex: 2; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--bo-line); font-size: 0.88rem;">
+                <input type="text" name="var_preco[]" value="${preco}" placeholder="Preço (ex: 25,00)" style="flex: 1; padding: 6px 10px; border-radius: 6px; border: 1px solid var(--bo-line); font-size: 0.88rem;">
+                <button type="button" class="bo-link bo-link-danger" onclick="this.parentElement.remove()" style="padding: 4px 8px; font-size: 0.8rem;">✕</button>
+            `;
+            container.appendChild(row);
+        }
+
         function editarProduto(prod) {
             document.getElementById('form-editar-produto').action = '/painel/produtos/' + prod.id + '/editar';
             document.getElementById('edit-prod-nome').value = prod.nome || '';
