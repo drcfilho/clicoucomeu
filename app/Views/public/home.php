@@ -1131,6 +1131,10 @@ $checkoutConfig = [
                 checkoutPayment.addEventListener('change', syncCheckoutVisibility);
             }
 
+            if (checkoutNeighborhood) {
+                checkoutNeighborhood.addEventListener('change', syncCheckoutVisibility);
+            }
+
             if (closeCheckoutModalButton) {
                 closeCheckoutModalButton.addEventListener('click', closeCheckoutModal);
             }
