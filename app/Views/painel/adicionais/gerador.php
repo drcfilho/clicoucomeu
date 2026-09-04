@@ -507,6 +507,9 @@
             const template = templates[type];
             if (!template) return;
 
+            // Zera os grupos atuais ao selecionar um novo template
+            groups = [];
+
             if (template.variations && Array.isArray(template.variations)) {
                 template.variations.forEach(varData => {
                     addGroup(JSON.parse(JSON.stringify(varData)));
