@@ -39,6 +39,7 @@ require_once BASE_PATH . '/app/Services/MenuService.php';
 require_once BASE_PATH . '/app/Services/OrderService.php';
 require_once BASE_PATH . '/app/Services/StoreHoursService.php';
 require_once BASE_PATH . '/app/Services/CouponService.php';
+require_once BASE_PATH . '/app/Services/PlanService.php';
 require_once BASE_PATH . '/app/Controllers/AuthController.php';
 require_once BASE_PATH . '/app/Controllers/Public/HomeController.php';
 require_once BASE_PATH . '/app/Controllers/Public/OrderController.php';
