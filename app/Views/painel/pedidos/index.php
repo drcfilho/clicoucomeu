@@ -52,11 +52,11 @@
 
                 <!-- Abas de Filtros de Status -->
                 <nav class="order-tabs">
-                    <a href="/painel/pedidos" class="order-tab <?= $currentStatus === '' ? 'is-active' : '' ?>">
-                        Todos <span class="order-tab-badge"><?= array_sum($counts) ?></span>
-                    </a>
                     <a href="/painel/pedidos?status=pendente" class="order-tab <?= $currentStatus === 'pendente' ? 'is-active' : '' ?>" style="border-color:#dc2626;">
                         🚨 Novos <span class="order-tab-badge" id="badge-pendente"><?= $counts['pendente'] ?></span>
+                    </a>
+                    <a href="/painel/pedidos?status=todos" class="order-tab <?= ($currentStatus === 'todos' || $currentStatus === 'all') ? 'is-active' : '' ?>">
+                        Todos <span class="order-tab-badge"><?= array_sum($counts) ?></span>
                     </a>
                     <a href="/painel/pedidos?status=em_preparo" class="order-tab <?= $currentStatus === 'em_preparo' ? 'is-active' : '' ?>">
                         👨‍🍳 Em Preparo <span class="order-tab-badge"><?= $counts['em_preparo'] ?></span>

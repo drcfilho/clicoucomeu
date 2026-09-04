@@ -24,7 +24,7 @@ class OrderController
     public function index(Request $request, Response $response, array $params = []): void
     {
         $tenantId = (int) $request->getAttribute('tenant_id', 0);
-        $statusFilter = (string) $request->input('status', '');
+        $statusFilter = (string) $request->input('status', 'pendente');
 
         $orders = $this->orderRepo->findOrdersByTenantId($tenantId, $statusFilter);
         $counts = $this->orderRepo->getCountsByStatus($tenantId);

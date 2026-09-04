@@ -24,7 +24,7 @@ class OrderRepository
                 WHERE p.tenant_id = :tenant_id';
         $params = ['tenant_id' => $tenantId];
 
-        if ($status !== null && $status !== '') {
+        if ($status !== null && $status !== '' && $status !== 'todos' && $status !== 'all') {
             if ($status === 'pendente') {
                 $sql .= " AND p.status IN ('novo', 'pendente')";
             } elseif ($status === 'em_preparo') {
