@@ -81,6 +81,56 @@
 
                 <?php require __DIR__ . '/../partials/flash-messages.php'; ?>
 
+                <?php if (!empty($showOnboarding)): ?>
+                    <section class="bo-panel" style="margin-bottom: 20px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                            <div>
+                                <h2 style="margin: 0; font-size: 1.15rem; font-weight: 700; color: #f8fafc; display: flex; align-items: center; gap: 8px;">
+                                    🚀 Configuração Inicial do Cardápio
+                                </h2>
+                                <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 0.85rem;">Conclua estes 4 passos simples para deixar seu cardápio online pronto para receber pedidos.</p>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: #38bdf8;">
+                                <?= (int) ($completedOnboardingCount ?? 0) ?> de 4 concluídos
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 16px;">
+                            <a href="<?= htmlspecialchars(($tenantPrefix ?? '') . '/painel/categorias', ENT_QUOTES, 'UTF-8') ?>" style="display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 10px; background: <?= !empty($onboardingSteps['categorias']) ? 'rgba(34, 197, 94, 0.15)' : 'rgba(255, 255, 255, 0.05)' ?>; border: 1px solid <?= !empty($onboardingSteps['categorias']) ? 'rgba(34, 197, 94, 0.4)' : 'rgba(255, 255, 255, 0.1)' ?>; text-decoration: none; color: inherit;">
+                                <span style="font-size: 1.2rem;"><?= !empty($onboardingSteps['categorias']) ? '✅' : '📁' ?></span>
+                                <div>
+                                    <strong style="display: block; font-size: 0.88rem; color: <?= !empty($onboardingSteps['categorias']) ? '#4ade80' : '#f8fafc' ?>;">1. Categorias</strong>
+                                    <span style="font-size: 0.75rem; color: #94a3b8;"><?= !empty($onboardingSteps['categorias']) ? 'Cadastradas' : 'Criar primeira categoria' ?></span>
+                                </div>
+                            </a>
+
+                            <a href="<?= htmlspecialchars(($tenantPrefix ?? '') . '/painel/produtos', ENT_QUOTES, 'UTF-8') ?>" style="display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 10px; background: <?= !empty($onboardingSteps['produtos']) ? 'rgba(34, 197, 94, 0.15)' : 'rgba(255, 255, 255, 0.05)' ?>; border: 1px solid <?= !empty($onboardingSteps['produtos']) ? 'rgba(34, 197, 94, 0.4)' : 'rgba(255, 255, 255, 0.1)' ?>; text-decoration: none; color: inherit;">
+                                <span style="font-size: 1.2rem;"><?= !empty($onboardingSteps['produtos']) ? '✅' : '🍔' ?></span>
+                                <div>
+                                    <strong style="display: block; font-size: 0.88rem; color: <?= !empty($onboardingSteps['produtos']) ? '#4ade80' : '#f8fafc' ?>;">2. Produtos</strong>
+                                    <span style="font-size: 0.75rem; color: #94a3b8;"><?= !empty($onboardingSteps['produtos']) ? 'Cadastrados' : 'Cadastrar produtos' ?></span>
+                                </div>
+                            </a>
+
+                            <a href="<?= htmlspecialchars(($tenantPrefix ?? '') . '/painel/bairros', ENT_QUOTES, 'UTF-8') ?>" style="display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 10px; background: <?= !empty($onboardingSteps['bairros']) ? 'rgba(34, 197, 94, 0.15)' : 'rgba(255, 255, 255, 0.05)' ?>; border: 1px solid <?= !empty($onboardingSteps['bairros']) ? 'rgba(34, 197, 94, 0.4)' : 'rgba(255, 255, 255, 0.1)' ?>; text-decoration: none; color: inherit;">
+                                <span style="font-size: 1.2rem;"><?= !empty($onboardingSteps['bairros']) ? '✅' : '🛵' ?></span>
+                                <div>
+                                    <strong style="display: block; font-size: 0.88rem; color: <?= !empty($onboardingSteps['bairros']) ? '#4ade80' : '#f8fafc' ?>;">3. Bairros & Taxas</strong>
+                                    <span style="font-size: 0.75rem; color: #94a3b8;"><?= !empty($onboardingSteps['bairros']) ? 'Configurados' : 'Definir taxas de entrega' ?></span>
+                                </div>
+                            </a>
+
+                            <a href="<?= htmlspecialchars(($tenantPrefix ?? '') . '/painel/horarios', ENT_QUOTES, 'UTF-8') ?>" style="display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 10px; background: <?= !empty($onboardingSteps['horarios']) ? 'rgba(34, 197, 94, 0.15)' : 'rgba(255, 255, 255, 0.05)' ?>; border: 1px solid <?= !empty($onboardingSteps['horarios']) ? 'rgba(34, 197, 94, 0.4)' : 'rgba(255, 255, 255, 0.1)' ?>; text-decoration: none; color: inherit;">
+                                <span style="font-size: 1.2rem;"><?= !empty($onboardingSteps['horarios']) ? '✅' : '⏰' ?></span>
+                                <div>
+                                    <strong style="display: block; font-size: 0.88rem; color: <?= !empty($onboardingSteps['horarios']) ? '#4ade80' : '#f8fafc' ?>;">4. Horários</strong>
+                                    <span style="font-size: 0.75rem; color: #94a3b8;"><?= !empty($onboardingSteps['horarios']) ? 'Definidos' : 'Definir funcionamento' ?></span>
+                                </div>
+                            </a>
+                        </div>
+                    </section>
+                <?php endif; ?>
+
                 <!-- Filtro por Período -->
                 <form method="GET" action="/painel" class="bo-filter-bar">
                     <div class="bo-filter-group">

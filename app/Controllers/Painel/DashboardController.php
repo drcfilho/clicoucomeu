@@ -47,6 +47,29 @@ class DashboardController
         $paymentMethods = $orderRepo->getTopPaymentMethods($tenantId, $startDate, $endDate);
         $topNeighborhoods = $orderRepo->getTopNeighborhoods($tenantId, $startDate, $endDate, 5);
 
+        /** @var \App\Repositories\CategoryRepository $categoryRepo */
+        $categoryRepo = $this->container->get(\App\Repositories\CategoryRepository::class);
+        /** @var \App\Repositories\ProductRepository $productRepo */
+        $productRepo = $this->container->get(\App\Repositories\ProductRepository::class);
+        /** @var \App\Repositories\NeighborhoodRepository $neighborhoodRepo */
+        $neighborhoodRepo = $this->container->get(\App\Repositories\NeighborhoodRepository::class);
+        /** @var \App\Repositories\StoreHoursRepository $hoursRepo */
+        $hoursRepo = $this->container->get(\App\Repositories\StoreHoursRepository::class);
+
+        $categoriesCount = count($categoryRepo->findAllByTenantId($tenantId));
+        $productsCount = count($productRepo->findAllByTenantId($tenantId));
+        $neighborhoodsCount = count($neighborhoodRepo->findAllByTenantId($tenantId));
+        $hoursCount = count($hoursRepo->findAllByTenantId($tenantId));
+
+        $onboardingSteps = [
+            'categorias' => $categoriesCount > 0,
+            'produtos' => $productsCount > 0,
+            'bairros' => $neighborhoodsCount > 0,
+            'horarios' => $hoursCount > 0,
+        ];
+        $completedOnboardingCount = count(array_filter($onboardingSteps));
+        $showOnboarding = $completedOnboardingCount < 4;
+
         $response->view('painel.dashboard', [
             'period' => $period,
             'startDate' => $startDate,
@@ -55,6 +78,9 @@ class DashboardController
             'topProducts' => $topProducts,
             'paymentMethods' => $paymentMethods,
             'topNeighborhoods' => $topNeighborhoods,
+            'onboardingSteps' => $onboardingSteps,
+            'completedOnboardingCount' => $completedOnboardingCount,
+            'showOnboarding' => $showOnboarding,
         ]);
     }
 }
