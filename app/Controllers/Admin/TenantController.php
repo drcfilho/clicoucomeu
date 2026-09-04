@@ -29,9 +29,16 @@ class TenantController
     public function home(Request $request, Response $response, array $params = []): void
     {
         $session = $this->container->get('session');
+        /** @var TenantRepository $tenantRepo */
+        $tenantRepo = $this->container->get('tenantRepository');
+
+        $metrics = $tenantRepo->getSaasMetrics();
+        $tenants = $tenantRepo->all();
 
         $response->view('admin.index', [
-            'nome' => (string) $session->get('nome', 'Superadmin'),
+            'nome' => (string) $session->get('user_nome', $session->get('nome', 'Superadmin')),
+            'metrics' => $metrics,
+            'tenants' => $tenants,
         ]);
     }
 
@@ -394,5 +401,47 @@ class TenantController
             'status' => trim((string) ($data['status'] ?? 'ativo')),
             'plano' => trim((string) ($data['plano'] ?? 'mvp')),
         ];
+    }
+
+    public function extendTrial(Request $request, Response $response, array $params = []): void
+    {
+        $id = (int) ($params['id'] ?? 0);
+        /** @var TenantRepository $tenantRepo */
+        $tenantRepo = $this->container->get('tenantRepository');
+        $session = $this->container->get('session');
+
+        $days = (int) ($request->getParsedBody()['dias'] ?? 7);
+        $success = $tenantRepo->extendTrial($id, $days);
+
+        if ($success) {
+            $session->setFlash('success', "Degustação prorrogada em +{$days} dias com sucesso!");
+        } else {
+            $session->setFlash('error', "Não foi possível prorrogar a degustação deste tenant.");
+        }
+
+        $response->redirect('/admin/tenants');
+    }
+
+    public function impersonate(Request $request, Response $response, array $params = []): void
+    {
+        $id = (int) ($params['id'] ?? 0);
+        /** @var TenantRepository $tenantRepo */
+        $tenantRepo = $this->container->get('tenantRepository');
+        $session = $this->container->get('session');
+
+        $tenant = $tenantRepo->findById($id);
+        if (!$tenant) {
+            $session->setFlash('error', 'Tenant não encontrado.');
+            $response->redirect('/admin/tenants');
+            return;
+        }
+
+        // Salvar sessão com o tenant selecionado pelo Superadmin para impersonação
+        $session->set('tenant_id', (int) $tenant['id']);
+        $session->set('tenant_slug', (string) $tenant['slug']);
+        $session->set('tenant_plano', (string) ($tenant['plano'] ?? 'mvp'));
+        $session->setFlash('success', "Acessando painel do tenant '{$tenant['nome']}' como Superadmin.");
+
+        $response->redirect("/{$tenant['slug']}/painel");
     }
 }

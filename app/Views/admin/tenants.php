@@ -127,8 +127,16 @@
                             <span class="bo-chip">Cidade: <?= htmlspecialchars(trim(((string) ($tenant['cidade'] ?? '')) . ' ' . ((string) ($tenant['uf'] ?? ''))), ENT_QUOTES, 'UTF-8') ?: 'n/d' ?></span>
                             <span class="bo-chip">Criado em: <?= htmlspecialchars((string) ($tenant['criado_em'] ?? 'n/d'), ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
-                        <div class="bo-form-actions">
+                        <div class="bo-form-actions" style="flex-wrap: wrap;">
+                            <a class="bo-link bo-link-primary" href="/admin/tenants/<?= (int) $tenant['id'] ?>/acessar">🔑 Entrar como Tenant</a>
                             <a class="bo-link bo-link-secondary" href="/admin/tenants/<?= (int) $tenant['id'] ?>/editar">Editar</a>
+                            <?php if ($planoKey === 'mvp'): ?>
+                                <form class="bo-inline-form" method="post" action="/admin/tenants/<?= (int) $tenant['id'] ?>/prorrogar-trial">
+                                    <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string) $csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                                    <input type="hidden" name="dias" value="7">
+                                    <button class="bo-btn bo-btn-secondary" type="submit" style="color: #d97706; border-color: rgba(245, 158, 11, 0.4);" title="Prorrogar degustação por mais 7 dias">+7 Dias Trial</button>
+                                </form>
+                            <?php endif; ?>
                             <?php if ($status !== 'ativo'): ?>
                                 <form class="bo-inline-form" method="post" action="/admin/tenants/<?= (int) $tenant['id'] ?>/ativar">
                                     <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string) $csrfToken, ENT_QUOTES, 'UTF-8') ?>">

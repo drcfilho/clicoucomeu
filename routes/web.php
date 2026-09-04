@@ -626,6 +626,14 @@ $router->post('/admin/tenants/{id}/plano', [TenantController::class, 'updatePlan
     AuthMiddleware::class,
     PermissionMiddleware::class,
 ]);
+$router->post('/admin/tenants/{id}/prorrogar-trial', [TenantController::class, 'extendTrial'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->get('/admin/tenants/{id}/acessar', [TenantController::class, 'impersonate'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->get('/{tenant}', [HomeController::class, 'index']);
 
 return $router;

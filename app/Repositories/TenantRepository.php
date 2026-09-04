@@ -139,5 +139,80 @@ class TenantRepository
             'id' => $id,
             'status' => $status,
         ]);
+    public function extendTrial(int $id, int $extraDays = 7): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare(
+            'UPDATE tenants 
+             SET criado_em = DATE_ADD(criado_em, INTERVAL :extraDays DAY) 
+             WHERE id = :id AND plano = "mvp"'
+        );
+        return $stmt->execute([
+            'extraDays' => $extraDays,
+            'id' => $id,
+        ]);
+    }
+
+    public function getSaasMetrics(): array
+    {
+        if ($this->db === null) {
+            return [
+                'total_tenants' => 0,
+                'active_tenants' => 0,
+                'trials_count' => 0,
+                'mrr' => 0.0,
+                'arr' => 0.0,
+                'plans_breakdown' => [],
+            ];
+        }
+
+        $all = $this->all();
+        $total = count($all);
+        $active = 0;
+        $trials = 0;
+        $mrr = 0.0;
+        $plansBreakdown = ['mvp' => 0, 'starter' => 0, 'pro' => 0, 'enterprise' => 0];
+
+        $prices = [
+            'mvp' => 0.0,
+            'starter' => 49.0,
+            'pro' => 99.0,
+            'enterprise' => 0.0,
+        ];
+
+        foreach ($all as $t) {
+            $status = (string) ($t['status'] ?? 'ativo');
+            $plano = (string) ($t['plano'] ?? 'mvp');
+
+            if ($status === 'ativo') {
+                $active++;
+            }
+
+            if ($plano === 'mvp') {
+                $trials++;
+            }
+
+            if (isset($plansBreakdown[$plano])) {
+                $plansBreakdown[$plano]++;
+            } else {
+                $plansBreakdown[$plano] = 1;
+            }
+
+            if ($status === 'ativo' && isset($prices[$plano])) {
+                $mrr += $prices[$plano];
+            }
+        }
+
+        return [
+            'total_tenants' => $total,
+            'active_tenants' => $active,
+            'trials_count' => $trials,
+            'mrr' => $mrr,
+            'arr' => $mrr * 12,
+            'plans_breakdown' => $plansBreakdown,
+        ];
     }
 }
