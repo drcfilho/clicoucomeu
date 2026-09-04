@@ -50,17 +50,31 @@ class PlanService
         return self::PLANS[$planKey] ?? self::PLANS['mvp'];
     }
 
-    public static function isTrialExpired(array $tenant): bool
+    public static function getRemainingTrialDays(array $tenant): int
     {
         $plan = (string) ($tenant['plano'] ?? 'mvp');
         if ($plan !== 'mvp') {
-            return false;
+            return 999;
         }
 
         $createdAt = !empty($tenant['criado_em']) ? new \DateTimeImmutable($tenant['criado_em']) : new \DateTimeImmutable();
         $now = new \DateTimeImmutable();
-        $diff = $now->diff($createdAt)->days;
+        $days = (int) $now->diff($createdAt)->days;
+        $remaining = 7 - $days;
 
-        return $diff >= 7;
+        return max(0, $remaining);
+    }
+
+    public static function canAddProduct(array $tenant, int $currentProductCount): bool
+    {
+        $planKey = (string) ($tenant['plano'] ?? 'mvp');
+        $plan = self::getPlanDetails($planKey);
+        $max = $plan['max_products'];
+
+        if ($max === null) {
+            return true;
+        }
+
+        return $currentProductCount < $max;
     }
 }

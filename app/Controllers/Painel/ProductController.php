@@ -65,6 +65,15 @@ class ProductController
             return;
         }
 
+        $tenantRepo = $this->container->get(\App\Repositories\TenantRepository::class);
+        $tenant = $tenantRepo->findById($tenantId);
+        $allProducts = $this->productRepo->findAllByTenantId($tenantId);
+        if ($tenant && !\App\Services\PlanService::canAddProduct($tenant, count($allProducts))) {
+            $this->session->setFlash('error', 'Limite de 20 produtos atingido para o plano MVP / Degustação. Faça o upgrade para cadastrar produtos ilimitados!');
+            $response->redirect('/painel/produtos');
+            return;
+        }
+
         // Processar upload de imagem se enviado
         $imagemPath = $this->handleImageUpload($request);
 

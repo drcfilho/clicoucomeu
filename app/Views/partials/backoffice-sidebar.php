@@ -45,6 +45,16 @@ if ($sessionPerfil === 'superadmin') {
         </div>
     </div>
 
+    <?php
+    $tenantPlano = $_SESSION['tenant_plano'] ?? 'mvp';
+    if ($tenantPlano === 'mvp'):
+    ?>
+        <div style="padding: 10px; margin-bottom: 12px; background: rgba(245, 158, 11, 0.15); border-radius: 8px; border: 1px solid rgba(245, 158, 11, 0.3); color: #fbbf24; font-size: 12px;">
+            <strong>⏳ Plano Degustação</strong>
+            <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 11px;">7 dias grátis ativos (Limite: 20 produtos).</p>
+        </div>
+    <?php endif; ?>
+
     <nav class="backoffice-sidebar-nav">
         <?php foreach ($backofficeNav as $key => $item): ?>
             <a class="backoffice-sidebar-link<?= $backofficeSection === $key ? ' is-active' : '' ?>" 
