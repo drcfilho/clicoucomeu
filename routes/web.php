@@ -11,6 +11,7 @@ use App\Controllers\Painel\AddonController;
 use App\Controllers\Painel\NeighborhoodController;
 use App\Controllers\Painel\PaymentMethodController;
 use App\Controllers\Painel\StoreHoursController;
+use App\Controllers\Painel\CouponController;
 use App\Controllers\Painel\OrderController as PainelOrderController;
 use App\Controllers\Painel\DashboardController;
 use App\Controllers\Public\HomeController;
@@ -222,6 +223,33 @@ $router->post('/painel/horarios', [StoreHoursController::class, 'save'], [
     PermissionMiddleware::class,
 ]);
 $router->post('/painel/horarios/manual', [StoreHoursController::class, 'toggleManual'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+
+/* Rotas de Cupons de Desconto */
+$router->get('/painel/cupons', [CouponController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/cupons', [CouponController::class, 'store'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/cupons/{id}/editar', [CouponController::class, 'update'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/cupons/{id}/toggle', [CouponController::class, 'toggle'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/cupons/{id}/excluir', [CouponController::class, 'delete'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
     PermissionMiddleware::class,

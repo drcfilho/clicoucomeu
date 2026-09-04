@@ -318,13 +318,13 @@
 
 # Fase 21 - Cupons
 
-- [ ] Criar cupom percentual.
-- [ ] Criar cupom valor fixo.
-- [ ] Criar frete gratis.
-- [ ] Validar periodo.
-- [ ] Validar limite de usos.
-- [ ] Validar valor minimo.
-- [ ] Registrar uso.
+- [x] Criar cupom percentual.
+- [x] Criar cupom valor fixo.
+- [x] Criar frete gratis.
+- [x] Validar periodo.
+- [x] Validar limite de usos.
+- [x] Validar valor minimo.
+- [x] Registrar uso.
 
 # Fase 22 - Dashboard
 

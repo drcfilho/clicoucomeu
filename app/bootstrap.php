@@ -28,6 +28,7 @@ require_once BASE_PATH . '/app/Repositories/ConfigurationRepository.php';
 require_once BASE_PATH . '/app/Repositories/NeighborhoodRepository.php';
 require_once BASE_PATH . '/app/Repositories/PaymentMethodRepository.php';
 require_once BASE_PATH . '/app/Repositories/OrderRepository.php';
+require_once BASE_PATH . '/app/Repositories/CouponRepository.php';
 require_once BASE_PATH . '/app/Repositories/ProductRepository.php';
 require_once BASE_PATH . '/app/Repositories/TenantRepository.php';
 require_once BASE_PATH . '/app/Repositories/UserRepository.php';
@@ -35,6 +36,7 @@ require_once BASE_PATH . '/app/Services/AuthService.php';
 require_once BASE_PATH . '/app/Services/MenuService.php';
 require_once BASE_PATH . '/app/Services/OrderService.php';
 require_once BASE_PATH . '/app/Services/StoreHoursService.php';
+require_once BASE_PATH . '/app/Services/CouponService.php';
 require_once BASE_PATH . '/app/Controllers/AuthController.php';
 require_once BASE_PATH . '/app/Controllers/Public/HomeController.php';
 require_once BASE_PATH . '/app/Controllers/Public/OrderController.php';
@@ -45,6 +47,7 @@ require_once BASE_PATH . '/app/Controllers/Painel/AddonController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/NeighborhoodController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/PaymentMethodController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/StoreHoursController.php';
+require_once BASE_PATH . '/app/Controllers/Painel/CouponController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/OrderController.php';
 require_once BASE_PATH . '/app/Controllers/Admin/TenantController.php';
 require_once BASE_PATH . '/app/Controllers/Cozinha/KitchenController.php';
@@ -116,6 +119,13 @@ function bootstrap(): App\Helpers\App
 
     $container->set('orderRepository', fn () => new App\Repositories\OrderRepository($container->get('db')));
     $container->set(App\Repositories\OrderRepository::class, fn () => $container->get('orderRepository'));
+
+    $container->set('couponRepository', fn () => new App\Repositories\CouponRepository($container->get('db')));
+    $container->set(App\Repositories\CouponRepository::class, fn () => $container->get('couponRepository'));
+
+    $container->set('couponService', fn () => new App\Services\CouponService($container->get('couponRepository')));
+    $container->set(App\Services\CouponService::class, fn () => $container->get('couponService'));
+
     $container->set('storeHoursService', function () use ($container, $appConfig): App\Services\StoreHoursService {
         return new App\Services\StoreHoursService(
             $container->get('db'),
@@ -154,7 +164,9 @@ function bootstrap(): App\Helpers\App
             $container->get('tenantResolver'),
             $container->get('productRepository'),
             $container->get('neighborhoodRepository'),
-            $container->get('paymentMethodRepository')
+            $container->get('paymentMethodRepository'),
+            $container->get('couponService'),
+            $container->get('couponRepository')
         );
     });
     $container->set('router', function (): App\Helpers\Router {

@@ -21,7 +21,9 @@ class OrderService
         private TenantResolver $tenantResolver,
         private ProductRepository $products,
         private NeighborhoodRepository $neighborhoods,
-        private PaymentMethodRepository $paymentMethods
+        private PaymentMethodRepository $paymentMethods,
+        private ?CouponService $couponService = null,
+        private ?CouponRepository $couponRepo = null
     ) {
     }
 
@@ -151,7 +153,18 @@ class OrderService
 
         $deliveryFee = $bairro !== null ? (float) $bairro['taxa_entrega'] : 0.0;
         $discount = 0.0;
-        $total = $subtotal + $deliveryFee - $discount;
+        $couponId = null;
+
+        $couponCode = trim((string) ($payload['coupon_code'] ?? ''));
+        if (!empty($couponCode) && $this->couponService !== null) {
+            $couponResult = $this->couponService->validateAndCalculate($tenantId, $couponCode, $subtotal, $deliveryFee);
+            if ($couponResult['valid']) {
+                $discount = (float) $couponResult['discount'];
+                $couponId = (int) $couponResult['coupon']['id'];
+            }
+        }
+
+        $total = max(0.0, $subtotal + $deliveryFee - $discount);
 
         $this->db->beginTransaction();
 
@@ -171,7 +184,7 @@ class OrderService
                   referencia, bairro_nome, forma_pagamento_nome, troco_para, subtotal, taxa_entrega, desconto,
                   total, observacao, status)
                  VALUES
-                 (:tenant_id, :cliente_id, :bairro_id, :forma_pagamento_id, NULL, :numero, :token,
+                 (:tenant_id, :cliente_id, :bairro_id, :forma_pagamento_id, :cupom_id, :numero, :token,
                   :cliente_nome, :cliente_whatsapp, :tipo_recebimento, :endereco, :numero_endereco, :complemento,
                   :referencia, :bairro_nome, :forma_pagamento_nome, :troco_para, :subtotal, :taxa_entrega, :desconto,
                   :total, :observacao, :status)'
@@ -182,6 +195,7 @@ class OrderService
                 'cliente_id' => $clientId,
                 'bairro_id' => $bairro !== null ? (int) $bairro['id'] : null,
                 'forma_pagamento_id' => $paymentMethodId,
+                'cupom_id' => $couponId,
                 'numero' => $number,
                 'token' => $token,
                 'cliente_nome' => trim((string) $customer['name']),
@@ -256,8 +270,12 @@ class OrderService
                 'tenant_id' => $tenantId,
                 'pedido_id' => $orderId,
                 'status_novo' => 'novo',
-                'observacao' => 'Pedido criado pelo checkout publico',
+                'observacao' => 'Pedido criado pelo cliente no cardapio publico',
             ]);
+
+            if ($couponId !== null && $this->couponRepo !== null) {
+                $this->couponRepo->incrementUsage($couponId);
+            }
 
             $this->db->commit();
 

@@ -9,6 +9,7 @@ $backofficeNav = [
     'adicionais' => ['label' => 'Adicionais', 'href' => '/painel/adicionais'],
     'bairros' => ['label' => 'Bairros / Taxas', 'href' => '/painel/bairros'],
     'pagamentos' => ['label' => 'Pagamentos', 'href' => '/painel/pagamentos'],
+    'cupons' => ['label' => 'Cupons 🎟️', 'href' => '/painel/cupons'],
     'horarios' => ['label' => 'Horários', 'href' => '/painel/horarios'],
     'cozinha' => ['label' => 'Cozinha', 'href' => '/cozinha'],
 ];
