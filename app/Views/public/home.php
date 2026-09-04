@@ -1209,12 +1209,17 @@ $checkoutConfig = [
                         saveCart();
                         renderCartFab();
                         renderCartModal();
+                        closeCheckoutModal();
 
-                        checkoutResult.innerHTML = `Pedido <strong>#${result.data.order_number}</strong> criado com sucesso.<br>Total: <strong>${formatCurrency(result.data.total)}</strong><br>Status: <strong>${result.data.status}</strong>`;
-                        checkoutResult.style.display = 'block';
-                        checkoutForm.reset();
-                        syncCheckoutVisibility();
-                        submitCheckoutTotal.textContent = formatCurrency(0);
+                        if (result.data && result.data.token) {
+                            window.location.href = '/pedido/' + result.data.token;
+                        } else {
+                            checkoutResult.innerHTML = `Pedido <strong>#${result.data.order_number}</strong> criado com sucesso.<br>Total: <strong>${formatCurrency(result.data.total)}</strong>`;
+                            checkoutResult.style.display = 'block';
+                            checkoutForm.reset();
+                            syncCheckoutVisibility();
+                            submitCheckoutTotal.textContent = formatCurrency(0);
+                        }
                     } catch (error) {
                         checkoutError.textContent = error.message || 'Falha ao enviar pedido';
                         checkoutError.style.display = 'block';
