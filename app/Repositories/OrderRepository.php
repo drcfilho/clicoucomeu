@@ -37,6 +37,12 @@ class OrderRepository
             }
         }
 
+        // Oculta pedidos finalizados há mais de 1 hora no painel ativo
+        $sql .= " AND NOT (p.status IN ('finalizado', 'retirado') AND (
+            (p.finalizado_em IS NOT NULL AND p.finalizado_em < DATE_SUB(NOW(), INTERVAL 1 HOUR)) OR
+            (p.finalizado_em IS NULL AND p.criado_em < DATE_SUB(NOW(), INTERVAL 1 HOUR))
+        ))";
+
         $sql .= ' ORDER BY p.criado_em DESC, p.id DESC LIMIT ' . (int) $limit;
 
         $stmt = $this->db->prepare($sql);
@@ -98,8 +104,12 @@ class OrderRepository
 
         $this->db->beginTransaction();
         try {
+            $extraSql = '';
+            if (in_array($newStatus, ['finalizado', 'retirado'], true)) {
+                $extraSql = ', finalizado_em = CURRENT_TIMESTAMP';
+            }
             $stmt = $this->db->prepare(
-                'UPDATE pedidos SET status = :status WHERE id = :id AND tenant_id = :tenant_id'
+                "UPDATE pedidos SET status = :status {$extraSql} WHERE id = :id AND tenant_id = :tenant_id"
             );
             $stmt->execute(['status' => $newStatus, 'id' => $orderId, 'tenant_id' => $tenantId]);
 
@@ -150,10 +160,14 @@ class OrderRepository
         }
 
         $stmt = $this->db->prepare(
-            'SELECT status, COUNT(*) as total
+            "SELECT status, COUNT(*) as total
              FROM pedidos
              WHERE tenant_id = :tenant_id
-             GROUP BY status'
+               AND NOT (status IN ('finalizado', 'retirado') AND (
+                   (finalizado_em IS NOT NULL AND finalizado_em < DATE_SUB(NOW(), INTERVAL 1 HOUR)) OR
+                   (finalizado_em IS NULL AND criado_em < DATE_SUB(NOW(), INTERVAL 1 HOUR))
+               ))
+             GROUP BY status"
         );
         $stmt->execute(['tenant_id' => $tenantId]);
         $rows = $stmt->fetchAll() ?: [];
