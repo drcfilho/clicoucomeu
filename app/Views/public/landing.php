@@ -432,6 +432,7 @@
             <nav class="nav-links">
                 <a href="#comparativo">Por que usar?</a>
                 <a href="#recursos">Recursos</a>
+                <a href="#planos">Planos & Preços</a>
                 <a href="#como-funciona">Como Funciona</a>
             </nav>
             <div>
@@ -580,6 +581,81 @@
                     <div class="feature-icon-wrapper">💵</div>
                     <h3>Troco Dinâmico & PIX Copia e Cola</h3>
                     <p>Facilite o pagamento para seu cliente com cálculo automático de troco em dinheiro e exibição da chave PIX instantânea.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="comparison-section" id="planos" style="background: #f8fafc;">
+        <div class="container">
+            <div class="section-title-center">
+                <h2>Planos sob medida para a escala do seu negócio</h2>
+                <p>Zero comissão sobre suas vendas em todos os planos. Escolha o ideal para o momento do seu restaurante.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px;">
+                <!-- MVP -->
+                <div style="background: #fff; border-radius: 24px; padding: 32px 24px; border: 1px solid var(--border-color); display: flex; flex-direction: column;">
+                    <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Teste / Inicial</span>
+                    <h3 style="font-size: 1.5rem; font-weight: 900; margin: 8px 0;">MVP / Degustação</h3>
+                    <div style="font-size: 2rem; font-weight: 900; color: var(--text-dark); margin-bottom: 16px;">Grátis</div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Ideal para validar o cardápio digital e começar a receber os primeiros pedidos online.</p>
+                    <ul class="comp-list" style="margin-bottom: 32px; flex: 1;">
+                        <li style="color: var(--text-dark);">✓ Até 20 produtos cadastrados</li>
+                        <li style="color: var(--text-dark);">✓ Recebimento de Pedidos no WhatsApp</li>
+                        <li style="color: var(--text-dark);">✓ Bairros & Taxas de entrega</li>
+                        <li style="color: var(--text-dark);">✓ Sem comissões sobre vendas</li>
+                    </ul>
+                    <a href="/login" class="btn-secondary-lg" style="text-align: center; display: block; padding: 12px 16px; font-size: 0.95rem;">Testar Agora</a>
+                </div>
+
+                <!-- Starter -->
+                <div style="background: #fff; border-radius: 24px; padding: 32px 24px; border: 1px solid var(--border-color); display: flex; flex-direction: column;">
+                    <span style="color: var(--primary); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Delivery Pequeno</span>
+                    <h3 style="font-size: 1.5rem; font-weight: 900; margin: 8px 0;">Starter</h3>
+                    <div style="font-size: 2rem; font-weight: 900; color: var(--text-dark); margin-bottom: 16px;">R$ 49<small style="font-size: 0.9rem; font-weight: 600; color: var(--text-muted);">/mês</small></div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Para pequenos estabelecimentos em crescimento que querem automatizar o atendimento.</p>
+                    <ul class="comp-list" style="margin-bottom: 32px; flex: 1;">
+                        <li style="color: var(--text-dark);">✓ Produtos e Categorias Ilimitados</li>
+                        <li style="color: var(--text-dark);">✓ Painel de Pedidos com Alerta Sonoro</li>
+                        <li style="color: var(--text-dark);">✓ Impressão de Comprovante / Cupom</li>
+                        <li style="color: var(--text-dark);">✓ Cupons de Desconto</li>
+                        <li style="color: var(--text-dark);">✓ Suporte via WhatsApp</li>
+                    </ul>
+                    <a href="/login" class="btn-secondary-lg" style="text-align: center; display: block; padding: 12px 16px; font-size: 0.95rem;">Assinar Starter</a>
+                </div>
+
+                <!-- Pro -->
+                <div style="background: #fff; border-radius: 24px; padding: 32px 24px; border: 2px solid var(--primary); position: relative; box-shadow: var(--shadow-xl); display: flex; flex-direction: column;">
+                    <span style="position: absolute; top: -14px; right: 20px; background: var(--primary); color: #fff; padding: 4px 12px; border-radius: 999px; font-weight: 800; font-size: 0.75rem; text-transform: uppercase;">Mais Popular</span>
+                    <span style="color: var(--primary); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Operação Acelerada</span>
+                    <h3 style="font-size: 1.5rem; font-weight: 900; margin: 8px 0;">Pro</h3>
+                    <div style="font-size: 2rem; font-weight: 900; color: var(--text-dark); margin-bottom: 16px;">R$ 99<small style="font-size: 0.9rem; font-weight: 600; color: var(--text-muted);">/mês</small></div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 24px;">Solução completa para restaurantes com alto fluxo de pedidos diários.</p>
+                    <ul class="comp-list" style="margin-bottom: 32px; flex: 1;">
+                        <li style="color: var(--text-dark);">✓ Tudo do plano Starter</li>
+                        <li style="color: var(--text-dark);">✓ <b>Tela de Cozinha (KDS) em Tempo Real</b></li>
+                        <li style="color: var(--text-dark);">✓ Relatórios Financeiros & Faturamento</li>
+                        <li style="color: var(--text-dark);">✓ Múltiplos Usuários (Admin / Operador / Cozinha)</li>
+                        <li style="color: var(--text-dark);">✓ Integração via Webhook</li>
+                    </ul>
+                    <a href="/login" class="btn-cta-lg" style="text-align: center; justify-content: center; padding: 14px 16px; font-size: 0.95rem;">Assinar Pro</a>
+                </div>
+
+                <!-- Enterprise -->
+                <div style="background: #1e293b; color: #fff; border-radius: 24px; padding: 32px 24px; display: flex; flex-direction: column;">
+                    <span style="color: #38bdf8; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Franquias & Redes</span>
+                    <h3 style="font-size: 1.5rem; font-weight: 900; margin: 8px 0; color: #fff;">Enterprise</h3>
+                    <div style="font-size: 2rem; font-weight: 900; color: #fff; margin-bottom: 16px;">Sob Consulta</div>
+                    <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 24px;">Para grandes operações, redes de franquias ou necessidades customizadas de API.</p>
+                    <ul class="comp-list" style="margin-bottom: 32px; flex: 1;">
+                        <li style="color: #e2e8f0;">✓ Lojas e Filiais Múltiplas</li>
+                        <li style="color: #e2e8f0;">✓ Domínio próprio customizado</li>
+                        <li style="color: #e2e8f0;">✓ Gerente de Conta Dedicado</li>
+                        <li style="color: #e2e8f0;">✓ Suporte Prioritário 24/7</li>
+                    </ul>
+                    <a href="/login" class="btn-secondary-lg" style="text-align: center; display: block; padding: 12px 16px; font-size: 0.95rem; background: #334155; color: #fff; border-color: #475569;">Falar com Consultor</a>
                 </div>
             </div>
         </div>
