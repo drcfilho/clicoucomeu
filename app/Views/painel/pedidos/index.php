@@ -245,7 +245,7 @@
             openModal('modal-detalhes-pedido');
 
             try {
-                const res = await fetch('/painel/pedidos/' + id);
+                const res = await fetch('/painel/pedidos/' + id + '?_t=' + Date.now(), { cache: 'no-store' });
                 const data = await res.json();
                 if (!data.success) {
                     document.getElementById('modal-pedido-corpo').innerHTML = '<p>Erro ao carregar detalhes.</p>';
@@ -296,11 +296,11 @@
             }
         }
 
-        // Polling para novos pedidos a cada 10 segundos
+        // Polling para novos pedidos a cada 8 segundos
         let lastPendenteCount = <?= (int) $counts['pendente'] ?>;
         setInterval(async () => {
             try {
-                const res = await fetch('/painel/pedidos/polling');
+                const res = await fetch('/painel/pedidos/polling?_t=' + Date.now(), { cache: 'no-store' });
                 const data = await res.json();
                 if (data.success && data.counts) {
                     const newPendente = data.counts.pendente || 0;
@@ -312,7 +312,7 @@
                     if (badge) badge.textContent = newPendente;
                 }
             } catch (e) {}
-        }, 10000);
+        }, 8000);
     </script>
 </body>
 </html>

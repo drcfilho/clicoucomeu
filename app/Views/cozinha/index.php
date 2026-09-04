@@ -117,16 +117,24 @@
     </main>
 
     <script>
-        // Polling automatico da cozinha a cada 8 segundos
-        setInterval(async () => {
+        // Polling automatico da cozinha a cada 6 segundos com re-renderizacao dinamica
+        let lastOrdersHash = '';
+
+        async function updateKitchenOrders() {
             try {
-                const res = await fetch('/cozinha/polling');
+                const res = await fetch('/cozinha/polling?_t=' + Date.now(), { cache: 'no-store' });
                 const data = await res.json();
-                if (data.success) {
-                    // Atualiza pagina se houver alteracao
+                if (!data.success) return;
+
+                const currentHash = JSON.stringify(data.orders.map(o => ({ id: o.id, status: o.status, total_itens: (o.itens || []).length })));
+                if (lastOrdersHash !== '' && currentHash !== lastOrdersHash) {
+                    window.location.reload();
                 }
+                lastOrdersHash = currentHash;
             } catch (e) {}
-        }, 8000);
+        }
+
+        setInterval(updateKitchenOrders, 6000);
     </script>
 </body>
 </html>

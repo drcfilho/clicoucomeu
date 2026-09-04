@@ -14,12 +14,18 @@ class Response
     {
         http_response_code($status);
         header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Cache-Control: post-check=0, pre-check=0', false);
+        header('Pragma: no-cache');
         echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 
     public function view(string $view, array $data = [], int $status = 200): void
     {
         http_response_code($status);
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Cache-Control: post-check=0, pre-check=0', false);
+        header('Pragma: no-cache');
 
         if ($this->view === null) {
             throw new \RuntimeException('View renderer not configured');
