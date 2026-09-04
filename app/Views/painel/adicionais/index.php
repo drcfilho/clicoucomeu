@@ -18,47 +18,12 @@
                         <p class="backoffice-subtitle">Crie grupos como "Bordas Recheadas", "Molhos" ou "Adicionais" e associe aos produtos.</p>
                     </div>
                     <div class="backoffice-actions">
-                        <a href="<?= htmlspecialchars(url('painel/adicionais/gerador'), ENT_QUOTES, 'UTF-8') ?>" class="bo-link" style="background: #0f172a; color: #fff; border: none;">🎨 Abrir Gerador Visual (Dante Testa)</a>
+                        <a href="<?= htmlspecialchars(url('painel/adicionais/gerador'), ENT_QUOTES, 'UTF-8') ?>" class="bo-link" style="background: #0f172a; color: #fff; border: none;">🎨 Abrir Gerador Visual</a>
                         <button type="button" class="bo-link bo-link-primary" onclick="openModal('modal-novo-grupo')">+ Novo Grupo</button>
                     </div>
                 </header>
 
                 <?php require __DIR__ . '/../../partials/flash-messages.php'; ?>
-
-                <!-- Gerador de Variações Rápidas por Segmento -->
-                <section class="bo-panel" style="margin-bottom: 20px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff;">
-                    <h2 style="margin: 0 0 8px 0; font-size: 1.15rem; color: #f8fafc; display: flex; align-items: center; gap: 8px;">
-                        🎨 Gerador de Variações & Presets Rápidos
-                    </h2>
-                    <p style="margin: 0 0 16px 0; color: #94a3b8; font-size: 0.88rem;">Clique no segmento do seu restaurante para carregar variações pré-configuradas de 1-clique:</p>
-                    
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
-                        <button type="button" onclick="loadPreset('pizzaria')" style="padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; text-align: left; cursor: pointer; transition: background 0.2s;">
-                            <strong style="display: block; color: #f8fafc; font-size: 0.95rem;">🍕 Pizzaria</strong>
-                            <span style="font-size: 0.78rem; color: #94a3b8;">Tamanhos, Bordas e Sabores</span>
-                        </button>
-
-                        <button type="button" onclick="loadPreset('hamburgueria')" style="padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; text-align: left; cursor: pointer; transition: background 0.2s;">
-                            <strong style="display: block; color: #f8fafc; font-size: 0.95rem;">🍔 Hamburgueria</strong>
-                            <span style="font-size: 0.78rem; color: #94a3b8;">Ponto da Carne, Pão & Molhos</span>
-                        </button>
-
-                        <button type="button" onclick="loadPreset('acaiteria')" style="padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; text-align: left; cursor: pointer; transition: background 0.2s;">
-                            <strong style="display: block; color: #f8fafc; font-size: 0.95rem;">🍧 Açaiteria</strong>
-                            <span style="font-size: 0.78rem; color: #94a3b8;">Tamanho Copo, Acompanhamentos</span>
-                        </button>
-
-                        <button type="button" onclick="loadPreset('confeitaria')" style="padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; text-align: left; cursor: pointer; transition: background 0.2s;">
-                            <strong style="display: block; color: #f8fafc; font-size: 0.95rem;">🍰 Confeitaria</strong>
-                            <span style="font-size: 0.78rem; color: #94a3b8;">Recheios & Coberturas</span>
-                        </button>
-
-                        <button type="button" onclick="loadPreset('sushi')" style="padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; text-align: left; cursor: pointer; transition: background 0.2s;">
-                            <strong style="display: block; color: #f8fafc; font-size: 0.95rem;">🍱 Sushi / Japa</strong>
-                            <span style="font-size: 0.78rem; color: #94a3b8;">Molhos & Adicionais</span>
-                        </button>
-                    </div>
-                </section>
 
                 <section class="bo-panel">
                     <?php if (empty($groups)): ?>
