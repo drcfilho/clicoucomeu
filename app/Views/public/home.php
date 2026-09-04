@@ -1,9 +1,10 @@
 <?php
-$primary = $tenant['cor_primaria'] ?? '#b47e11';
-$secondary = $tenant['cor_secundaria'] ?? '#935711';
-$slogan = $settings['identidade_visual.slogan'] ?? 'Sabor, rapidez e praticidade no seu pedido';
+$primary = $settings['cor_primaria'] ?? $tenant['cor_primaria'] ?? '#e11d48';
+$secondary = $settings['cor_secundaria'] ?? $tenant['cor_secundaria'] ?? '#be123c';
+$bg = $settings['cor_fundo'] ?? '#f7f0e2';
+$slogan = $settings['slogan'] ?? $settings['identidade_visual.slogan'] ?? 'Sabor, rapidez e praticidade no seu pedido';
 $phone = $tenant['whatsapp'] ?? '';
-$address = $tenant['endereco'] ?? '';
+$address = $settings['endereco_completo'] ?? $tenant['endereco'] ?? '';
 $currency = static fn ($value): string => $value !== null ? 'R$ ' . number_format((float) $value, 2, ',', '.') : 'Consulte';
 $initials = static function (string $name): string {
     $words = preg_split('/\s+/', trim($name)) ?: [];
@@ -42,7 +43,7 @@ $checkoutConfig = [
         :root {
             --cor-primaria: <?= htmlspecialchars((string) $primary, ENT_QUOTES, 'UTF-8') ?>;
             --cor-secundaria: <?= htmlspecialchars((string) $secondary, ENT_QUOTES, 'UTF-8') ?>;
-            --cor-fundo: #f7f0e2;
+            --cor-fundo: <?= htmlspecialchars((string) $bg, ENT_QUOTES, 'UTF-8') ?>;
             --cor-card: #ffffff;
             --cor-borda: #eadfcb;
             --cor-texto: #31261d;

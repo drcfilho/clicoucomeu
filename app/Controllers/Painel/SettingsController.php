@@ -92,6 +92,9 @@ class SettingsController
         // Salvar configurações chave-valor adicionais
         $configKeys = [
             'cor_primaria',
+            'cor_secundaria',
+            'cor_fundo',
+            'slogan',
             'impressora_formato',
             'mensagem_loja_fechada',
             'endereco_completo',

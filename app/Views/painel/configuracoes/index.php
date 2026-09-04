@@ -114,13 +114,36 @@
                             </div>
 
                             <div class="bo-form-group">
-                                <label for="cor_primaria">Cor Primária do Tema (Hexadecimal)</label>
-                                <input type="color" id="cor_primaria" name="cor_primaria" value="<?= htmlspecialchars((string)($configs['cor_primaria'] ?? '#EA1D2C'), ENT_QUOTES, 'UTF-8') ?>" style="height: 42px; padding: 2px;">
-                            </div>
-
-                            <div class="bo-form-group">
                                 <label for="mensagem_loja_fechada">Mensagem de Loja Fechada</label>
                                 <textarea id="mensagem_loja_fechada" name="mensagem_loja_fechada" rows="2"><?= htmlspecialchars((string)($configs['mensagem_loja_fechada'] ?? 'No momento estamos fechados. Consulte nossos horários de funcionamento.'), ENT_QUOTES, 'UTF-8') ?></textarea>
+                            </div>
+                        </section>
+
+                        <!-- Identidade Visual e Personalização de Cores -->
+                        <section class="bo-panel" style="grid-column: 1 / -1;">
+                            <h2 class="bo-section-title">🎨 Identidade Visual & Tema do Cardápio</h2>
+                            <p style="color: var(--bo-muted); font-size: 0.88rem; margin-bottom: 16px;">Personalize as cores do seu cardápio público para combinarem com a sua marca.</p>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+                                <div class="bo-form-group">
+                                    <label for="cor_primaria">Cor Primária (Destaques & Botões)</label>
+                                    <input type="color" id="cor_primaria" name="cor_primaria" value="<?= htmlspecialchars((string)($configs['cor_primaria'] ?? '#e11d48'), ENT_QUOTES, 'UTF-8') ?>" style="height: 44px; padding: 2px; cursor: pointer;">
+                                </div>
+
+                                <div class="bo-form-group">
+                                    <label for="cor_secundaria">Cor Secundária / Accent</label>
+                                    <input type="color" id="cor_secundaria" name="cor_secundaria" value="<?= htmlspecialchars((string)($configs['cor_secundaria'] ?? '#be123c'), ENT_QUOTES, 'UTF-8') ?>" style="height: 44px; padding: 2px; cursor: pointer;">
+                                </div>
+
+                                <div class="bo-form-group">
+                                    <label for="cor_fundo">Cor de Fundo da Página</label>
+                                    <input type="color" id="cor_fundo" name="cor_fundo" value="<?= htmlspecialchars((string)($configs['cor_fundo'] ?? '#f7f0e2'), ENT_QUOTES, 'UTF-8') ?>" style="height: 44px; padding: 2px; cursor: pointer;">
+                                </div>
+
+                                <div class="bo-form-group">
+                                    <label for="slogan">Slogan / Subtítulo no Cardápio</label>
+                                    <input type="text" id="slogan" name="slogan" value="<?= htmlspecialchars((string)($configs['slogan'] ?? 'Sabor, rapidez e praticidade no seu pedido'), ENT_QUOTES, 'UTF-8') ?>" placeholder="ex: O melhor delivery da cidade">
+                                </div>
                             </div>
                         </section>
                     </div>

@@ -24,6 +24,41 @@
 
                 <?php require __DIR__ . '/../../partials/flash-messages.php'; ?>
 
+                <!-- Gerador de Variações Rápidas por Segmento -->
+                <section class="bo-panel" style="margin-bottom: 20px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #fff;">
+                    <h2 style="margin: 0 0 8px 0; font-size: 1.15rem; color: #f8fafc; display: flex; align-items: center; gap: 8px;">
+                        🎨 Gerador de Variações & Presets Rápidos
+                    </h2>
+                    <p style="margin: 0 0 16px 0; color: #94a3b8; font-size: 0.88rem;">Clique no segmento do seu restaurante para carregar variações pré-configuradas de 1-clique:</p>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+                        <button type="button" onclick="loadPreset('pizzaria')" style="padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; text-align: left; cursor: pointer; transition: background 0.2s;">
+                            <strong style="display: block; color: #f8fafc; font-size: 0.95rem;">🍕 Pizzaria</strong>
+                            <span style="font-size: 0.78rem; color: #94a3b8;">Tamanhos, Bordas e Sabores</span>
+                        </button>
+
+                        <button type="button" onclick="loadPreset('hamburgueria')" style="padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; text-align: left; cursor: pointer; transition: background 0.2s;">
+                            <strong style="display: block; color: #f8fafc; font-size: 0.95rem;">🍔 Hamburgueria</strong>
+                            <span style="font-size: 0.78rem; color: #94a3b8;">Ponto da Carne, Pão & Molhos</span>
+                        </button>
+
+                        <button type="button" onclick="loadPreset('acaiteria')" style="padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; text-align: left; cursor: pointer; transition: background 0.2s;">
+                            <strong style="display: block; color: #f8fafc; font-size: 0.95rem;">🍧 Açaiteria</strong>
+                            <span style="font-size: 0.78rem; color: #94a3b8;">Tamanho Copo, Acompanhamentos</span>
+                        </button>
+
+                        <button type="button" onclick="loadPreset('confeitaria')" style="padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; text-align: left; cursor: pointer; transition: background 0.2s;">
+                            <strong style="display: block; color: #f8fafc; font-size: 0.95rem;">🍰 Confeitaria</strong>
+                            <span style="font-size: 0.78rem; color: #94a3b8;">Recheios & Coberturas</span>
+                        </button>
+
+                        <button type="button" onclick="loadPreset('sushi')" style="padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #fff; text-align: left; cursor: pointer; transition: background 0.2s;">
+                            <strong style="display: block; color: #f8fafc; font-size: 0.95rem;">🍱 Sushi / Japa</strong>
+                            <span style="font-size: 0.78rem; color: #94a3b8;">Molhos & Adicionais</span>
+                        </button>
+                    </div>
+                </section>
+
                 <section class="bo-panel">
                     <?php if (empty($groups)): ?>
                         <div style="text-align: center; padding: 40px 20px; color: var(--bo-muted);">
@@ -183,6 +218,27 @@
             document.getElementById('edit-group-maximo').value = g.maximo || 1;
             document.getElementById('edit-group-obrigatorio').checked = g.obrigatorio == 1;
             openModal('modal-editar-grupo');
+        }
+
+        function loadPreset(type) {
+            const presets = {
+                pizzaria: { nome: '🍕 Escolha a Borda Recheada', minimo: 0, maximo: 1, obrigatorio: false },
+                hamburgueria: { nome: '🍔 Escolha o Ponto da Carne', minimo: 1, maximo: 1, obrigatorio: true },
+                acaiteria: { nome: '🍧 Escolha os Acompanhamentos Grátis', minimo: 0, maximo: 3, obrigatorio: false },
+                confeitaria: { nome: '🍰 Escolha a Cobertura Especial', minimo: 1, maximo: 1, obrigatorio: true },
+                sushi: { nome: '🍱 Escolha os Molhos & Hashi', minimo: 0, maximo: 2, obrigatorio: false }
+            };
+
+            const selected = presets[type];
+            if (!selected) return;
+
+            const modal = document.getElementById('modal-novo-grupo');
+            modal.querySelector('input[name="nome"]').value = selected.nome;
+            modal.querySelector('input[name="minimo"]').value = selected.minimo;
+            modal.querySelector('input[name="maximo"]').value = selected.maximo;
+            modal.querySelector('input[name="obrigatorio"]').checked = selected.obrigatorio;
+
+            openModal('modal-novo-grupo');
         }
     </script>
 </body>
