@@ -44,7 +44,7 @@
                         <p class="backoffice-subtitle">Gerencie o fluxo de entrada, aceite, preparo e entrega dos pedidos do seu restaurante.</p>
                     </div>
                     <div class="backoffice-actions">
-                        <button type="button" id="btn-audio-toggle" class="bo-link bo-link-secondary" onclick="toggleAudioAlert()">🔕 Alerta Sonoro: DESLIGADO</button>
+                        <button type="button" id="btn-audio-toggle" class="bo-link bo-link-primary" onclick="toggleAudioAlert()">🔔 Alerta Sonoro: LIGADO</button>
                     </div>
                 </header>
 
@@ -195,17 +195,25 @@
     <script src="<?= htmlspecialchars(asset('assets/js/backoffice.js'), ENT_QUOTES, 'UTF-8') ?>"></script>
     <script>
         let audioContext = null;
-        let isAudioEnabled = false;
+        let isAudioEnabled = true;
+
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+
+        // Garante ativacao de som na primeira interacao do usuario
+        document.addEventListener('click', initAudioContext, { once: true });
+        document.addEventListener('keydown', initAudioContext, { once: true });
 
         function toggleAudioAlert() {
             const btn = document.getElementById('btn-audio-toggle');
             if (!isAudioEnabled) {
-                if (!audioContext) {
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
+                initAudioContext();
                 isAudioEnabled = true;
                 if (btn) {
                     btn.textContent = '🔔 Alerta Sonoro: LIGADO';
@@ -224,8 +232,9 @@
         }
 
         function playBeep() {
-            if (!isAudioEnabled || !audioContext) return;
+            if (!isAudioEnabled) return;
             try {
+                initAudioContext();
                 const osc = audioContext.createOscillator();
                 const gain = audioContext.createGain();
                 osc.connect(gain);
