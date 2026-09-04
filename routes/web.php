@@ -276,7 +276,17 @@ $router->get('/painel/pedidos/{id}/imprimir', [PainelOrderController::class, 'pr
     TenantMiddleware::class,
     PermissionMiddleware::class,
 ]);
+$router->post('/painel/pedidos/limpar-cancelados', [PainelOrderController::class, 'clearCancelled'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
 $router->post('/painel/pedidos/{id}/status', [PainelOrderController::class, 'updateStatus'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/pedidos/{id}/excluir', [PainelOrderController::class, 'delete'], [
     AuthMiddleware::class,
     TenantMiddleware::class,
     PermissionMiddleware::class,

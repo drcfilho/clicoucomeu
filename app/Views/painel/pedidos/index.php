@@ -73,7 +73,19 @@
                     <a href="/painel/pedidos?status=finalizado" class="order-tab <?= $currentStatus === 'finalizado' ? 'is-active' : '' ?>">
                         🏁 Finalizados <span class="order-tab-badge"><?= $counts['finalizado'] ?></span>
                     </a>
+                    <a href="/painel/pedidos?status=cancelado" class="order-tab <?= $currentStatus === 'cancelado' ? 'is-active' : '' ?>">
+                        ❌ Cancelados <span class="order-tab-badge"><?= $counts['cancelado'] ?></span>
+                    </a>
                 </nav>
+
+                <?php if ($currentStatus === 'cancelado' && ($counts['cancelado'] ?? 0) > 0): ?>
+                    <div style="margin-bottom: 16px; text-align: right;">
+                        <form method="post" action="/painel/pedidos/limpar-cancelados" style="display: inline;" onsubmit="return confirm('Tem certeza que deseja apagar TODOS os pedidos cancelados? Esta ação não pode ser desfeita.');">
+                            <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string)$csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                            <button type="submit" class="bo-link bo-link-danger">🗑️ Apagar Todos os Cancelados (<?= (int)$counts['cancelado'] ?>)</button>
+                        </form>
+                    </div>
+                <?php endif; ?>
 
                 <!-- Lista de Pedidos -->
                 <section id="orders-container">
@@ -151,6 +163,11 @@
                                             <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string)$csrfToken, ENT_QUOTES, 'UTF-8') ?>">
                                             <input type="hidden" name="status" value="cancelado">
                                             <button type="submit" class="bo-link bo-link-danger" style="font-size: 0.82rem;">❌ Cancelar</button>
+                                        </form>
+                                    <?php elseif ($o['status'] === 'cancelado'): ?>
+                                        <form method="post" action="/painel/pedidos/<?= (int)$o['id'] ?>/excluir" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja apagar este pedido do histórico?');">
+                                            <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string)$csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                                            <button type="submit" class="bo-link bo-link-danger" style="font-size: 0.82rem;">🗑️ Apagar Pedido</button>
                                         </form>
                                     <?php endif; ?>
                                 </div>

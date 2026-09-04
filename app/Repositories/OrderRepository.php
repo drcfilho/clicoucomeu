@@ -121,6 +121,26 @@ class OrderRepository
         }
     }
 
+    public function deleteOrder(int $orderId, int $tenantId): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare('DELETE FROM pedidos WHERE id = :id AND tenant_id = :tenant_id');
+        return $stmt->execute(['id' => $orderId, 'tenant_id' => $tenantId]);
+    }
+
+    public function deleteCancelledOrders(int $tenantId): bool
+    {
+        if ($this->db === null) {
+            return false;
+        }
+
+        $stmt = $this->db->prepare("DELETE FROM pedidos WHERE tenant_id = :tenant_id AND status = 'cancelado'");
+        return $stmt->execute(['tenant_id' => $tenantId]);
+    }
+
     public function getCountsByStatus(int $tenantId): array
     {
         if ($this->db === null) {

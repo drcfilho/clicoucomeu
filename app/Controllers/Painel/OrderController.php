@@ -98,6 +98,33 @@ class OrderController
         $response->redirect('/painel/pedidos');
     }
 
+    public function delete(Request $request, Response $response, array $params = []): void
+    {
+        $tenantId = (int) $request->getAttribute('tenant_id', 0);
+        $id = (int) ($params['id'] ?? 0);
+
+        if ($this->orderRepo->deleteOrder($id, $tenantId)) {
+            $this->session->setFlash('success', "Pedido #{$id} excluído com sucesso!");
+        } else {
+            $this->session->setFlash('error', 'Falha ao excluir pedido.');
+        }
+
+        $response->redirect('/painel/pedidos');
+    }
+
+    public function clearCancelled(Request $request, Response $response, array $params = []): void
+    {
+        $tenantId = (int) $request->getAttribute('tenant_id', 0);
+
+        if ($this->orderRepo->deleteCancelledOrders($tenantId)) {
+            $this->session->setFlash('success', 'Todos os pedidos cancelados foram apagados!');
+        } else {
+            $this->session->setFlash('error', 'Falha ao apagar pedidos cancelados.');
+        }
+
+        $response->redirect('/painel/pedidos?status=cancelado');
+    }
+
     public function poll(Request $request, Response $response, array $params = []): void
     {
         $tenantId = (int) $request->getAttribute('tenant_id', 0);
