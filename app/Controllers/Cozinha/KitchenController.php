@@ -26,9 +26,9 @@ class KitchenController
         $tenantId = (int) $request->getAttribute('tenant_id', 0);
         $rawOrders = $this->orderRepo->findOrdersByTenantId($tenantId, null, 100);
 
-        // A cozinha foca em pedidos relevantes: 'novo', 'pendente', 'aceito', 'em_preparo', 'preparando'
+        // A cozinha exibe apenas pedidos que estao em preparo (aceitos pelo painel)
         $relevantOrders = array_values(array_filter($rawOrders, static function ($o): bool {
-            return in_array($o['status'], ['novo', 'pendente', 'aceito', 'em_preparo', 'preparando'], true);
+            return in_array($o['status'], ['em_preparo', 'preparando'], true);
         }));
 
         $detailedOrders = [];
@@ -69,7 +69,7 @@ class KitchenController
         $rawOrders = $this->orderRepo->findOrdersByTenantId($tenantId, null, 100);
 
         $relevantOrders = array_values(array_filter($rawOrders, static function ($o): bool {
-            return in_array($o['status'], ['novo', 'pendente', 'aceito', 'em_preparo', 'preparando'], true);
+            return in_array($o['status'], ['em_preparo', 'preparando'], true);
         }));
 
         $detailedOrders = [];

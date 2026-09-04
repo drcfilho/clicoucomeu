@@ -58,9 +58,6 @@
                     <a href="/painel/pedidos?status=pendente" class="order-tab <?= $currentStatus === 'pendente' ? 'is-active' : '' ?>" style="border-color:#dc2626;">
                         🚨 Novos <span class="order-tab-badge" id="badge-pendente"><?= $counts['pendente'] ?></span>
                     </a>
-                    <a href="/painel/pedidos?status=aceito" class="order-tab <?= $currentStatus === 'aceito' ? 'is-active' : '' ?>">
-                        Em Aceite <span class="order-tab-badge"><?= $counts['aceito'] ?></span>
-                    </a>
                     <a href="/painel/pedidos?status=em_preparo" class="order-tab <?= $currentStatus === 'em_preparo' ? 'is-active' : '' ?>">
                         👨‍🍳 Em Preparo <span class="order-tab-badge"><?= $counts['em_preparo'] ?></span>
                     </a>
@@ -127,7 +124,7 @@
                                     <?php if ($isNew): ?>
                                         <form method="post" action="/painel/pedidos/<?= (int)$o['id'] ?>/status" style="display:inline;">
                                             <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string)$csrfToken, ENT_QUOTES, 'UTF-8') ?>">
-                                            <input type="hidden" name="status" value="aceito">
+                                            <input type="hidden" name="status" value="preparando">
                                             <button type="submit" class="bo-link bo-link-primary" style="font-size: 0.82rem;">✅ Aceitar Pedido</button>
                                         </form>
                                     <?php elseif ($o['status'] === 'aceito'): ?>
