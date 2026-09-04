@@ -309,12 +309,12 @@
 
 # Fase 20 - Acompanhamento do Cliente
 
-- [ ] Criar pagina por token.
-- [ ] Exibir numero.
-- [ ] Exibir status.
-- [ ] Exibir linha de progresso.
-- [ ] Criar polling.
-- [ ] Encerrar polling em status final.
+- [x] Criar pagina por token.
+- [x] Exibir numero.
+- [x] Exibir status.
+- [x] Exibir linha de progresso.
+- [x] Criar polling.
+- [x] Encerrar polling em status final.
 
 # Fase 21 - Cupons
 
