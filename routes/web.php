@@ -28,6 +28,7 @@ $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
 $router->get('/cadastrar', [RegisterController::class, 'showRegister']);
 $router->post('/cadastrar', [RegisterController::class, 'register']);
+$router->get('/logout', [AuthController::class, 'logout']);
 $router->post('/logout', [AuthController::class, 'logout'], [
     AuthMiddleware::class,
 ]);

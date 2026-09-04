@@ -95,6 +95,6 @@ class AuthController
         $auth = $this->container->get('auth');
         $auth->logout();
 
-        $response->redirect('/login');
+        $response->view('auth.logout');
     }
 }
