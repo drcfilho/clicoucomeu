@@ -16,6 +16,7 @@ use App\Controllers\Painel\OrderController as PainelOrderController;
 use App\Controllers\Painel\DashboardController;
 use App\Controllers\Public\HomeController;
 use App\Controllers\Public\OrderController;
+use App\Controllers\Public\RegisterController;
 use App\Helpers\Router;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\PermissionMiddleware;
@@ -25,6 +26,8 @@ $router = new Router();
 
 $router->get('/login', [AuthController::class, 'showLogin']);
 $router->post('/login', [AuthController::class, 'login']);
+$router->get('/cadastrar', [RegisterController::class, 'showRegister']);
+$router->post('/cadastrar', [RegisterController::class, 'register']);
 $router->post('/logout', [AuthController::class, 'logout'], [
     AuthMiddleware::class,
 ]);

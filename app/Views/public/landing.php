@@ -607,7 +607,7 @@
                         <li style="color: var(--text-dark);">✓ Bairros & Taxas de entrega</li>
                         <li style="color: var(--text-dark);">✓ Sem comissões sobre vendas</li>
                     </ul>
-                    <a href="/login" class="btn-secondary-lg" style="text-align: center; display: block; padding: 12px 16px; font-size: 0.95rem;">Testar Agora</a>
+                    <a href="/cadastrar?plano=mvp" class="btn-secondary-lg" style="text-align: center; display: block; padding: 12px 16px; font-size: 0.95rem;">Testar 7 Dias Grátis</a>
                 </div>
 
                 <!-- Starter -->
@@ -623,7 +623,7 @@
                         <li style="color: var(--text-dark);">✓ Cupons de Desconto</li>
                         <li style="color: var(--text-dark);">✓ Suporte via WhatsApp</li>
                     </ul>
-                    <a href="/login" class="btn-secondary-lg" style="text-align: center; display: block; padding: 12px 16px; font-size: 0.95rem;">Assinar Starter</a>
+                    <a href="/cadastrar?plano=starter" class="btn-secondary-lg" style="text-align: center; display: block; padding: 12px 16px; font-size: 0.95rem;">Assinar Starter</a>
                 </div>
 
                 <!-- Pro -->
@@ -640,7 +640,7 @@
                         <li style="color: var(--text-dark);">✓ Múltiplos Usuários (Admin / Operador / Cozinha)</li>
                         <li style="color: var(--text-dark);">✓ Integração via Webhook</li>
                     </ul>
-                    <a href="/login" class="btn-cta-lg" style="text-align: center; justify-content: center; padding: 14px 16px; font-size: 0.95rem;">Assinar Pro</a>
+                    <a href="/cadastrar?plano=pro" class="btn-cta-lg" style="text-align: center; justify-content: center; padding: 14px 16px; font-size: 0.95rem;">Assinar Pro</a>
                 </div>
 
                 <!-- Enterprise -->
@@ -655,7 +655,7 @@
                         <li style="color: #e2e8f0;">✓ Gerente de Conta Dedicado</li>
                         <li style="color: #e2e8f0;">✓ Suporte Prioritário 24/7</li>
                     </ul>
-                    <a href="/login" class="btn-secondary-lg" style="text-align: center; display: block; padding: 12px 16px; font-size: 0.95rem; background: #334155; color: #fff; border-color: #475569;">Falar com Consultor</a>
+                    <a href="/cadastrar?plano=enterprise" class="btn-secondary-lg" style="text-align: center; display: block; padding: 12px 16px; font-size: 0.95rem; background: #334155; color: #fff; border-color: #475569;">Falar com Consultor</a>
                 </div>
             </div>
         </div>
@@ -666,7 +666,7 @@
         <section class="cta-banner" id="como-funciona">
             <h2>Pronto para escalar seu delivery hoje?</h2>
             <p>Cadastre seus produtos em poucos minutos e comece a vender diretamente pelo seu link oficial sem pagar nenhuma comissão.</p>
-            <a class="btn-cta-lg" href="/login">
+            <a class="btn-cta-lg" href="/cadastrar?plano=mvp">
                 🚀 Criar Meu Cardápio Agora
             </a>
         </section>

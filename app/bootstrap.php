@@ -42,6 +42,7 @@ require_once BASE_PATH . '/app/Services/CouponService.php';
 require_once BASE_PATH . '/app/Controllers/AuthController.php';
 require_once BASE_PATH . '/app/Controllers/Public/HomeController.php';
 require_once BASE_PATH . '/app/Controllers/Public/OrderController.php';
+require_once BASE_PATH . '/app/Controllers/Public/RegisterController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/DashboardController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/CategoryController.php';
 require_once BASE_PATH . '/app/Controllers/Painel/ProductController.php';
