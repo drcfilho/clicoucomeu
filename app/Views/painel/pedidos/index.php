@@ -44,7 +44,7 @@
                         <p class="backoffice-subtitle">Gerencie o fluxo de entrada, aceite, preparo e entrega dos pedidos do seu restaurante.</p>
                     </div>
                     <div class="backoffice-actions">
-                        <button type="button" class="bo-link bo-link-secondary" onclick="enableAudioAlert()">🔔 Ativar Alerta Sonoro</button>
+                        <button type="button" id="btn-audio-toggle" class="bo-link bo-link-secondary" onclick="toggleAudioAlert()">🔕 Alerta Sonoro: DESLIGADO</button>
                     </div>
                 </header>
 
@@ -198,22 +198,46 @@
     <script src="<?= htmlspecialchars(asset('assets/js/backoffice.js'), ENT_QUOTES, 'UTF-8') ?>"></script>
     <script>
         let audioContext = null;
+        let isAudioEnabled = false;
 
-        function enableAudioAlert() {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            alert('Alerta sonoro ativado para novos pedidos!');
+        function toggleAudioAlert() {
+            const btn = document.getElementById('btn-audio-toggle');
+            if (!isAudioEnabled) {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                isAudioEnabled = true;
+                if (btn) {
+                    btn.textContent = '🔔 Alerta Sonoro: LIGADO';
+                    btn.classList.remove('bo-link-secondary');
+                    btn.classList.add('bo-link-primary');
+                }
+                playBeep();
+            } else {
+                isAudioEnabled = false;
+                if (btn) {
+                    btn.textContent = '🔕 Alerta Sonoro: DESLIGADO';
+                    btn.classList.remove('bo-link-primary');
+                    btn.classList.add('bo-link-secondary');
+                }
+            }
         }
 
         function playBeep() {
-            if (!audioContext) return;
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            osc.connect(gain);
-            gain.connect(audioContext.destination);
-            osc.frequency.value = 880;
-            gain.gain.setValueAtTime(0.5, audioContext.currentTime);
-            osc.start();
-            osc.stop(audioContext.currentTime + 0.4);
+            if (!isAudioEnabled || !audioContext) return;
+            try {
+                const osc = audioContext.createOscillator();
+                const gain = audioContext.createGain();
+                osc.connect(gain);
+                gain.connect(audioContext.destination);
+                osc.frequency.value = 880;
+                gain.gain.setValueAtTime(0.5, audioContext.currentTime);
+                osc.start();
+                osc.stop(audioContext.currentTime + 0.4);
+            } catch (e) {}
         }
 
         async function verDetalhes(id) {
