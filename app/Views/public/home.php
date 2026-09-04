@@ -1211,7 +1211,19 @@ $checkoutConfig = [
                         renderCartModal();
                         closeCheckoutModal();
 
-                        if (result.data && result.data.token) {
+                        if (result.data && result.data.whatsapp_message && result.data.tenant_whatsapp) {
+                            const encodedMsg = encodeURIComponent(result.data.whatsapp_message);
+                            const waUrl = `https://api.whatsapp.com/send?phone=${result.data.tenant_whatsapp}&text=${encodedMsg}`;
+                            
+                            // Abre WhatsApp em nova aba ou redireciona
+                            try {
+                                window.open(waUrl, '_blank');
+                            } catch (e) {}
+
+                            if (result.data.token) {
+                                window.location.href = '/pedido/' + result.data.token;
+                            }
+                        } else if (result.data && result.data.token) {
                             window.location.href = '/pedido/' + result.data.token;
                         } else {
                             checkoutResult.innerHTML = `Pedido <strong>#${result.data.order_number}</strong> criado com sucesso.<br>Total: <strong>${formatCurrency(result.data.total)}</strong>`;

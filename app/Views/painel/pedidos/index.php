@@ -293,23 +293,24 @@
             }
         }
 
-        // Polling para novos pedidos a cada 8 segundos
-        let lastPendenteCount = <?= (int) $counts['pendente'] ?>;
+        // Polling para novos pedidos e alteracao de status a cada 5 segundos
+        let lastCountsJson = JSON.stringify(<?= json_encode($counts) ?>);
         setInterval(async () => {
             try {
                 const res = await fetch('/painel/pedidos/polling?_t=' + Date.now(), { cache: 'no-store' });
                 const data = await res.json();
                 if (data.success && data.counts) {
-                    const newPendente = data.counts.pendente || 0;
-                    if (newPendente > lastPendenteCount) {
+                    const currentCountsJson = JSON.stringify(data.counts);
+                    if (data.counts.pendente > (JSON.parse(lastCountsJson).pendente || 0)) {
                         playBeep();
                     }
-                    lastPendenteCount = newPendente;
-                    const badge = document.getElementById('badge-pendente');
-                    if (badge) badge.textContent = newPendente;
+                    if (currentCountsJson !== lastCountsJson) {
+                        lastCountsJson = currentCountsJson;
+                        window.location.reload();
+                    }
                 }
             } catch (e) {}
-        }, 8000);
+        }, 5000);
     </script>
 </body>
 </html>

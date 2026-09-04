@@ -280,6 +280,9 @@ class OrderService
 
             $this->db->commit();
 
+            $tenantWhatsApp = preg_replace('/\D+/', '', (string) ($tenant['whatsapp'] ?? ''));
+            $whatsappMessage = $this->buildWhatsAppMessage($tenant, $customer, $fulfillment, $type, $bairro, $paymentMethod, $payment, $calculatedItems, $subtotal, $deliveryFee, $discount, $total, $couponCode, trim((string) ($payload['notes'] ?? '')));
+
             return [
                 'order_id' => $orderId,
                 'order_number' => $number,
@@ -289,11 +292,129 @@ class OrderService
                 'delivery_fee' => $deliveryFee,
                 'discount' => $discount,
                 'total' => $total,
+                'tenant_whatsapp' => $tenantWhatsApp,
+                'whatsapp_message' => $whatsappMessage,
             ];
         } catch (\Throwable $exception) {
             $this->db->rollBack();
             throw $exception;
         }
+    }
+
+    private function buildWhatsAppMessage(
+        array $tenant,
+        array $customer,
+        array $fulfillment,
+        string $type,
+        ?array $bairro,
+        array $paymentMethod,
+        array $payment,
+        array $calculatedItems,
+        float $subtotal,
+        float $deliveryFee,
+        float $discount,
+        float $total,
+        string $couponCode,
+        string $notes
+    ): string {
+        $msg = "🔔 *NOVO PEDIDO* 🔔\n";
+        $msg .= "━━━━━━━━━━━━━━\n\n";
+
+        $msg .= "👤 *Cliente:* " . trim((string) ($customer['name'] ?? '')) . "\n";
+        if (!empty($customer['whatsapp'])) {
+            $msg .= "📱 *WhatsApp:* " . trim((string) $customer['whatsapp']) . "\n";
+        }
+
+        $typeText = $type === 'delivery' ? "🛵 Delivery" : "🥡 Retirar no Balcão";
+        $msg .= "📍 *Entrega:* {$typeText}\n";
+
+        if ($type === 'delivery') {
+            $addressStr = trim((string) ($fulfillment['address'] ?? '')) . ', ' . trim((string) ($fulfillment['number'] ?? ''));
+            if (!empty($fulfillment['complement'])) {
+                $addressStr .= ' - ' . trim((string) $fulfillment['complement']);
+            }
+            $msg .= "🏠 *Endereço:*\n";
+            $msg .= "   {$addressStr}\n";
+            if ($bairro !== null && !empty($bairro['nome'])) {
+                $msg .= "   " . $bairro['nome'] . "\n";
+            }
+            if ($deliveryFee > 0 && $bairro !== null) {
+                $msg .= "\n🚚 *Taxa de Delivery:* R$ " . number_format($deliveryFee, 2, ',', '.') . " (" . $bairro['nome'] . ")\n";
+            }
+        }
+
+        $msg .= "\n━━━━━━━━━━━━━━\n";
+        $msg .= "🛍️ *ITENS DO PEDIDO:*\n\n";
+
+        foreach ($calculatedItems as $item) {
+            $prodName = (string) $item['product']['nome'];
+            $msg .= "• *{$prodName}*\n";
+
+            if ($item['variation'] !== null && !empty($item['variation']['nome'])) {
+                $msg .= "  └ ✓ " . (string) $item['variation']['nome'] . "\n";
+            }
+
+            foreach ($item['addons'] as $addon) {
+                $msg .= "  └ ✓ " . (string) $addon['adicional_nome'] . "\n";
+            }
+
+            if (!empty($item['notes'])) {
+                $msg .= "  └ Obs: " . $item['notes'] . "\n";
+            }
+
+            $qty = (int) $item['quantity'];
+            $unitPrice = (float) $item['unit_price'];
+            $lineTotal = (float) $item['line_total'];
+
+            $msg .= "  └ 📊 Qtd: {$qty}x\n";
+            $msg .= "  └ 💰 Unitário: R$ " . number_format($unitPrice, 2, ',', '.') . "\n";
+            $msg .= "  └ 🧮 Subtotal: R$ " . number_format($lineTotal, 2, ',', '.') . "\n\n\n";
+        }
+
+        $msg .= "━━━━━━━━━━━━━━\n";
+        $msg .= "💰 *RESUMO FINANCEIRO:*\n\n";
+        $msg .= "💵 Subtotal produtos: R$ " . number_format($subtotal, 2, ',', '.') . "\n";
+
+        if ($type === 'delivery' && $deliveryFee > 0) {
+            $msg .= "🚚 Taxa de delivery: R$ " . number_format($deliveryFee, 2, ',', '.') . "\n";
+        }
+
+        if ($discount > 0) {
+            $msg .= "🎟️ Cupom {$couponCode}: -R$ " . number_format($discount, 2, ',', '.') . "\n";
+        }
+
+        $msg .= "\n💰 *TOTAL FINAL: R$ " . number_format($total, 2, ',', '.') . "*\n";
+        $msg .= "━━━━━━━━━━━━━━\n";
+
+        $payName = (string) $paymentMethod['nome'];
+        $payLower = mb_strtolower($payName);
+        $payEmoji = '💳';
+        if (str_contains($payLower, 'dinheiro')) {
+            $payEmoji = '💵';
+        } elseif (str_contains($payLower, 'pix')) {
+            $payEmoji = '📱';
+        }
+        $msg .= "\n💳 *Pagamento:* {$payEmoji} {$payName}\n";
+
+        if (str_contains($payLower, 'dinheiro') && !empty($payment['change_for'])) {
+            $changeFor = (float) $payment['change_for'];
+            $msg .= "💸 *Troco para:* R$ " . number_format($changeFor, 2, ',', '.') . "\n";
+            $changeDue = $changeFor - $total;
+            if ($changeDue > 0) {
+                $msg .= "💰 *Troco a devolver:* R$ " . number_format($changeDue, 2, ',', '.') . "\n";
+            }
+        }
+        $msg .= "━━━━━━━━━━━━━━\n";
+
+        if (!empty($notes)) {
+            $msg .= "\n📝 *Observações:*\n{$notes}\n";
+            $msg .= "━━━━━━━━━━━━━━\n";
+        }
+
+        $msg .= "\n⏰ *Pedido realizado em:* " . date('d/m/Y, H:i:s') . "\n";
+        $msg .= "\n✅ *Aguardando confirmação do estabelecimento*";
+
+        return $msg;
     }
 
     private function calculateAddonsTotal(array $addons): float
