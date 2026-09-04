@@ -353,7 +353,7 @@ $checkoutConfig = [
                                 </label>
                                 <label>
                                     WhatsApp
-                                    <input type="text" id="checkout-whatsapp" required>
+                                    <input type="text" id="checkout-whatsapp" placeholder="(88) 99999-9999" maxlength="15" required>
                                 </label>
                             </div>
                             <div class="checkout-grid">
@@ -1147,12 +1147,37 @@ $checkoutConfig = [
                 });
             }
 
+            if (checkoutWhatsapp) {
+                checkoutWhatsapp.addEventListener('input', (e) => {
+                    let v = e.target.value.replace(/\D/g, '');
+                    if (v.length > 11) v = v.substring(0, 11);
+                    if (v.length > 10) {
+                        v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+                    } else if (v.length > 6) {
+                        v = v.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+                    } else if (v.length > 2) {
+                        v = v.replace(/^(\d{2})(\d{0,5})$/, '($1) $2');
+                    } else if (v.length > 0) {
+                        v = v.replace(/^(\d{0,2})$/, '($1');
+                    }
+                    e.target.value = v;
+                });
+            }
+
             if (checkoutForm) {
                 checkoutForm.addEventListener('submit', async (event) => {
                     event.preventDefault();
 
                     checkoutError.style.display = 'none';
                     checkoutResult.style.display = 'none';
+
+                    const rawPhoneDigits = checkoutWhatsapp.value.replace(/\D/g, '');
+                    if (rawPhoneDigits.length < 10 || rawPhoneDigits.length > 11) {
+                        checkoutError.textContent = 'Por favor, informe um número de WhatsApp válido com DDD (ex: (88) 99999-9999).';
+                        checkoutError.style.display = 'block';
+                        checkoutWhatsapp.focus();
+                        return;
+                    }
 
                     if (cart.length === 0) {
                         checkoutError.textContent = 'Carrinho vazio.';
