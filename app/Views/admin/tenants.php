@@ -82,7 +82,7 @@
                     <label class="bo-field">
                         Plano
                         <select name="plano">
-                            <?php foreach (['mvp' => 'MVP', 'starter' => 'Starter', 'pro' => 'Pro', 'enterprise' => 'Enterprise'] as $value => $label): ?>
+                            <?php foreach (['mvp' => 'MVP / Degustação (7 dias)', 'starter' => 'Starter (R$ 49/mês)', 'pro' => 'Pro (R$ 99/mês)', 'enterprise' => 'Enterprise (Sob Consulta)'] as $value => $label): ?>
                                 <option value="<?= htmlspecialchars($value, ENT_QUOTES, 'UTF-8') ?>" <?= (($form['plano'] ?? 'mvp') === $value) ? 'selected' : '' ?>><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></option>
                             <?php endforeach; ?>
                         </select>
