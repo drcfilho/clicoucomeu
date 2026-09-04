@@ -29,6 +29,17 @@ class PaymentMethodRepository
         return $stmt->fetchAll() ?: [];
     }
 
+    public function findIndexedByTenantId(int $tenantId): array
+    {
+        $rows = $this->findActiveByTenantId($tenantId);
+        $indexed = [];
+        foreach ($rows as $row) {
+            $indexed[(int) $row['id']] = $row;
+        }
+
+        return $indexed;
+    }
+
     public function findAllByTenantId(int $tenantId): array
     {
         if ($this->db === null) {
