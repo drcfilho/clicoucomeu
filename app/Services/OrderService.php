@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Helpers\TenantResolver;
+use App\Repositories\CouponRepository;
 use App\Repositories\NeighborhoodRepository;
 use App\Repositories\PaymentMethodRepository;
 use App\Repositories\ProductRepository;
