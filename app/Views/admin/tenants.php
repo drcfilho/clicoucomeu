@@ -114,7 +114,16 @@
                             </span>
                         </div>
                         <div class="bo-meta-row">
-                            <span class="bo-chip">Plano: <?= htmlspecialchars((string) ($tenant['plano'] ?? 'n/d'), ENT_QUOTES, 'UTF-8') ?></span>
+                            <?php 
+                            $planoKey = (string) ($tenant['plano'] ?? 'mvp');
+                            $remainingDays = \App\Services\PlanService::getRemainingTrialDays($tenant);
+                            ?>
+                            <span class="bo-chip">Plano: <?= htmlspecialchars(strtoupper($planoKey), ENT_QUOTES, 'UTF-8') ?></span>
+                            <?php if ($planoKey === 'mvp'): ?>
+                                <span class="bo-chip" style="background: rgba(245, 158, 11, 0.15); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.3);">
+                                    ⏳ Degustação: <?= $remainingDays > 0 ? "{$remainingDays} dias restantes" : "Expirado" ?>
+                                </span>
+                            <?php endif; ?>
                             <span class="bo-chip">Cidade: <?= htmlspecialchars(trim(((string) ($tenant['cidade'] ?? '')) . ' ' . ((string) ($tenant['uf'] ?? ''))), ENT_QUOTES, 'UTF-8') ?: 'n/d' ?></span>
                             <span class="bo-chip">Criado em: <?= htmlspecialchars((string) ($tenant['criado_em'] ?? 'n/d'), ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
