@@ -25,12 +25,12 @@ class OrderRepository
         $params = ['tenant_id' => $tenantId];
 
         if ($status !== null && $status !== '') {
-            $sql .= ' AND p.status = :status';
             if ($status === 'pendente') {
-                $params['status'] = 'novo';
+                $sql .= " AND p.status IN ('novo', 'pendente')";
             } elseif ($status === 'saiu_entrega') {
-                $params['status'] = 'saiu_para_entrega';
+                $sql .= " AND p.status IN ('saiu_entrega', 'saiu_para_entrega')";
             } else {
+                $sql .= ' AND p.status = :status';
                 $params['status'] = $status;
             }
         }
