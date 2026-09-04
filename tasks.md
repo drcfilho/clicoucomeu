@@ -438,3 +438,27 @@
   - [ ] Exibir Barra de Progresso do Onboarding na topo do Painel (`0% a 100% Concluído`).
   - [ ] Exibir Botão "Ver Meu Cardápio no Ar" assim que os passos mínimos forem finalizados.
   - [ ] Opção de Pular/Concluir Onboarding a qualquer momento.
+
+# Fase 30 - Painel Exclusivo do Superadmin (Gestão SaaS & Tenants)
+
+- [ ] **30.1 Separação Total da Barra Lateral (`backoffice-sidebar.php`)**
+  - [ ] Ocultar opções de loja (Cardápio, Pedidos, Categorias, Produtos, Bairros, Pagamentos, Horários, Cozinha) quando o usuário logado for `perfil === 'superadmin'` sem tenant selecionado.
+  - [ ] Criar Menu Exclusivo do Superadmin:
+    - 📊 **Visão Geral Global** (`/admin`) - Métricas de toda a plataforma.
+    - 🏢 **Gestão de Tenants / Lojas** (`/admin/tenants`) - Lista completa de restaurantes.
+    - ➕ **Novo Estabelecimento** (`/admin/tenants/novo`).
+    - 👥 **Usuários & Admins** (`/admin/usuarios`).
+    - 💳 **Planos e Assinaturas** (`/admin/planos`).
+    - ⚙️ **Configurações Globais SaaS** (`/admin/configuracoes`).
+
+- [ ] **30.2 Funcionalidades de Gestão de Estabelecimentos (Tenants)**
+  - [ ] **Ações Rápidas por Tenant na Listagem:**
+    - 🟢 **Ativar / 🔴 Bloquear / 🚫 Cancelar** loja com 1 clique.
+    - 🔄 **Mudar Plano** (MVP, Starter, Pro, Enterprise).
+    - 👤 **Criar/Resetar Senha do Administrador** da loja.
+    - 👁️ **"Acessar Como..." (Impersonate Tenant)** - Permitir que o Superadmin entre no painel de qualquer loja temporariamente para dar suporte.
+
+- [ ] **30.3 Dashboard Global do Superadmin (`/admin`)**
+  - [ ] Métricas Globais da Plataforma: Total de Lojas Ativas, Lojas Bloqueadas, Total de Pedidos Processados na Plataforma e Faturamento Global.
+  - [ ] Gráfico de Novos Cadastros de Lojas por Mês/Dia.
+  - [ ] Registro de Atividades / Logs Globais de Acesso.
