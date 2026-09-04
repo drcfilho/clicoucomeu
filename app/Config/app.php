@@ -6,12 +6,19 @@ namespace App\Config;
 
 function appConfig(): array
 {
+    $env = env('APP_ENV', 'production');
+    $key = env('APP_KEY', '');
+
+    if ($env === 'production' && empty($key)) {
+        throw new \RuntimeException('APP_KEY obrigatória não configurada no ambiente de produção.');
+    }
+
     return [
         'name' => env('APP_NAME', 'Clicou Comeu'),
-        'env' => env('APP_ENV', 'production'),
+        'env' => $env,
         'debug' => filter_var(env('APP_DEBUG', false), FILTER_VALIDATE_BOOL),
         'url' => env('APP_URL', 'http://localhost'),
-        'key' => env('APP_KEY', ''),
+        'key' => $key,
         'timezone' => env('APP_TIMEZONE', 'America/Sao_Paulo'),
         'session' => [
             'name' => env('SESSION_NAME', 'clicoucomeu_session'),

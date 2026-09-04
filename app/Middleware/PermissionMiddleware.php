@@ -32,15 +32,15 @@ class PermissionMiddleware
 
     private function allowedProfilesForPath(string $path): array
     {
-        if (str_starts_with($path, '/admin')) {
+        if (preg_match('#^/admin(/|$)#', $path)) {
             return ['superadmin'];
         }
 
-        if (str_contains($path, '/cozinha')) {
+        if (preg_match('#^(/[^/]+)?/cozinha(/|$)#', $path)) {
             return ['superadmin', 'admin', 'cozinha'];
         }
 
-        if (str_contains($path, '/painel')) {
+        if (preg_match('#^(/[^/]+)?/painel(/|$)#', $path)) {
             return ['superadmin', 'admin', 'operador'];
         }
 

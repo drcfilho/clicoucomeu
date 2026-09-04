@@ -207,6 +207,13 @@ class ProductController
         $precoStr = str_replace(',', '.', $precoStr);
         $preco = $precoStr !== '' ? (float) $precoStr : null;
 
+        $product = $this->productRepo->findById($productId, $tenantId);
+        if (!$product) {
+            $this->session->setFlash('error', 'Produto não encontrado.');
+            $response->redirect('/painel/produtos');
+            return;
+        }
+
         if (empty($nome)) {
             $this->session->setFlash('error', 'O nome da variação é obrigatório.');
             $response->redirect("/painel/produtos/{$productId}/variacoes");

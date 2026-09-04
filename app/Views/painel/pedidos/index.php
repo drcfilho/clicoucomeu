@@ -53,25 +53,25 @@
                 <!-- Abas de Filtros de Status -->
                 <nav class="order-tabs">
                     <a href="/painel/pedidos?status=pendente" class="order-tab <?= $currentStatus === 'pendente' ? 'is-active' : '' ?>" style="border-color:#dc2626;">
-                        🚨 Novos <span class="order-tab-badge" id="badge-pendente"><?= $counts['pendente'] ?></span>
+                        🚨 Novos <span class="order-tab-badge" id="badge-pendente"><?= (int) ($counts['pendente'] ?? 0) ?></span>
                     </a>
                     <a href="/painel/pedidos?status=todos" class="order-tab <?= ($currentStatus === 'todos' || $currentStatus === 'all') ? 'is-active' : '' ?>">
-                        Todos <span class="order-tab-badge"><?= array_sum($counts) ?></span>
+                        Todos <span class="order-tab-badge"><?= (int) array_sum($counts) ?></span>
                     </a>
                     <a href="/painel/pedidos?status=em_preparo" class="order-tab <?= $currentStatus === 'em_preparo' ? 'is-active' : '' ?>">
-                        👨‍🍳 Em Preparo <span class="order-tab-badge"><?= $counts['em_preparo'] ?></span>
+                        👨‍🍳 Em Preparo <span class="order-tab-badge"><?= (int) ($counts['em_preparo'] ?? 0) ?></span>
                     </a>
                     <a href="/painel/pedidos?status=pronto" class="order-tab <?= $currentStatus === 'pronto' ? 'is-active' : '' ?>">
-                        ✅ Prontos <span class="order-tab-badge"><?= $counts['pronto'] ?></span>
+                        ✅ Prontos <span class="order-tab-badge"><?= (int) ($counts['pronto'] ?? 0) ?></span>
                     </a>
                     <a href="/painel/pedidos?status=saiu_entrega" class="order-tab <?= $currentStatus === 'saiu_entrega' ? 'is-active' : '' ?>">
-                        🛵 Em Entrega <span class="order-tab-badge"><?= $counts['saiu_entrega'] ?></span>
+                        🛵 Em Entrega <span class="order-tab-badge"><?= (int) ($counts['saiu_entrega'] ?? 0) ?></span>
                     </a>
                     <a href="/painel/pedidos?status=finalizado" class="order-tab <?= $currentStatus === 'finalizado' ? 'is-active' : '' ?>">
-                        🏁 Finalizados <span class="order-tab-badge"><?= $counts['finalizado'] ?></span>
+                        🏁 Finalizados <span class="order-tab-badge"><?= (int) ($counts['finalizado'] ?? 0) ?></span>
                     </a>
                     <a href="/painel/pedidos?status=cancelado" class="order-tab <?= $currentStatus === 'cancelado' ? 'is-active' : '' ?>">
-                        ❌ Cancelados <span class="order-tab-badge"><?= $counts['cancelado'] ?></span>
+                        ❌ Cancelados <span class="order-tab-badge"><?= (int) ($counts['cancelado'] ?? 0) ?></span>
                     </a>
                 </nav>
 
