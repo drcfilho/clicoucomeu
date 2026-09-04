@@ -47,12 +47,13 @@ class AuthService
         $this->session->regenerate();
         $this->session->set('usuario_id', (int) $user['id']);
         $this->session->set('tenant_id', $user['tenant_id'] !== null ? (int) $user['tenant_id'] : null);
+        $this->session->set('tenant_slug', $user['tenant_slug'] ?? null);
         $this->session->set('perfil', $user['perfil']);
         $this->session->set('nome', $user['nome']);
         $this->session->touch();
         $this->users->updateLastLogin((int) $user['id']);
 
-        return ['success' => true, 'message' => 'Login realizado'];
+        return ['success' => true, 'message' => 'Login realizado', 'tenant_slug' => $user['tenant_slug'] ?? null];
     }
 
     public function logout(): void

@@ -65,9 +65,19 @@ class AuthController
         if (!$result['success']) {
             $session->set('auth_error', $result['message']);
             $response->redirect('/login');
+            return;
         }
 
-        $response->redirect('/painel');
+        $tenantSlug = (string) ($result['tenant_slug'] ?? $session->get('tenant_slug', ''));
+        $perfil = (string) $session->get('perfil', '');
+
+        if ($perfil === 'superadmin' && !$tenantSlug) {
+            $response->redirect('/admin');
+        } elseif ($tenantSlug !== '') {
+            $response->redirect("/{$tenantSlug}/painel");
+        } else {
+            $response->redirect('/painel');
+        }
     }
 
     public function logout(Request $request, Response $response, array $params = []): void

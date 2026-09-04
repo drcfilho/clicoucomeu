@@ -1,18 +1,19 @@
 <?php
 $sessionPerfil = $_SESSION['perfil'] ?? null;
+$tenantPrefix = !empty($_SESSION['tenant_slug']) ? '/' . $_SESSION['tenant_slug'] : '';
 $backofficeSection = (string) ($backofficeSection ?? 'painel');
 $backofficeNav = [
-    'painel' => ['label' => 'Painel', 'href' => '/painel'],
-    'pedidos' => ['label' => 'Pedidos 🚨', 'href' => '/painel/pedidos'],
-    'categorias' => ['label' => 'Categorias', 'href' => '/painel/categorias'],
-    'produtos' => ['label' => 'Produtos', 'href' => '/painel/produtos'],
-    'adicionais' => ['label' => 'Adicionais', 'href' => '/painel/adicionais'],
-    'bairros' => ['label' => 'Bairros / Taxas', 'href' => '/painel/bairros'],
-    'pagamentos' => ['label' => 'Pagamentos', 'href' => '/painel/pagamentos'],
-    'cupons' => ['label' => 'Cupons 🎟️', 'href' => '/painel/cupons'],
-    'horarios' => ['label' => 'Horários', 'href' => '/painel/horarios'],
-    'configuracoes' => ['label' => 'Configurações ⚙️', 'href' => '/painel/configuracoes'],
-    'cozinha' => ['label' => 'Cozinha', 'href' => '/cozinha'],
+    'painel' => ['label' => 'Painel', 'href' => $tenantPrefix . '/painel'],
+    'pedidos' => ['label' => 'Pedidos 🚨', 'href' => $tenantPrefix . '/painel/pedidos'],
+    'categorias' => ['label' => 'Categorias', 'href' => $tenantPrefix . '/painel/categorias'],
+    'produtos' => ['label' => 'Produtos', 'href' => $tenantPrefix . '/painel/produtos'],
+    'adicionais' => ['label' => 'Adicionais', 'href' => $tenantPrefix . '/painel/adicionais'],
+    'bairros' => ['label' => 'Bairros / Taxas', 'href' => $tenantPrefix . '/painel/bairros'],
+    'pagamentos' => ['label' => 'Pagamentos', 'href' => $tenantPrefix . '/painel/pagamentos'],
+    'cupons' => ['label' => 'Cupons 🎟️', 'href' => $tenantPrefix . '/painel/cupons'],
+    'horarios' => ['label' => 'Horários', 'href' => $tenantPrefix . '/painel/horarios'],
+    'configuracoes' => ['label' => 'Configurações ⚙️', 'href' => $tenantPrefix . '/painel/configuracoes'],
+    'cozinha' => ['label' => 'Cozinha', 'href' => $tenantPrefix . '/cozinha'],
 ];
 
 if ($sessionPerfil === 'superadmin') {

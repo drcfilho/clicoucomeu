@@ -36,11 +36,11 @@ class PermissionMiddleware
             return ['superadmin'];
         }
 
-        if (str_starts_with($path, '/cozinha')) {
+        if (str_contains($path, '/cozinha')) {
             return ['superadmin', 'admin', 'cozinha'];
         }
 
-        if (str_starts_with($path, '/painel')) {
+        if (str_contains($path, '/painel')) {
             return ['superadmin', 'admin', 'operador'];
         }
 

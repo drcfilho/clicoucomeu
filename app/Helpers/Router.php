@@ -45,6 +45,10 @@ class Router
                 continue;
             }
 
+            if (isset($params['tenant'])) {
+                $request->setAttribute('route_tenant', (string) $params['tenant']);
+            }
+
             foreach ($route['middleware'] as $middleware) {
                 (new $middleware())->handle($request, $container);
             }
