@@ -108,50 +108,78 @@ class BackupService
         return $filepath;
     }
 
+    private function getPdo(): PDO
+    {
+        if ($this->pdo !== null) {
+            return $this->pdo;
+        }
+
+        $configPath = BASE_PATH . '/app/Config/database.php';
+        if (file_exists($configPath)) {
+            require_once $configPath;
+            $conn = function_exists('App\Config\databaseConfig') ? \App\Config\databaseConfig() : [];
+        } else {
+            $conn = [];
+        }
+
+        $config = [
+            'host' => $conn['host'] ?? '127.0.0.1',
+            'port' => (int) ($conn['port'] ?? 3306),
+            'database' => $conn['database'] ?? 'clicoucomeu',
+            'username' => $conn['username'] ?? 'root',
+            'password' => $conn['password'] ?? '',
+            'charset' => $conn['charset'] ?? 'utf8mb4',
+        ];
+
+        $pdo = \App\Helpers\Database::connect($config);
+        if ($pdo === null) {
+            throw new Exception('Não foi possível conectar ao banco de dados MySQL.');
+        }
+
+        $this->pdo = $pdo;
+        return $this->pdo;
+    }
+
     /**
      * Gera a exportação individual dos dados de um tenant específico (JSON).
      */
     public function exportTenantJson(int $tenantId): array
     {
-        if ($this->pdo === null) {
-            $dbConfig = $this->dbConfig;
-            $dsn = "mysql:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['database']};charset=utf8mb4";
-            $this->pdo = new PDO($dsn, $dbConfig['username'], $dbConfig['password']);
-        }
+        $pdo = $this->getPdo();
 
         // Informações do Tenant
-        $stmt = $this->pdo->prepare("SELECT * FROM tenants WHERE id = ?");
+        $stmt = $pdo->prepare("SELECT * FROM tenants WHERE id = ?");
         $stmt->execute([$tenantId]);
         $tenant = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // Categorias
-        $stmt = $this->pdo->prepare("SELECT * FROM categorias WHERE tenant_id = ?");
+        $stmt = $pdo->prepare("SELECT * FROM categorias WHERE tenant_id = ?");
         $stmt->execute([$tenantId]);
         $categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Produtos
-        $stmt = $this->pdo->prepare("SELECT * FROM produtos WHERE tenant_id = ?");
+        $stmt = $pdo->prepare("SELECT * FROM produtos WHERE tenant_id = ?");
         $stmt->execute([$tenantId]);
         $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Grupos de Adicionais & Adicionais
-        $stmt = $this->pdo->prepare("SELECT * FROM grupos_adicionais WHERE tenant_id = ?");
+        $stmt = $pdo->prepare("SELECT * FROM grupos_adicionais WHERE tenant_id = ?");
         $stmt->execute([$tenantId]);
         $grupos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($grupos as &$grupo) {
-            $stmtAddons = $this->pdo->prepare("SELECT * FROM adicionais WHERE grupo_id = ?");
+            $stmtAddons = $pdo->prepare("SELECT * FROM adicionais WHERE grupo_id = ?");
             $stmtAddons->execute([$grupo['id']]);
             $grupo['adicionais'] = $stmtAddons->fetchAll(PDO::FETCH_ASSOC);
         }
 
         // Bairros / Taxas
-        $stmt = $this->pdo->prepare("SELECT * FROM bairros WHERE tenant_id = ?");
+        $stmt = $pdo->prepare("SELECT * FROM bairros WHERE tenant_id = ?");
         $stmt->execute([$tenantId]);
         $bairros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Histórico de Pedidos (Últimos 1000)
-        $stmt = $this->pdo->prepare("SELECT * FROM pedidos WHERE tenant_id = ? ORDER BY id DESC LIMIT 1000");
+        $stmt = $pdo->prepare("SELECT * FROM pedidos WHERE tenant_id = ? ORDER BY id DESC LIMIT 1000");
         $stmt->execute([$tenantId]);
         $pedidos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -172,23 +200,19 @@ class BackupService
      */
     private function generatePhpDatabaseBackup(string $filepath): void
     {
-        if ($this->pdo === null) {
-            $dbConfig = $this->dbConfig;
-            $dsn = "mysql:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['database']};charset=utf8mb4";
-            $this->pdo = new PDO($dsn, $dbConfig['username'], $dbConfig['password']);
-        }
+        $pdo = $this->getPdo();
 
-        $tables = $this->pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
+        $tables = $pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
 
         $out = "-- Backup Clicou Comeu\n-- Gerado em: " . date('Y-m-d H:i:s') . "\n\n";
         $out .= "SET FOREIGN_KEY_CHECKS=0;\n\n";
 
         foreach ($tables as $table) {
-            $createTable = $this->pdo->query("SHOW CREATE TABLE `{$table}`")->fetch(PDO::FETCH_NUM);
+            $createTable = $pdo->query("SHOW CREATE TABLE `{$table}`")->fetch(PDO::FETCH_NUM);
             $out .= "DROP TABLE IF EXISTS `{$table}`;\n";
             $out .= $createTable[1] . ";\n\n";
 
-            $rows = $this->pdo->query("SELECT * FROM `{$table}`")->fetchAll(PDO::FETCH_ASSOC);
+            $rows = $pdo->query("SELECT * FROM `{$table}`")->fetchAll(PDO::FETCH_ASSOC);
             foreach ($rows as $row) {
                 $keys = array_map(fn($k) => "`$k`", array_keys($row));
                 $vals = array_map(function ($v) {
