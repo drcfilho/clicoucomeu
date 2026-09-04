@@ -414,3 +414,27 @@
 - [ ] Programa de fidelidade.
 - [ ] NPS.
 - [ ] Relatorios avancados.
+
+# Fase 29 - Onboarding & Auto-Cadastro de Estabelecimento
+
+- [ ] **29.1 Cadastro Inicial (Cadastro Grátis na Landing Page)**
+  - [ ] Criar formulário público de auto-cadastro na landing page (`/cadastro` ou modal).
+  - [ ] Coletar Dados Essenciais: Nome do Estabelecimento, Nome do Responsável, WhatsApp, E-mail e Senha.
+  - [ ] Gerar Slug Automático único a partir do Nome (ex: "Pizzaria Brasil" -> `pizzaria-brasil`).
+  - [ ] Criar Tenant no banco (`tenants`), usuário Administrador (`usuarios`) e configurações padrão de horário/identidade.
+  - [ ] Autenticar o novo usuário automaticamente e redirecioná-lo para a primeira etapa do Assistente de Onboarding.
+
+- [ ] **29.2 Assistente Passo-a-Passo de Configuração (Wizard de 4 Etapas)**
+  - [ ] **Etapa 1: Dados do Restaurante & Identidade Visual**
+    - Configurar Logotipo, Slogan, Cor Primária/Secundária e Endereço da loja.
+  - [ ] **Etapa 2: Bairros & Entrega**
+    - Cadastro rápido das regiões atendidas e taxas de entrega (ou opção de Retirada Grátis).
+  - [ ] **Etapa 3: Formas de Pagamento & PIX**
+    - Habilitar métodos aceitos (Dinheiro, Cartão, PIX com chave para recebimento).
+  - [ ] **Etapa 4: Primeiras Categorias & Produtos**
+    - Cadastro prático do primeiro produto/categoria com foto, preço e opções ou carregamento de Modelo/Template pré-definido por segmento (Pizzaria, Hamburgueria, Marmitaria, Açaí).
+
+- [ ] **29.3 Dashboard Guia / Checklist Inicial**
+  - [ ] Exibir Barra de Progresso do Onboarding na topo do Painel (`0% a 100% Concluído`).
+  - [ ] Exibir Botão "Ver Meu Cardápio no Ar" assim que os passos mínimos forem finalizados.
+  - [ ] Opção de Pular/Concluir Onboarding a qualquer momento.
