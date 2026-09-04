@@ -252,11 +252,14 @@ class OrderService
                 $orderItemId = (int) $this->db->lastInsertId();
 
                 foreach ($calculatedItem['addons'] as $addon) {
+                    $gName = !empty($addon['grupo_nome']) ? (string) $addon['grupo_nome'] : '';
+                    $fullName = $gName !== '' ? "{$gName}: " . (string) $addon['adicional_nome'] : (string) $addon['adicional_nome'];
+
                     $addonStmt->execute([
                         'tenant_id' => $tenantId,
                         'pedido_item_id' => $orderItemId,
                         'adicional_id' => (int) $addon['adicional_id'],
-                        'nome' => (string) $addon['adicional_nome'],
+                        'nome' => $fullName,
                         'valor_unitario' => (float) $addon['preco'],
                         'valor_total' => (float) $addon['preco'],
                     ]);
