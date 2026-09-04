@@ -183,4 +183,149 @@ class OrderRepository
 
         return $counts;
     }
+
+    public function getDashboardMetrics(int $tenantId, ?string $startDate = null, ?string $endDate = null): array
+    {
+        if ($this->db === null) {
+            return [
+                'orders_count' => 0,
+                'total_revenue' => 0.0,
+                'average_ticket' => 0.0,
+                'open_orders' => 0,
+            ];
+        }
+
+        $params = ['tenant_id' => $tenantId];
+        $dateFilter = '';
+
+        if ($startDate !== null && $startDate !== '') {
+            $dateFilter .= ' AND DATE(criado_em) >= :start_date';
+            $params['start_date'] = $startDate;
+        }
+
+        if ($endDate !== null && $endDate !== '') {
+            $dateFilter .= ' AND DATE(criado_em) <= :end_date';
+            $params['end_date'] = $endDate;
+        }
+
+        // Estatísticas do período (apenas pedidos finalizados/entregues para faturamento, ou todos exceto cancelados)
+        $sql = "SELECT 
+                    COUNT(*) as total_pedidos,
+                    COALESCE(SUM(CASE WHEN status NOT IN ('cancelado') THEN total ELSE 0 END), 0) as faturamento_total,
+                    COALESCE(AVG(CASE WHEN status NOT IN ('cancelado') THEN total ELSE NULL END), 0) as ticket_medio
+                FROM pedidos
+                WHERE tenant_id = :tenant_id {$dateFilter}";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        $row = $stmt->fetch() ?: [];
+
+        // Pedidos abertos no momento (novo, aceito, preparando, pronto, saiu_para_entrega)
+        $sqlOpen = "SELECT COUNT(*) as total_abertos
+                    FROM pedidos
+                    WHERE tenant_id = :tenant_id AND status IN ('novo', 'pendente', 'aceito', 'preparando', 'em_preparo', 'pronto', 'saiu_para_entrega', 'saiu_entrega')";
+        $stmtOpen = $this->db->prepare($sqlOpen);
+        $stmtOpen->execute(['tenant_id' => $tenantId]);
+        $rowOpen = $stmtOpen->fetch() ?: [];
+
+        return [
+            'orders_count' => (int) ($row['total_pedidos'] ?? 0),
+            'total_revenue' => (float) ($row['faturamento_total'] ?? 0),
+            'average_ticket' => (float) ($row['ticket_medio'] ?? 0),
+            'open_orders' => (int) ($rowOpen['total_abertos'] ?? 0),
+        ];
+    }
+
+    public function getTopProducts(int $tenantId, ?string $startDate = null, ?string $endDate = null, int $limit = 5): array
+    {
+        if ($this->db === null) {
+            return [];
+        }
+
+        $params = ['tenant_id' => $tenantId];
+        $dateFilter = '';
+
+        if ($startDate !== null && $startDate !== '') {
+            $dateFilter .= ' AND DATE(p.criado_em) >= :start_date';
+            $params['start_date'] = $startDate;
+        }
+
+        if ($endDate !== null && $endDate !== '') {
+            $dateFilter .= ' AND DATE(p.criado_em) <= :end_date';
+            $params['end_date'] = $endDate;
+        }
+
+        $sql = "SELECT pi.nome, SUM(pi.quantidade) as total_qtd, SUM(pi.subtotal) as total_valor
+                FROM pedido_itens pi
+                JOIN pedidos p ON p.id = pi.pedido_id
+                WHERE p.tenant_id = :tenant_id AND p.status NOT IN ('cancelado') {$dateFilter}
+                GROUP BY pi.nome
+                ORDER BY total_qtd DESC, total_valor DESC
+                LIMIT " . (int) $limit;
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll() ?: [];
+    }
+
+    public function getTopPaymentMethods(int $tenantId, ?string $startDate = null, ?string $endDate = null): array
+    {
+        if ($this->db === null) {
+            return [];
+        }
+
+        $params = ['tenant_id' => $tenantId];
+        $dateFilter = '';
+
+        if ($startDate !== null && $startDate !== '') {
+            $dateFilter .= ' AND DATE(criado_em) >= :start_date';
+            $params['start_date'] = $startDate;
+        }
+
+        if ($endDate !== null && $endDate !== '') {
+            $dateFilter .= ' AND DATE(criado_em) <= :end_date';
+            $params['end_date'] = $endDate;
+        }
+
+        $sql = "SELECT forma_pagamento, COUNT(*) as qtd, SUM(total) as valor_total
+                FROM pedidos
+                WHERE tenant_id = :tenant_id AND status NOT IN ('cancelado') {$dateFilter}
+                GROUP BY forma_pagamento
+                ORDER BY qtd DESC";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll() ?: [];
+    }
+
+    public function getTopNeighborhoods(int $tenantId, ?string $startDate = null, ?string $endDate = null, int $limit = 5): array
+    {
+        if ($this->db === null) {
+            return [];
+        }
+
+        $params = ['tenant_id' => $tenantId];
+        $dateFilter = '';
+
+        if ($startDate !== null && $startDate !== '') {
+            $dateFilter .= ' AND DATE(criado_em) >= :start_date';
+            $params['start_date'] = $startDate;
+        }
+
+        if ($endDate !== null && $endDate !== '') {
+            $dateFilter .= ' AND DATE(criado_em) <= :end_date';
+            $params['end_date'] = $endDate;
+        }
+
+        $sql = "SELECT cliente_bairro AS bairro, COUNT(*) as qtd, SUM(total) as valor_total
+                FROM pedidos
+                WHERE tenant_id = :tenant_id AND status NOT IN ('cancelado') AND cliente_bairro IS NOT NULL AND cliente_bairro != '' {$dateFilter}
+                GROUP BY cliente_bairro
+                ORDER BY qtd DESC
+                LIMIT " . (int) $limit;
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll() ?: [];
+    }
 }
