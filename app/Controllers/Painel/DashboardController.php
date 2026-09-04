@@ -53,13 +53,13 @@ class DashboardController
         $productRepo = $this->container->get(\App\Repositories\ProductRepository::class);
         /** @var \App\Repositories\NeighborhoodRepository $neighborhoodRepo */
         $neighborhoodRepo = $this->container->get(\App\Repositories\NeighborhoodRepository::class);
-        /** @var \App\Repositories\StoreHoursRepository $hoursRepo */
-        $hoursRepo = $this->container->get(\App\Repositories\StoreHoursRepository::class);
+        /** @var \App\Services\StoreHoursService $hoursService */
+        $hoursService = $this->container->get(\App\Services\StoreHoursService::class);
 
         $categoriesCount = count($categoryRepo->findAllByTenantId($tenantId));
         $productsCount = count($productRepo->findAllByTenantId($tenantId));
         $neighborhoodsCount = count($neighborhoodRepo->findAllByTenantId($tenantId));
-        $hoursCount = count($hoursRepo->findAllByTenantId($tenantId));
+        $hoursCount = count($hoursService->getWeeklySchedule($tenantId));
 
         $onboardingSteps = [
             'categorias' => $categoriesCount > 0,
