@@ -45,7 +45,7 @@
                     </div>
                 </header>
 
-                <?php require __DIR__ . '/../partials/flash-messages.php'; ?>
+                <?php require __DIR__ . '/../../partials/flash-messages.php'; ?>
 
                 <form method="post" action="/painel/configuracoes" enctype="multipart/form-data">
                     <input type="hidden" name="_csrf" value="<?= htmlspecialchars((string)$csrfToken, ENT_QUOTES, 'UTF-8') ?>">
