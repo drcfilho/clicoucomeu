@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Controllers\AuthController;
 use App\Controllers\Admin\TenantController;
+use App\Controllers\Admin\BackupController as AdminBackupController;
+use App\Controllers\Painel\TenantBackupController;
 use App\Controllers\Cozinha\KitchenController;
 use App\Controllers\Painel\CategoryController;
 use App\Controllers\Painel\ProductController;
@@ -639,6 +641,42 @@ $router->post('/admin/tenants/{id}/plano', [TenantController::class, 'updatePlan
 ]);
 $router->post('/admin/tenants/{id}/prorrogar-trial', [TenantController::class, 'extendTrial'], [
     AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
+
+/* Rotas de Backup Superadmin */
+$router->get('/admin/backups', [AdminBackupController::class, 'index'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/admin/backups/banco', [AdminBackupController::class, 'generateDatabase'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/admin/backups/uploads', [AdminBackupController::class, 'generateUploads'], [
+    AuthMiddleware::class,
+    PermissionMiddleware::class,
+]);
+
+/* Rotas de Exportacao de Dados Tenant */
+$router->get('/painel/backup', [TenantBackupController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->get('/{tenant}/painel/backup', [TenantBackupController::class, 'index'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/painel/backup/export-json', [TenantBackupController::class, 'exportJson'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
+    PermissionMiddleware::class,
+]);
+$router->post('/{tenant}/painel/backup/export-json', [TenantBackupController::class, 'exportJson'], [
+    AuthMiddleware::class,
+    TenantMiddleware::class,
     PermissionMiddleware::class,
 ]);
 $router->get('/admin/tenants/{id}/acessar', [TenantController::class, 'impersonate'], [

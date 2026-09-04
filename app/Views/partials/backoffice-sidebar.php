@@ -9,6 +9,7 @@ if ($sessionPerfil === 'superadmin') {
     $backofficeNav = [
         'admin' => ['label' => 'Visão Geral Superadmin', 'href' => '/admin', 'target' => '_self'],
         'tenants' => ['label' => 'Gestão de Tenants 🏬', 'href' => '/admin/tenants', 'target' => '_self'],
+        'admin_backups' => ['label' => 'Backups Globais 🛡️', 'href' => '/admin/backups', 'target' => '_self'],
     ];
 } else {
     $backofficeNav = [
@@ -22,6 +23,7 @@ if ($sessionPerfil === 'superadmin') {
         'cupons' => ['label' => 'Cupons 🎟️', 'href' => $tenantPrefix . '/painel/cupons', 'target' => '_self'],
         'horarios' => ['label' => 'Horários', 'href' => $tenantPrefix . '/painel/horarios', 'target' => '_self'],
         'configuracoes' => ['label' => 'Configurações ⚙️', 'href' => $tenantPrefix . '/painel/configuracoes', 'target' => '_self'],
+        'tenant_backup' => ['label' => 'Exportar Dados 📦', 'href' => $tenantPrefix . '/painel/backup', 'target' => '_self'],
         'cozinha' => ['label' => 'Cozinha 🍳', 'href' => $tenantPrefix . '/cozinha', 'target' => '_blank'],
     ];
 
