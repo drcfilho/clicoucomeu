@@ -350,16 +350,16 @@
 
 # Fase 24 - Seguranca
 
-- [ ] CSRF em POSTs.
-- [ ] Escape HTML.
-- [ ] Queries parametrizadas.
-- [ ] Rate limit no login.
-- [ ] Rate limit em pedidos publicos.
-- [ ] Sessao segura.
-- [ ] Validar tenant em todas as queries.
-- [ ] Sanitizar uploads.
-- [ ] Desativar erros detalhados em producao.
-- [ ] Criar logs.
+- [x] CSRF em POSTs.
+- [x] Escape HTML.
+- [x] Queries parametrizadas.
+- [x] Rate limit no login.
+- [x] Rate limit em pedidos publicos.
+- [x] Sessao segura.
+- [x] Validar tenant em todas as queries.
+- [x] Sanitizar uploads.
+- [x] Desativar erros detalhados em producao.
+- [x] Criar logs.
 
 # Fase 25 - Performance
 
