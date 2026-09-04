@@ -255,11 +255,11 @@ class OrderRepository
             $params['end_date'] = $endDate;
         }
 
-        $sql = "SELECT pi.nome, SUM(pi.quantidade) as total_qtd, SUM(pi.subtotal) as total_valor
+        $sql = "SELECT pi.produto_nome AS nome, SUM(pi.quantidade) as total_qtd, SUM(pi.valor_total) as total_valor
                 FROM pedido_itens pi
                 JOIN pedidos p ON p.id = pi.pedido_id
                 WHERE p.tenant_id = :tenant_id AND p.status NOT IN ('cancelado') {$dateFilter}
-                GROUP BY pi.nome
+                GROUP BY pi.produto_nome
                 ORDER BY total_qtd DESC, total_valor DESC
                 LIMIT " . (int) $limit;
 
