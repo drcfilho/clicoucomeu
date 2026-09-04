@@ -58,6 +58,14 @@ if ($sessionPerfil === 'superadmin') {
             </a>
         <?php endforeach; ?>
     </nav>
+
+    <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <form method="post" action="/logout">
+            <button type="submit" class="backoffice-sidebar-link" style="width: 100%; border: none; background: transparent; cursor: pointer; text-align: left; color: #ef4444; font-weight: 600;">
+                🚪 Sair do Sistema
+            </button>
+        </form>
+    </div>
 </aside>
 
 <script>
