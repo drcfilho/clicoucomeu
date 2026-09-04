@@ -177,6 +177,11 @@ function bootstrap(): App\Helpers\App
             $container->get('couponRepository')
         );
     });
+    $container->set('backupService', function () use ($container): App\Services\BackupService {
+        return new App\Services\BackupService($container->get('db'));
+    });
+    $container->set(App\Services\BackupService::class, fn () => $container->get('backupService'));
+
     $container->set('router', function (): App\Helpers\Router {
         return require BASE_PATH . '/routes/web.php';
     });
