@@ -351,9 +351,8 @@ class OrderService
             $sku = sprintf('%04d', (int) $item['product']['id']);
             $msg .= "• *{$prodName}* ({$sku})\n";
 
-            $details = [];
             if ($item['variation'] !== null && !empty($item['variation']['nome'])) {
-                $details[] = "Tamanho: " . (string) $item['variation']['nome'];
+                $msg .= "  └ ✓ Tamanho: " . (string) $item['variation']['nome'] . "\n";
             }
 
             // Agrupa adicionais por nome do grupo
@@ -364,15 +363,11 @@ class OrderService
             }
 
             foreach ($groupedAddons as $gName => $aNames) {
-                $details[] = "{$gName}: " . implode(', ', $aNames);
+                $msg .= "  └ ✓ {$gName}: " . implode(', ', $aNames) . "\n";
             }
 
             if (!empty($item['notes'])) {
-                $details[] = "Obs: " . $item['notes'];
-            }
-
-            if (!empty($details)) {
-                $msg .= "  └ ✓ " . implode(' ', $details) . "\n";
+                $msg .= "  └ Obs: " . $item['notes'] . "\n";
             }
 
             $qty = (int) $item['quantity'];
