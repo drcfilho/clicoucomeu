@@ -328,14 +328,14 @@
 
 # Fase 22 - Dashboard
 
-- [ ] Pedidos hoje.
-- [ ] Faturamento hoje.
-- [ ] Ticket medio.
-- [ ] Pedidos abertos.
-- [ ] Filtro por periodo.
-- [ ] Produtos mais vendidos.
-- [ ] Formas de pagamento.
-- [ ] Bairros mais frequentes.
+- [x] Pedidos hoje.
+- [x] Faturamento hoje.
+- [x] Ticket medio.
+- [x] Pedidos abertos.
+- [x] Filtro por periodo.
+- [x] Produtos mais vendidos.
+- [x] Formas de pagamento.
+- [x] Bairros mais frequentes.
 
 # Fase 23 - Configuracoes do Tenant
 
