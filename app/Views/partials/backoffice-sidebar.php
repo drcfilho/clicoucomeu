@@ -19,6 +19,13 @@ $backofficeNav = [
     'cozinha' => ['label' => 'Cozinha 🍳', 'href' => $tenantPrefix . '/cozinha', 'target' => '_blank'],
 ];
 
+$tenantPlano = $_SESSION['tenant_plano'] ?? 'mvp';
+$planDetails = \App\Services\PlanService::getPlanDetails($tenantPlano);
+
+if (!($planDetails['kds_enabled'] ?? false)) {
+    unset($backofficeNav['cozinha']);
+}
+
 if ($sessionPerfil === 'superadmin') {
     $backofficeNav['admin'] = ['label' => 'Superadmin', 'href' => '/admin', 'target' => '_self'];
     $backofficeNav['tenants'] = ['label' => 'Tenants', 'href' => '/admin/tenants', 'target' => '_self'];

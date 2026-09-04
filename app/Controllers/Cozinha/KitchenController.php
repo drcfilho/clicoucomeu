@@ -24,6 +24,18 @@ class KitchenController
     public function index(Request $request, Response $response, array $params = []): void
     {
         $tenantId = (int) $request->getAttribute('tenant_id', 0);
+        $tenantRepo = $this->container->get(\App\Repositories\TenantRepository::class);
+        $tenant = $tenantRepo->findById($tenantId);
+
+        $planoKey = (string) ($tenant['plano'] ?? 'mvp');
+        $planDetails = \App\Services\PlanService::getPlanDetails($planoKey);
+
+        if (!($planDetails['kds_enabled'] ?? false)) {
+            $this->session->setFlash('error', 'A tela de Cozinha (KDS) é um recurso exclusivo dos planos Pro e Enterprise.');
+            $response->redirect('/painel');
+            return;
+        }
+
         $rawOrders = $this->orderRepo->findOrdersByTenantId($tenantId, null, 100);
 
         // A cozinha exibe apenas pedidos que estao em preparo (aceitos pelo painel)
