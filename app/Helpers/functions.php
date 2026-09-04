@@ -22,3 +22,9 @@ function asset(string $path): string
     }
     return $cleanPath . '?v=' . time();
 }
+
+function url(string $path = ''): string
+{
+    return '/' . ltrim($path, '/');
+}
+
