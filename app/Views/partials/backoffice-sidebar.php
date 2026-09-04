@@ -5,30 +5,32 @@ $tenantPrefix = !empty($tenantSlug) ? '/' . $tenantSlug : '';
 $menuUrl = $tenantPrefix !== '' ? $tenantPrefix : '/';
 $backofficeSection = (string) ($backofficeSection ?? 'painel');
 
-$backofficeNav = [
-    'painel' => ['label' => 'Painel', 'href' => $tenantPrefix . '/painel', 'target' => '_self'],
-    'pedidos' => ['label' => 'Pedidos 🚨', 'href' => $tenantPrefix . '/painel/pedidos', 'target' => '_blank'],
-    'categorias' => ['label' => 'Categorias', 'href' => $tenantPrefix . '/painel/categorias', 'target' => '_self'],
-    'produtos' => ['label' => 'Produtos', 'href' => $tenantPrefix . '/painel/produtos', 'target' => '_self'],
-    'adicionais' => ['label' => 'Adicionais', 'href' => $tenantPrefix . '/painel/adicionais', 'target' => '_self'],
-    'bairros' => ['label' => 'Bairros / Taxas', 'href' => $tenantPrefix . '/painel/bairros', 'target' => '_self'],
-    'pagamentos' => ['label' => 'Pagamentos', 'href' => $tenantPrefix . '/painel/pagamentos', 'target' => '_self'],
-    'cupons' => ['label' => 'Cupons 🎟️', 'href' => $tenantPrefix . '/painel/cupons', 'target' => '_self'],
-    'horarios' => ['label' => 'Horários', 'href' => $tenantPrefix . '/painel/horarios', 'target' => '_self'],
-    'configuracoes' => ['label' => 'Configurações ⚙️', 'href' => $tenantPrefix . '/painel/configuracoes', 'target' => '_self'],
-    'cozinha' => ['label' => 'Cozinha 🍳', 'href' => $tenantPrefix . '/cozinha', 'target' => '_blank'],
-];
-
-$tenantPlano = $_SESSION['tenant_plano'] ?? 'mvp';
-$planDetails = \App\Services\PlanService::getPlanDetails($tenantPlano);
-
-if (!($planDetails['kds_enabled'] ?? false)) {
-    unset($backofficeNav['cozinha']);
-}
-
 if ($sessionPerfil === 'superadmin') {
-    $backofficeNav['admin'] = ['label' => 'Superadmin', 'href' => '/admin', 'target' => '_self'];
-    $backofficeNav['tenants'] = ['label' => 'Tenants', 'href' => '/admin/tenants', 'target' => '_self'];
+    $backofficeNav = [
+        'admin' => ['label' => 'Visão Geral Superadmin', 'href' => '/admin', 'target' => '_self'],
+        'tenants' => ['label' => 'Gestão de Tenants 🏬', 'href' => '/admin/tenants', 'target' => '_self'],
+    ];
+} else {
+    $backofficeNav = [
+        'painel' => ['label' => 'Painel', 'href' => $tenantPrefix . '/painel', 'target' => '_self'],
+        'pedidos' => ['label' => 'Pedidos 🚨', 'href' => $tenantPrefix . '/painel/pedidos', 'target' => '_blank'],
+        'categorias' => ['label' => 'Categorias', 'href' => $tenantPrefix . '/painel/categorias', 'target' => '_self'],
+        'produtos' => ['label' => 'Produtos', 'href' => $tenantPrefix . '/painel/produtos', 'target' => '_self'],
+        'adicionais' => ['label' => 'Adicionais', 'href' => $tenantPrefix . '/painel/adicionais', 'target' => '_self'],
+        'bairros' => ['label' => 'Bairros / Taxas', 'href' => $tenantPrefix . '/painel/bairros', 'target' => '_self'],
+        'pagamentos' => ['label' => 'Pagamentos', 'href' => $tenantPrefix . '/painel/pagamentos', 'target' => '_self'],
+        'cupons' => ['label' => 'Cupons 🎟️', 'href' => $tenantPrefix . '/painel/cupons', 'target' => '_self'],
+        'horarios' => ['label' => 'Horários', 'href' => $tenantPrefix . '/painel/horarios', 'target' => '_self'],
+        'configuracoes' => ['label' => 'Configurações ⚙️', 'href' => $tenantPrefix . '/painel/configuracoes', 'target' => '_self'],
+        'cozinha' => ['label' => 'Cozinha 🍳', 'href' => $tenantPrefix . '/cozinha', 'target' => '_blank'],
+    ];
+
+    $tenantPlano = $_SESSION['tenant_plano'] ?? 'mvp';
+    $planDetails = \App\Services\PlanService::getPlanDetails($tenantPlano);
+
+    if (!($planDetails['kds_enabled'] ?? false)) {
+        unset($backofficeNav['cozinha']);
+    }
 }
 ?>
 <aside class="backoffice-sidebar" aria-label="Navegacao principal">
@@ -36,10 +38,11 @@ if ($sessionPerfil === 'superadmin') {
         <span class="backoffice-sidebar-mark">CC</span>
         <div>
             <strong>Clicou Comeu</strong>
-            <span>Backoffice</span>
+            <span><?= $sessionPerfil === 'superadmin' ? 'Superadmin' : 'Backoffice' ?></span>
         </div>
     </div>
     
+    <?php if ($sessionPerfil !== 'superadmin'): ?>
     <div style="padding: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
         <div style="font-size: 11px; text-transform: uppercase; color: #94a3b8; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px;">Seu Cardápio</div>
         <div style="display: flex; gap: 6px;">
@@ -68,6 +71,7 @@ if ($sessionPerfil === 'superadmin') {
                 <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 11px;">7 dias grátis ativos (Limite: 20 produtos).</p>
             </div>
         <?php endif; ?>
+    <?php endif; ?>
     <?php endif; ?>
 
     <nav class="backoffice-sidebar-nav">
